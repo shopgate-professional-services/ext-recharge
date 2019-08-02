@@ -10,5 +10,5 @@ export const getRechargeSubscriptionItemsState = state =>
 
 export const getRechargeSubscriptionItems = createSelector(
   getRechargeSubscriptionItemsState,
-  ({ product }) => product
+  ({ products }) => products
 );

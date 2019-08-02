@@ -6,11 +6,32 @@ import connect from './connector';
  * @returns {JSX}
  */
 const PdpRechargeProducts = ({ subscriptionProducts }) => {
-  console.warn(subscriptionProducts); return (<div>hi</div>);
+  // componentWillReceiveProps(nextProps, nextContext) {
+
+  //   if (nextProps.product) {
+
+  //     if (!nextProps.product.flags.hasVariants) {
+  //       this.props.dispatch(fetchSubscriptionProducts([nextProps.product.id]));
+  //     } else {
+
+  //       if (nextProps.variants) {
+
+  //         const variantIds = nextProps.variants.map((id) => id)
+
+  //         this.props.dispatch(fetchSubscriptionProducts(variantIds));
+
+  //       }
+
+  //     }
+  //   }
+
+  // }
+  console.warn(subscriptionProducts);
+  return (<div>hi</div>);
 };
 
 PdpRechargeProducts.propTypes = {
-  subscriptionProducts: PropTypes.shape().isRequired,
+  subscriptionProducts: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default connect(PdpRechargeProducts);
