@@ -6,6 +6,6 @@ module.exports = async (context, input) => {
     return { products: [] }
   }
   const api = new ReChargeApi(context)
-  const products = await api.getProducts(input.productIds)
+  const { products = [] } = await api.getProducts(input.productIds)
   return { products }
 }
