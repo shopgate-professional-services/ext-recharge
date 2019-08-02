@@ -29,6 +29,16 @@
         "type": "text",
         "required": true
       }
+    },
+    "baseUrl": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "https://api.rechargeapps.com",
+      "params": {
+        "label": "ReCharge API base URL",
+        "type": "text",
+        "required": true
+      }
     }
   },
   "steps": []
