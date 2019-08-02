@@ -9,6 +9,16 @@
     }
   ],
   "configuration": {
+    "apiToken": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "66bf89e72b05c085f289fe43542659e6fd0e56888ef52fc0ff825a03",
+      "params": {
+        "label": "ReCharge API token",
+        "type": "text",
+        "required": true
+      }
+    }
   },
   "steps": [
   ]
