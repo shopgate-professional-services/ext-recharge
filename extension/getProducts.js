@@ -1,16 +1,16 @@
 module.exports = async (context, input) => {
-  const { apiToken } = context.config;
+  const { apiToken } = context.config
 
   // TODO: check if input.productIds is !empty
 
-  const request = context.tracedRequest('ShopgateProjectReChargeProducts');
+  const request = context.tracedRequest('ShopgateProjectReChargeProducts')
 
   // TODO: refactor to general API client later
 
   const params = {
     uri: 'https://api.rechargeapps.com/products',
     qs: {
-      shopify_product_ids: input.productIds,
+      shopify_product_ids: input.productIds
     },
     method: 'GET',
     headers: {
@@ -18,11 +18,11 @@ module.exports = async (context, input) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
-  };
+  }
 
-  const response = await request(params);
+  const response = await request(params)
   // TODO: error handling
-  console.warn(response);
+  console.warn(response)
 
-  return {products: JSON.parse(response).products};
+  return { products: JSON.parse(response).products }
 }
