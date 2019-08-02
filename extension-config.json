@@ -2,8 +2,33 @@
   "version": "1.0.0-alpha.1",
   "id": "@shopgate-project/recharge",
   "components": [
+    {
+      "id": "subscriptions",
+      "path": "frontend/subscriptions/index.js",
+      "type": "subscribers"
+    }
   ],
   "configuration": {
+    "apiToken": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "66bf89e72b05c085f289fe43542659e6fd0e56888ef52fc0ff825a03",
+      "params": {
+        "label": "ReCharge API token",
+        "type": "text",
+        "required": true
+      }
+    },
+    "baseUrl": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "https://api.rechargeapps.com",
+      "params": {
+        "label": "ReCharge API base URL",
+        "type": "text",
+        "required": true
+      }
+    }
   },
   "steps": [
   ]
