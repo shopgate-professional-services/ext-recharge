@@ -2,6 +2,11 @@
   "version": "1.0.0-alpha.1",
   "id": "@shopgate-project/recharge",
   "components": [
+    {
+      "id": "subscriptions",
+      "path": "frontend/subscriptions/index.js",
+      "type": "subscribers"
+    }
   ],
   "configuration": {
   },
