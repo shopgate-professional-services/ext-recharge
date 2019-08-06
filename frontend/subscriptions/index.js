@@ -1,15 +1,14 @@
-import { appDidStart$ } from '@shopgate/pwa-common/streams/app';
+import { productWillEnter$, getBaseProductId } from '@shopgate/engage/product';
+import { hex2bin } from '@shopgate/engage/core';
 import { fetchSubscriptionProducts } from '../actions';
 
 export default (subscribe) => {
-
-  // fetch user info when app returns to the foreground
-  subscribe(appDidStart$, ({ dispatch }) => {
-
-    window.recharge = (Ids) => dispatch(fetchSubscriptionProducts(Ids))
-
+  subscribe(productWillEnter$, ({ action, dispatch, getState }) => {
+    const { productId } = action.route.params;
+    const { productId: variantId } = action.route.state;
+    const baseProductId = getBaseProductId(getState(), {
+      variantId, productId: hex2bin(productId),
+    });
+    dispatch(fetchSubscriptionProducts(baseProductId));
   });
-
-
-
 };

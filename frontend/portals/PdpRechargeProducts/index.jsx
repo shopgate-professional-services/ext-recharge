@@ -1,45 +1,43 @@
-import React, { Fragment, useEffect, memo } from 'react';
+/* eslint-disable camelcase */
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { withCurrentProduct } from '@shopgate/engage/core';
-import RechargeOptions from '../../components/RechargeOptions';
+import RechargeOption from '../../components/RechargeOption';
 import connect from './connector';
 
 /**
  * @returns {JSX}
  */
-const PdpRechargeProducts = ({
-  baseProductId,
-  productId,
-  variantId,
-  subscriptionProducts,
-  fetchSubscriptionProducts,
-}) => {
-  useEffect(() => {
-    fetchSubscriptionProducts(baseProductId);
-  }, [baseProductId]);
+const PdpRechargeProducts = ({ subscriptionProducts }) => {
+  if (!subscriptionProducts) {
+    return null;
+  }
 
   console.warn('subscriptionProducts: ', subscriptionProducts);
 
-  return (
-    <Fragment>
-      {
-        subscriptionProducts ?
-          <RechargeOptions subscriptionProducts={subscriptionProducts} /> : null
-      }
-    </Fragment>
-  );
+  return subscriptionProducts.map((option) => {
+    const {
+      id, discount_amount, discount_type, subscription_defaults,
+    } = option;
+
+    return (
+      <RechargeOption
+        key={id}
+        id={id}
+        discountAmount={discount_amount}
+        discountType={discount_type}
+        frequencyValues={subscription_defaults.order_interval_frequency_options}
+        intervalUnit={subscription_defaults.order_interval_unit}
+        purchaseOption={subscription_defaults.storefront_purchase_options}
+      />
+    );
+  });
 };
 PdpRechargeProducts.propTypes = {
-  baseProductId: PropTypes.string.isRequired,
-  fetchSubscriptionProducts: PropTypes.func.isRequired,
-  productId: PropTypes.string.isRequired,
   subscriptionProducts: PropTypes.arrayOf(PropTypes.shape()),
-  variantId: PropTypes.string,
 };
 
 PdpRechargeProducts.defaultProps = {
   subscriptionProducts: null,
-  variantId: null,
 };
 
-export default withCurrentProduct(connect(memo(PdpRechargeProducts)));
+export default connect(memo(PdpRechargeProducts));

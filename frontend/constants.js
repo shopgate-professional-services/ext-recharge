@@ -5,3 +5,7 @@ export const ERROR_RECHARGE_SUBSCRIPTION_ITEMS = 'ERROR_RECHARGE_SUBSCRIPTION_IT
 export const REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS = '@shopgate-project/recharge/rechargeSubscriptionItems';
 
 export const REQUIRED_SUBSCRIPTION_TEXT = 'subscription_only';
+
+export const REQUIRED_SUBSCRIPTION_LABEL = 'Recharge Subscription';
+
+export const OPTIONAL_SUBSCRIPTION_LABEL = 'Recharge Subscription(optional)';
