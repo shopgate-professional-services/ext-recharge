@@ -28,6 +28,90 @@
         "type": "text",
         "required": true
       }
+    },
+    "rechargeDetailsButtonText": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "Subscription details",
+      "params": {
+        "label": "Subscription Details Button Text",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsButtonIconSrc": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "https://rechargestatic-bootstrapheroes.netdna-ssl.com/static/images/widget/rc_widget__icon__black@2x.png",
+      "params": {
+        "label": "Url to recharge icon image src",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsPopUpTitle": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "How subscriptions work",
+      "params": {
+        "label": "Subscription Details PopUp Title",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsPopUpText": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "Products are automatically delivered on your schedule. No obligation, modify or cancel your subscription anytime.",
+      "params": {
+        "label": "Subscription Details PopUp text",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsPopUpLearnMoreLinkText": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "Learn more...",
+      "params": {
+        "label": "Subscription Details PopUp Learn More Link Text",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsPopUpLearnMoreLinkHref": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "http://rechargepayments.com/subscribe-with-recharge",
+      "params": {
+        "label": "Subscription Details PopUp Learn More Link Href",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsPopUpFooterImageSrc": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "https://rechargestatic-bootstrapheroes.netdna-ssl.com/static/images/widget/rc_widget__banner@2x.png",
+      "params": {
+        "label": "Subscription Details PopUp Footer Image Src",
+        "type": "text"
+      }
+    },
+    "baseReChargeScriptSrc": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "https://rechargeassets-bootstrapheroes-rechargeapps.netdna-ssl.com/static/js/recharge.js",
+      "params": {
+        "label": "Source URL to recharge javascript",
+        "type": "text",
+        "required": true
+      }
+    },
+    "shopifyAlias" : {
+      "type": "bigApi",
+      "destination" : "both",
+      "default": "shopgate-recharge-sandbox",
+      "params": {
+        "method":  "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+        "key": "value.frontend.alias"
+      }
     }
   },
   "steps": [
