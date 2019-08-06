@@ -10,6 +10,7 @@ const SheetItem = ({
   onSelect,
   selected,
   index,
+  intervalUnit,
 }) => {
   /**
    * @returns {string}
@@ -43,13 +44,14 @@ const SheetItem = ({
 
   return (
     <button {...buildProps()} aria-selected={selected} role="option">
-      {item}
+      {`${item} ${intervalUnit}`}
     </button>
   );
 };
 
 SheetItem.propTypes = {
   index: PropTypes.number.isRequired,
+  intervalUnit: PropTypes.string.isRequired,
   item: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired,
   selected: PropTypes.bool.isRequired,

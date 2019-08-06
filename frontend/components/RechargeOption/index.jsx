@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback, useEffect, memo } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/Transition';
 import { i18n } from '@shopgate/engage/core';
@@ -60,7 +60,7 @@ const RechargeOption = ({
     }
     const valueLabel = frequencyValues.find(frequencyValue => frequencyValue === selected);
 
-    return valueLabel;
+    return `${valueLabel} ${intervalUnit}`;
   };
 
   /**
@@ -107,6 +107,7 @@ const RechargeOption = ({
         <SheetList>
           {frequencyValues.map((value, index) => (
             <SheetItem
+              intervalUnit={intervalUnit}
               item={value}
               index={index}
               key={index.toString()}
@@ -129,4 +130,4 @@ RechargeOption.propTypes = {
   purchaseOption: PropTypes.string.isRequired,
 };
 
-export default memo(RechargeOption);
+export default RechargeOption;
