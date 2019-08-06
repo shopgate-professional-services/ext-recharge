@@ -74,7 +74,7 @@ class ReChargeApi {
       if (qs) {
         params.qs = qs
       }
-      this.logger.debug(this.sanitizeForLogging(params), 'Calling BoltAPI')
+      this.logger.debug(this.sanitizeForLogging(params), 'Calling RechargeAPI')
       this.request(params, (err, res, body) => {
         if (err) {
           this.logger.error({

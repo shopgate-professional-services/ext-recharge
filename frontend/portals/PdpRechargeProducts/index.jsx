@@ -1,37 +1,45 @@
-import React from 'react';
+import React, { Fragment, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
+import { withCurrentProduct } from '@shopgate/engage/core';
+import RechargeOptions from '../../components/RechargeOptions';
 import connect from './connector';
 
 /**
  * @returns {JSX}
  */
-const PdpRechargeProducts = ({ subscriptionProducts }) => {
-  // componentWillReceiveProps(nextProps, nextContext) {
+const PdpRechargeProducts = ({
+  baseProductId,
+  productId,
+  variantId,
+  subscriptionProducts,
+  fetchSubscriptionProducts,
+}) => {
+  useEffect(() => {
+    fetchSubscriptionProducts(baseProductId);
+  }, [baseProductId]);
 
-  //   if (nextProps.product) {
+  console.warn('subscriptionProducts: ', subscriptionProducts);
 
-  //     if (!nextProps.product.flags.hasVariants) {
-  //       this.props.dispatch(fetchSubscriptionProducts([nextProps.product.id]));
-  //     } else {
-
-  //       if (nextProps.variants) {
-
-  //         const variantIds = nextProps.variants.map((id) => id)
-
-  //         this.props.dispatch(fetchSubscriptionProducts(variantIds));
-
-  //       }
-
-  //     }
-  //   }
-
-  // }
-  console.warn(subscriptionProducts);
-  return (<div>hi</div>);
+  return (
+    <Fragment>
+      {
+        subscriptionProducts ?
+          <RechargeOptions subscriptionProducts={subscriptionProducts} /> : null
+      }
+    </Fragment>
+  );
 };
-
 PdpRechargeProducts.propTypes = {
-  subscriptionProducts: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  baseProductId: PropTypes.string.isRequired,
+  fetchSubscriptionProducts: PropTypes.func.isRequired,
+  productId: PropTypes.string.isRequired,
+  subscriptionProducts: PropTypes.arrayOf(PropTypes.shape()),
+  variantId: PropTypes.string,
 };
 
-export default connect(PdpRechargeProducts);
+PdpRechargeProducts.defaultProps = {
+  subscriptionProducts: null,
+  variantId: null,
+};
+
+export default withCurrentProduct(connect(memo(PdpRechargeProducts)));

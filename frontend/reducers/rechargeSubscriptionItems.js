@@ -12,7 +12,7 @@ import {
  */
 const rechargeSubscriptionItemsReducer = (
   state = {
-    products: [],
+    products: null,
     isFetching: false,
   },
   action
@@ -25,7 +25,7 @@ const rechargeSubscriptionItemsReducer = (
       };
     case RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS:
       return {
-        ...action.products,
+        products: action.products,
         isFetching: false,
       };
     case ERROR_RECHARGE_SUBSCRIPTION_ITEMS:
