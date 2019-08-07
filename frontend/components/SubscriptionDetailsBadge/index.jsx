@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import Image from '@shopgate/pwa-common/components/Image';
 import Button from '@shopgate/pwa-common/components/Button';
 import RCDetailsPopup from './components/RCDetailsPopup';
@@ -28,7 +28,7 @@ const SubscriptionDetailsBadge = () => {
   };
 
   return (
-    <Fragment>
+    <div className={styles.wrapper}>
       <Button
         onClick={togglePopUp}
         className={styles.button}
@@ -43,7 +43,7 @@ const SubscriptionDetailsBadge = () => {
       {show &&
         <RCDetailsPopup closePopUp={closePopUp} />
       }
-    </Fragment>
+    </div>
   );
 };
 

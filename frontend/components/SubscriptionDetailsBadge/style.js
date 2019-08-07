@@ -1,5 +1,9 @@
 import { css } from 'glamor';
 
+const wrapper = css({
+  padding: '13px 16px',
+}).toString();
+
 const image = css({
   height: 21,
   width: 18,
@@ -14,6 +18,7 @@ const button = css({
 }).toString();
 
 export default {
+  wrapper,
   image,
   button,
 };
