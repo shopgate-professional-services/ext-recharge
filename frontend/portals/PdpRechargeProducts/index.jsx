@@ -1,7 +1,8 @@
 /* eslint-disable camelcase */
-import React, { memo } from 'react';
+import React, { memo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import RechargeOption from '../../components/RechargeOption';
+import SubscriptionDetailsBadge from '../../components/SubscriptionDetailsBadge';
 import connect from './connector';
 
 /**
@@ -12,26 +13,31 @@ const PdpRechargeProducts = ({ subscriptionProducts }) => {
     return null;
   }
 
-  console.warn('subscriptionProducts: ', subscriptionProducts);
-
-  return subscriptionProducts.map((option) => {
-    const {
-      id, discount_amount, discount_type, subscription_defaults,
-    } = option;
-
-    return (
-      <RechargeOption
-        key={id}
-        id={id}
-        discountAmount={discount_amount}
-        discountType={discount_type}
-        frequencyValues={subscription_defaults.order_interval_frequency_options}
-        intervalUnit={subscription_defaults.order_interval_unit}
-        purchaseOption={subscription_defaults.storefront_purchase_options}
-      />
-    );
-  });
+  return (
+    <Fragment>
+      <SubscriptionDetailsBadge />
+      {
+        subscriptionProducts.map((option) => {
+          const {
+            id, discount_amount, discount_type, subscription_defaults,
+          } = option;
+          return (
+            <RechargeOption
+              key={id}
+              id={id}
+              discountAmount={discount_amount}
+              discountType={discount_type}
+              frequencyValues={subscription_defaults.order_interval_frequency_options}
+              intervalUnit={subscription_defaults.order_interval_unit}
+              purchaseOption={subscription_defaults.storefront_purchase_options}
+            />
+          );
+        })
+      }
+    </Fragment>
+  );
 };
+
 PdpRechargeProducts.propTypes = {
   subscriptionProducts: PropTypes.arrayOf(PropTypes.shape()),
 };
