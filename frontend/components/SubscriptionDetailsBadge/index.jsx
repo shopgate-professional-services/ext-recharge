@@ -41,16 +41,7 @@ const SubscriptionDetailsBadge = () => {
         {rechargeDetailsButtonText}
       </Button>
       {show &&
-        <Fragment>
-          <div
-            tabIndex="0"
-            role="link"
-            onClick={closePopUp}
-            onKeyDown={closePopUp}
-            className={styles.backDrop}
-          />
-          <RCDetailsPopup />
-        </Fragment>
+        <RCDetailsPopup closePopUp={closePopUp} />
       }
     </Fragment>
   );

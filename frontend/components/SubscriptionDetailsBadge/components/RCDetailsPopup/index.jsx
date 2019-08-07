@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Link from '@shopgate/pwa-common/components/Link';
 import Image from '@shopgate/pwa-common/components/Image';
 import styles from './style';
@@ -14,10 +15,17 @@ const {
 
 /**
  * RCDetailsPopUp
+ * @param {Function} closePopUp Function to close popup
  * @return {JSX}
  */
-const RCDetailsPopup = () => (
-  <div className={styles.popUpWrapper}>
+const RCDetailsPopup = ({ closePopUp }) => (
+  <div
+    tabIndex="0"
+    role="link"
+    onKeyDown={closePopUp}
+    className={styles.popUpWrapper}
+    onClick={closePopUp}
+  >
     <div className={styles.popUpContent}>
       <div className={styles.popUpTitle}>{rechargeDetailsPopUpTitle}</div>
       {rechargeDetailsPopUpText}
@@ -42,5 +50,13 @@ const RCDetailsPopup = () => (
     </div>
   </div>
 );
+
+RCDetailsPopup.propTypes = {
+  closePopUp: PropTypes.func,
+};
+
+RCDetailsPopup.defaultProps = {
+  closePopUp: () => {},
+};
 
 export default RCDetailsPopup;
