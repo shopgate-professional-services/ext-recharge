@@ -3,9 +3,20 @@
   "id": "@shopgate-project/recharge",
   "components": [
     {
+      "id": "PdpRechargeProducts",
+      "path": "frontend/portals/PdpRechargeProducts/index.jsx",
+      "target": "product.description.before",
+      "type": "portals"
+    },
+    {
       "id": "subscriptions",
       "path": "frontend/subscriptions/index.js",
       "type": "subscribers"
+    },
+    {
+      "id": "rechargeSubscriptionItems",
+      "path": "frontend/reducers/rechargeSubscriptionItems.js",
+      "type": "reducers"
     }
   ],
   "configuration": {
@@ -114,6 +125,5 @@
       }
     }
   },
-  "steps": [
-  ]
+  "steps": []
 }
