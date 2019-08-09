@@ -21,7 +21,12 @@ const RechargeOption = ({
   frequencyValues,
   intervalUnit,
   purchaseOption,
+  shopifyVariantId,
+  setSelectedRechargeSubscription,
 }) => {
+  if (!shopifyVariantId) {
+    return null;
+  }
   const [showSheet, setShowSheet] = useState(false);
   const [selected, setSelected] = useState(null);
   const [highlight, setHighlight] = useState(false);
@@ -47,6 +52,14 @@ const RechargeOption = ({
    */
   const handleSelection = (frequencyValue) => {
     setSelected(frequencyValue);
+    const rechargeOptions = {
+      shopifyVariantId,
+      frequencyValue,
+      discountType,
+      discountAmount,
+      quantity: 1,
+    };
+    setSelectedRechargeSubscription(rechargeOptions);
     handleClose();
   };
 
@@ -128,6 +141,8 @@ RechargeOption.propTypes = {
   id: PropTypes.number.isRequired,
   intervalUnit: PropTypes.string.isRequired,
   purchaseOption: PropTypes.string.isRequired,
+  setSelectedRechargeSubscription: PropTypes.func.isRequired,
+  shopifyVariantId: PropTypes.string.isRequired,
 };
 
 export default RechargeOption;

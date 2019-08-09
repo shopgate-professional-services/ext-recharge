@@ -100,12 +100,26 @@ class ReChargeApi {
     })
   }
 
-  async getProducts (productIds) {
+  async getProducts (productId) {
     return this.call({
       path: 'products',
       method: 'GET',
       qs: {
-        shopify_product_ids: productIds
+        shopify_product_ids: productId
+      }
+    })
+  }
+
+  async createOrderToken (checkoutParams) {
+    return this.call({
+      path: 'checkouts',
+      method: 'POST',
+      qs: {
+        line_items: {
+          quantity: checkoutParams.quantity,
+          variant_id: checkoutParams.variantId,
+          productId: checkoutParams.productId
+        }
       }
     })
   }

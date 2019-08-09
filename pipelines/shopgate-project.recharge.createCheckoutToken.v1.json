@@ -1,0 +1,128 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate-project.recharge.createCheckoutToken.v1",
+    "public": true,
+    "input": [
+      {
+        "id": "1000",
+        "key": "sgxsMeta"
+      }
+    ],
+    "output": [
+      {
+        "id": "2010",
+        "key": "cartToken"
+      }
+    ],
+    "steps": [
+      {
+        "id": "shopgate.cart.getCart.v1",
+        "type": "pipeline",
+        "input": [
+          {
+            "id": "1000",
+            "key": "sgxsMeta",
+            "optional": true
+          }
+        ],
+        "output": [
+          {
+            "id": "1010",
+            "key": "isOrderable"
+          },
+          {
+            "id": "1020",
+            "key": "isTaxIncluded"
+          },
+          {
+            "id": "1030",
+            "key": "currency"
+          },
+          {
+            "id": "1040",
+            "key": "messages"
+          },
+          {
+            "id": "1050",
+            "key": "text"
+          },
+          {
+            "id": "1060",
+            "key": "cartItems"
+          },
+          {
+            "id": "1070",
+            "key": "totals"
+          },
+          {
+            "id": "1080",
+            "key": "flags"
+          }
+        ]
+      },
+      {
+        "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/buildRechargeCart.js",
+        "type": "extension",
+        "input": [
+          {
+            "id": "1010",
+            "key": "isOrderable"
+          },
+          {
+            "id": "1020",
+            "key": "isTaxIncluded"
+          },
+          {
+            "id": "1030",
+            "key": "currency"
+          },
+          {
+            "id": "1040",
+            "key": "messages"
+          },
+          {
+            "id": "1050",
+            "key": "text"
+          },
+          {
+            "id": "1060",
+            "key": "cartItems"
+          },
+          {
+            "id": "1070",
+            "key": "totals"
+          },
+          {
+            "id": "1080",
+            "key": "flags"
+          }
+        ],
+        "output": [
+          {
+            "id": "2000",
+            "key": "cart"
+          }
+        ]
+      },
+      {
+        "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/transferCart.js",
+        "type": "extension",
+        "input": [
+          {
+            "id": "2000",
+            "key": "cart"
+          }
+        ],
+        "output": [
+          {
+            "id": "2010",
+            "key": "cartToken"
+          }
+        ]
+      }
+    ]
+  }
+}

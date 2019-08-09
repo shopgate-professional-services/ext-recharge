@@ -12,8 +12,6 @@ import {
  */
 const rechargeSubscriptionItemsReducer = (
   state = {
-    products: null,
-    isFetching: false,
   },
   action
 ) => {
@@ -21,17 +19,21 @@ const rechargeSubscriptionItemsReducer = (
     case REQUEST_RECHARGE_SUBSCRIPTION_ITEMS:
       return {
         ...state,
-        isFetching: true,
+        [action.productId]: {
+          isFetching: true,
+        },
       };
     case RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS:
       return {
-        products: action.products,
-        isFetching: false,
+        ...state,
+        [action.productId]: {
+          subscriptionInfo: action.products,
+          isFetching: false,
+        },
       };
     case ERROR_RECHARGE_SUBSCRIPTION_ITEMS:
       return {
         ...state,
-        isFetching: false,
       };
     default:
       return state;

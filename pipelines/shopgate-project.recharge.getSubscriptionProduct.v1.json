@@ -1,25 +1,28 @@
 {
   "version": "1",
   "pipeline": {
-    "id": "shopgate.recharge.getSubscriptionProducts.v1",
+    "id": "shopgate-project.recharge.getSubscriptionProduct.v1",
     "public": true,
     "input": [
       {
-        "key": "productIds",
+        "key": "productId",
         "id": "1000"
       }
     ],
     "output": [
-      {"key": "products", "id": "1100"}
+      {
+        "key": "products",
+        "id": "1100"
+      }
     ],
     "steps": [
       {
         "type": "extension",
         "id": "@shopgate-project/recharge",
-        "path": "@shopgate-project/recharge/getProducts.js",
+        "path": "@shopgate-project/recharge/lib/getSubscriptionProduct.js",
         "input": [
           {
-            "key": "productIds",
+            "key": "productId",
             "id": "1000"
           }
         ],

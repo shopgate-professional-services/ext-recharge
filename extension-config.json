@@ -9,6 +9,12 @@
       "type": "portals"
     },
     {
+      "id": "RechargeCheckoutButton",
+      "path": "frontend/portals/CartCheckoutButton/index.jsx",
+      "target": "cart.checkout-button",
+      "type": "portals"
+    },
+    {
       "id": "subscriptions",
       "path": "frontend/subscriptions/index.js",
       "type": "subscribers"
@@ -16,6 +22,11 @@
     {
       "id": "rechargeSubscriptionItems",
       "path": "frontend/reducers/rechargeSubscriptionItems.js",
+      "type": "reducers"
+    },
+    {
+      "id": "rechargeCartToken",
+      "path": "frontend/reducers/rechargeCartToken.js",
       "type": "reducers"
     }
   ],
@@ -113,17 +124,63 @@
         "required": true
       }
     },
-    "shopifyAlias" : {
+    "shopifyAlias": {
       "type": "bigApi",
-      "destination" : "both",
+      "destination": "both",
       "default": "shopgate-recharge-sandbox",
       "params": {
-        "method":  "GET",
+        "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
         "key": "value.frontend.alias"
       }
     }
   },
-  "steps": []
+  "steps": [
+    {
+      "path": "extension/lib/storeMetadata.js",
+      "input": [
+        {
+          "key": "products"
+        }
+      ],
+      "output": [],
+      "hooks": [
+        "shopgate.cart.addProducts.v1:after"
+      ]
+    },
+    {
+      "path": "extension/lib/pruneRechargeSubscriptionInformation.js",
+      "input": [
+        {
+          "key": "cartItems"
+        }
+      ],
+      "output": [
+        {
+          "key": "cartItems"
+        }
+      ],
+      "hooks": [
+        "shopgate.cart.getCart.v1:after"
+      ]
+    },
+    {
+      "path": "extension/steps/exposeCustomDataToGetProduct.js",
+      "hooks": [
+        "shopgate.catalog.getProduct.v1:afterFetchProducts"
+      ],
+      "input": [
+        {
+          "key": "products"
+        }
+      ],
+      "output": [
+        {
+          "key": "customData",
+          "addPipelineOutput": true
+        }
+      ]
+    }
+  ]
 }
