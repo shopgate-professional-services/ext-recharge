@@ -123,6 +123,16 @@ class ReChargeApi {
       }
     })
   }
+
+  async getCustomerByShopifyUserId (id) {
+    return this.call({
+      path: 'customers',
+      method: 'GET',
+      qs: {
+        shopify_customer_id: id
+      }
+    })
+  }
 }
 
 module.exports = ReChargeApi

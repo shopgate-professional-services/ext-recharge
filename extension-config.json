@@ -15,6 +15,12 @@
       "type": "portals"
     },
     {
+      "id": "RechargePortalLink",
+      "path": "frontend/portals/RechargePortalLink/index.jsx",
+      "target": "nav-menu.imprint.after",
+      "type": "portals"
+    },
+    {
       "id": "subscriptions",
       "path": "frontend/subscriptions/index.js",
       "type": "subscribers"
@@ -27,6 +33,11 @@
     {
       "id": "rechargeCartToken",
       "path": "frontend/reducers/rechargeCartToken.js",
+      "type": "reducers"
+    },
+    {
+      "id": "rechargeCustomerHash",
+      "path": "frontend/reducers/rechargeCustomerHash.js",
       "type": "reducers"
     }
   ],
@@ -184,3 +195,4 @@
     }
   ]
 }
+
