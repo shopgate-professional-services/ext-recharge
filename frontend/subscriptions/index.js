@@ -1,7 +1,8 @@
-import { productWillEnter$, getBaseProductId } from '@shopgate/engage/product';
+import { productWillEnter$, getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
 import { hex2bin } from '@shopgate/engage/core';
 import { cartReceived$ } from '@shopgate/engage/cart';
-import { fetchSubscriptionProducts, fetchRechargeCartToken } from '../actions';
+import { fetchSubscriptionProducts, fetchRechargeCartToken, addShopifyVariantId } from '../actions';
+import { getVariantId } from '../selectors';
 
 export default (subscribe) => {
   subscribe(productWillEnter$, ({ action, dispatch, getState }) => {
@@ -15,9 +16,20 @@ export default (subscribe) => {
     dispatch(fetchSubscriptionProducts(baseProductId));
   });
 
-  subscribe(cartReceived$, ({ action, dispatch }) => {
-    const { recharge } = action.cart.cartItems[0].product.additionalInfo[1].rechargeInfo || {};
-    console.warn(recharge);
-    dispatch(fetchRechargeCartToken(recharge));
+  subscribe(receivedVisibleProduct$, ({ action, dispatch, getState }) => {
+    const productId = action.productData.id;
+    const customData = JSON.parse(action.productData.customData);
+    if (customData.variantId) {
+      const shopifyVariantId = customData.variant_id;
+      dispatch(addShopifyVariantId(productId, shopifyVariantId));
+      return;
+    }
+
+    const shopifyVariantId = getVariantId(getState(), { productId });
+    dispatch(addShopifyVariantId(productId, shopifyVariantId));
+  });
+
+  subscribe(cartReceived$, ({ dispatch }) => {
+    dispatch(fetchRechargeCartToken());
   });
 };

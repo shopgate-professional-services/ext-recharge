@@ -15,7 +15,6 @@ import styles from './style';
  * @returns {JSX}
  */
 const RechargeOption = ({
-  id,
   discountAmount,
   discountType,
   frequencyValues,
@@ -53,7 +52,6 @@ const RechargeOption = ({
   const handleSelection = (frequencyValue) => {
     setSelected(frequencyValue);
     const rechargeOptions = {
-      shopifyVariantId,
       frequencyValue,
       discountType,
       discountAmount,
@@ -138,7 +136,6 @@ RechargeOption.propTypes = {
   discountAmount: PropTypes.number.isRequired,
   discountType: PropTypes.string.isRequired,
   frequencyValues: PropTypes.arrayOf(PropTypes.string).isRequired,
-  id: PropTypes.number.isRequired,
   intervalUnit: PropTypes.string.isRequired,
   purchaseOption: PropTypes.string.isRequired,
   setSelectedRechargeSubscription: PropTypes.func.isRequired,

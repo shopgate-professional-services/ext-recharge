@@ -56,10 +56,9 @@ export const fetchSubscriptionProducts = (productId = null) => (dispatch, getSta
 };
 
 /**
- * @param {Object} recharge the recharge subscription information
  * @returns {Function}
  */
-export const fetchRechargeCartToken = recharge => (dispatch, getState) => {
+export const fetchRechargeCartToken = () => (dispatch, getState) => {
   const state = getState();
   const rechargeCartTokenState = getRechargeCartTokenState(state);
 
@@ -72,7 +71,6 @@ export const fetchRechargeCartToken = recharge => (dispatch, getState) => {
   dispatch(requestRechargeCartToken());
 
   new PipelineRequest(CREATE_CHECKOUT_TOKEN)
-    .setInput({ recharge })
     .setHandleErrors(ERROR_HANDLE_SUPPRESS)
     .dispatch()
     .then((response) => {
@@ -84,4 +82,13 @@ export const fetchRechargeCartToken = recharge => (dispatch, getState) => {
       dispatch(errorRechargetCartToken());
       LoadingProvider.unsetLoading(CART_PATH);
     });
+};
+
+export const addShopifyVariantId = (productId, shopifyVariantId) => (dispatch) => {
+  console.warn('henlo');
+  const metaData = {
+    shopifyVariantId,
+  };
+
+  dispatch(updateMetaData(productId, metaData));
 };

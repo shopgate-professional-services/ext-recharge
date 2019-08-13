@@ -10,9 +10,10 @@ module.exports = async (context, input) => {
   try {
     rechargeSubscriptionInfo = await context.storage.device.get(RECHARGE_INFO_KEY) || {}
   } catch (error) {
-    context.log.error({ errorMessage: error.message }, 'coult not recharge subscription data from device storage')
+    context.log.error({ errorMessage: error.message }, 'coult not get recharge subscription data from device storage')
     return {}
   }
+
   input.products.forEach((product) => {
     if (!product.metadata || !product.productId) {
       return
