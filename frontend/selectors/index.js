@@ -5,6 +5,7 @@ import parseJson from '../helpers/parseJson';
 import {
   REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS,
   REDUX_NAMESPACE_RECHARGE_CART_TOKEN,
+  REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH,
 } from '../constants';
 
 /**
@@ -82,4 +83,22 @@ export const getVariantId = createSelector(
 
     return productId;
   }
+);
+
+/**
+ * Get Recharge Customer Hash State
+ * @param {Object} state Redux state
+ * @return {Object}
+ */
+export const getRechargeCustomerHashState = state =>
+  state.extensions[REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH];
+
+/**
+ * Get recharge customer hash
+ * @param {Object} state Redux state,
+ * @return {string}
+ */
+export const getRechargeCustomerHash = createSelector(
+  getRechargeCustomerHashState,
+  customerHashState => customerHashState.customerHash
 );

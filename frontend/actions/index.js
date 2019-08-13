@@ -6,7 +6,7 @@ import {
   getRechargeSubscriptionItemsState,
   getRechargeCartTokenState,
 } from '../selectors';
-import { GET_SUBSCRIPTION_PRODUCT, CREATE_CHECKOUT_TOKEN } from '../constants';
+import { GET_SUBSCRIPTION_PRODUCT, CREATE_CHECKOUT_TOKEN, GET_CUSTOMER_HASH } from '../constants';
 import {
   receiveRechargeSubscriptionItems,
   requestRechargeSubscriptionItems,
@@ -14,6 +14,9 @@ import {
   receiveRechargeCartToken,
   requestRechargeCartToken,
   errorRechargetCartToken,
+  requestRechargeCustomerHash,
+  receiveRechargeCustomerHash,
+  errorRechargeCustomerHash,
 } from '../action-creators';
 
 /**
@@ -30,7 +33,7 @@ export const setSelectedRechargeSubscription = (productId, recharge) => (dispatc
 };
 
 /**
- * Fetchs subscription product information
+ * Fetches subscription product information
  * @param {string} productId product id used to fetch subscription
  * @returns {Function}
  */
@@ -91,4 +94,23 @@ export const addShopifyVariantId = (productId, shopifyVariantId) => (dispatch) =
   };
 
   dispatch(updateMetaData(productId, metaData));
+};
+/**
+ * Fetch recharge customer hash
+ * @return {Function}
+ */
+export const fetchRechargeCustomerHash = () => (dispatch) => {
+  dispatch(requestRechargeCustomerHash());
+
+  return new PipelineRequest(GET_CUSTOMER_HASH)
+    .setHandleErrors(ERROR_HANDLE_SUPPRESS)
+    .dispatch()
+    .then((response) => {
+      const { customerHash } = response || {};
+      dispatch(receiveRechargeCustomerHash(customerHash));
+    })
+    .catch((err) => {
+      logger.error(err);
+      dispatch(errorRechargeCustomerHash());
+    });
 };

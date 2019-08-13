@@ -1,8 +1,10 @@
 import { productWillEnter$, getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
 import { hex2bin } from '@shopgate/engage/core';
 import { cartReceived$ } from '@shopgate/engage/cart';
-import { fetchSubscriptionProducts, fetchRechargeCartToken, addShopifyVariantId } from '../actions';
+import { userDataReceived$, userDidLogout$ } from '@shopgate/engage/user';
+import { fetchSubscriptionProducts, fetchRechargeCartToken, addShopifyVariantId, fetchRechargeCustomerHash } from '../actions';
 import { getVariantId } from '../selectors';
+import { removeRechargeCustomerHash } from '../action-creators';
 
 export default (subscribe) => {
   subscribe(productWillEnter$, ({ action, dispatch, getState }) => {
@@ -31,5 +33,13 @@ export default (subscribe) => {
 
   subscribe(cartReceived$, ({ dispatch }) => {
     dispatch(fetchRechargeCartToken());
+  });
+
+  subscribe(userDataReceived$, ({ dispatch }) => {
+    dispatch(fetchRechargeCustomerHash());
+  });
+
+  subscribe(userDidLogout$, ({ dispatch }) => {
+    dispatch(removeRechargeCustomerHash());
   });
 };
