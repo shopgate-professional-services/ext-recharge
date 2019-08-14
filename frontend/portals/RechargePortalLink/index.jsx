@@ -16,11 +16,11 @@ const RechargePortalLink = ({ customerHash, Item, openPortal }) => {
   }
   return (
     <Item
-      label="Subscriptions"
+      label="recharge.customer_portal.manage_subscriptions"
       icon={InfoIcon}
       onClick={openPortal}
     >
-      <I18n.Text string="Subscriptions" />
+      <I18n.Text string="recharge.customer_portal.manage_subscriptions" />
     </Item>
   );
 };

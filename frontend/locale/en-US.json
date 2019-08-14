@@ -5,6 +5,9 @@
       "subscription": "Select subscription",
       "optional": "optional",
       "no_subscription": "No Subscription"
+    },
+    "customer_portal": {
+      "manage_subscriptions": "Manage Subscriptions"
     }
   }
 }
