@@ -1,0 +1,10 @@
+{
+  "recharge": {
+    "subscription_option": {
+      "and_save": "and save",
+      "subscription": "Select subscription",
+      "optional": "optional",
+      "no_subscription": "No Subscription"
+    }
+  }
+}

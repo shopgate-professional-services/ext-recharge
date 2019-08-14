@@ -8,7 +8,7 @@ import RechargeCheckoutButton from '../../components/RechargeCheckoutButton';
  */
 const CartCheckoutButton = ({ cartToken, isActive, children }) => (
   // <RechargeCheckoutButton cartToken={cartToken} isActive={isActive} />
-  { children }
+  children
 );
 
 CartCheckoutButton.propTypes = {

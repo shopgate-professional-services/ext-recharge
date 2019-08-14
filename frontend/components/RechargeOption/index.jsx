@@ -6,11 +6,14 @@ import { SheetDrawer, SheetList } from '@shopgate/engage/components';
 import SheetItem from './components/SheetItem';
 import {
   REQUIRED_SUBSCRIPTION_TEXT,
-  REQUIRED_SUBSCRIPTION_LABEL,
-  OPTIONAL_SUBSCRIPTION_LABEL,
+  DISCOUNT_TYPE_PERCENTAGE,
 } from '../../constants';
 import transition from './transition';
 import styles from './style';
+import getConfig from '../../helpers/getConfig';
+
+const { rechargeCurrency } = getConfig();
+
 /**
  * @returns {JSX}
  */
@@ -61,6 +64,34 @@ const RechargeOption = ({
     handleClose();
   };
 
+  const removeSelection = () => {
+    setSelected(null);
+    setSelectedRechargeSubscription(null);
+    handleClose();
+  }
+
+  const isSubscriptionOptions = purchaseOption !== REQUIRED_SUBSCRIPTION_TEXT;
+
+  /**
+   * Generate Option Label
+   * @return {string}
+   */
+  const generateOptionLabel = () => {
+    const intro = i18n.text('recharge.subscription_option.subscription');
+    let save = '';
+    if (discountAmount > 0) {
+      const discount = discountType === DISCOUNT_TYPE_PERCENTAGE
+        ? ` ${discountAmount}%`
+        : ` ${i18n.price(discountAmount / 100, rechargeCurrency, 2)}`;
+      save = ` ${i18n.text('recharge.subscription_option.and_save')} ${discount}`;
+    }
+    const optionalText = isSubscriptionOptions
+      ? ` (${i18n.text('recharge.subscription_option.optional')})` : '';
+
+    return `${intro}${save}${optionalText}`;
+  };
+
+  const optionLabel = generateOptionLabel();
   /**
    * @param {string} defaultLabel default recharge label
    * @returns {string}
@@ -80,11 +111,7 @@ const RechargeOption = ({
  * @returns {JSX}
  */
   const transitionRenderer = (state) => {
-    const label = purchaseOption === REQUIRED_SUBSCRIPTION_TEXT ?
-      REQUIRED_SUBSCRIPTION_LABEL : OPTIONAL_SUBSCRIPTION_LABEL;
-
-    const translatedLabel = i18n.text('product.pick_an_attribute', [label]);
-    const buttonLabel = getButtonLabel(translatedLabel);
+    const buttonLabel = getButtonLabel(optionLabel);
 
     return (
       <div
@@ -95,15 +122,11 @@ const RechargeOption = ({
         onClick={handleOpen}
         style={transition[state]}
       >
-        {selected && <div className={styles.label}>{label}</div>}
+        {selected && <div className={styles.label}>{optionLabel}</div>}
         <div className={styles.selection}>{buttonLabel}</div>
       </div>
     );
   };
-
-  const label = purchaseOption === REQUIRED_SUBSCRIPTION_TEXT ?
-    REQUIRED_SUBSCRIPTION_LABEL : OPTIONAL_SUBSCRIPTION_LABEL;
-  const translatedLabel = i18n.text('product.pick_an_attribute', [label]);
 
   return (
     <Fragment>
@@ -112,7 +135,7 @@ const RechargeOption = ({
       </Transition>
       <SheetDrawer
         isOpen={showSheet}
-        title={translatedLabel}
+        title={optionLabel}
         onClose={handleClose}
       >
         <SheetList>
@@ -126,6 +149,16 @@ const RechargeOption = ({
               selected={value === selected}
             />
           ))}
+          {isSubscriptionOptions &&
+            <SheetItem
+              intervalUnit=""
+              item={i18n.text('recharge.subscription_option.no_subscription')}
+              index={frequencyValues.length}
+              key={frequencyValues.length.toString()}
+              onSelect={removeSelection}
+              selected={false}
+            />
+          }
         </SheetList>
       </SheetDrawer>
     </Fragment>

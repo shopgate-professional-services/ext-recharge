@@ -15,15 +15,13 @@ export const REQUEST_RECHARGE_CUSTOMER_HASH = 'REQUEST_RECHARGE_CUSTOMER_HASH';
 export const ERROR_RECHARGE_CUSTOMER_HASH = 'ERROR_RECHARGE_CUSTOMER_HASH';
 export const REMOVE_RECHARGE_CUSTOMER_HASH = 'REMOVE_RECHARGE_CUSTOMER_HASH';
 
+// Redux namespace
 export const REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS = '@shopgate-project/recharge/rechargeSubscriptionItems';
 export const REDUX_NAMESPACE_RECHARGE_CART_TOKEN = '@shopgate-project/recharge/rechargeCartToken';
 export const REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH = '@shopgate-project/recharge/rechargeCustomerHash';
 
 export const REQUIRED_SUBSCRIPTION_TEXT = 'subscription_only';
-
-export const REQUIRED_SUBSCRIPTION_LABEL = 'Recharge Subscription';
-
-export const OPTIONAL_SUBSCRIPTION_LABEL = 'Recharge Subscription(optional)';
+export const DISCOUNT_TYPE_PERCENTAGE = 'percentage';
 
 // Pipelines
 export const GET_SUBSCRIPTION_PRODUCT = 'shopgate-project.recharge.getSubscriptionProduct';
