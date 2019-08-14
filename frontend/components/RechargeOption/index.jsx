@@ -70,7 +70,7 @@ const RechargeOption = ({
     handleClose();
   }
 
-  const isSubscriptionOptions = purchaseOption !== REQUIRED_SUBSCRIPTION_TEXT;
+  const isSubscriptionOptional = purchaseOption !== REQUIRED_SUBSCRIPTION_TEXT;
 
   /**
    * Generate Option Label
@@ -85,7 +85,7 @@ const RechargeOption = ({
         : ` ${i18n.price(discountAmount / 100, rechargeCurrency, 2)}`;
       save = ` ${i18n.text('recharge.subscription_option.and_save')} ${discount}`;
     }
-    const optionalText = isSubscriptionOptions
+    const optionalText = isSubscriptionOptional
       ? ` (${i18n.text('recharge.subscription_option.optional')})` : '';
 
     return `${intro}${save}${optionalText}`;
@@ -149,7 +149,7 @@ const RechargeOption = ({
               selected={value === selected}
             />
           ))}
-          {isSubscriptionOptions &&
+          {isSubscriptionOptional &&
             <SheetItem
               intervalUnit=""
               item={i18n.text('recharge.subscription_option.no_subscription')}
