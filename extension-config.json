@@ -39,6 +39,11 @@
       "id": "rechargeCustomerHash",
       "path": "frontend/reducers/rechargeCustomerHash.js",
       "type": "reducers"
+    },
+    {
+      "type": "translations",
+      "path": "frontend/locale/en-US.json",
+      "id": "locale/en-US"
     }
   ],
   "configuration": {
@@ -125,12 +130,12 @@
         "type": "text"
       }
     },
-    "baseReChargeScriptSrc": {
+    "rechargeCurrency": {
       "type": "admin",
       "destination": "frontend",
-      "default": "https://rechargeassets-bootstrapheroes-rechargeapps.netdna-ssl.com/static/js/recharge.js",
+      "default": "USD",
       "params": {
-        "label": "Source URL to recharge javascript",
+        "label": "The currency recharge discounts are in",
         "type": "text",
         "required": true
       }
