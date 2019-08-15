@@ -14,7 +14,8 @@ const PdpRechargeProducts = ({
   subscriptionInfo,
   setSelectedRechargeSubscription,
 }) => {
-  if (!subscriptionInfo) {
+  // if subscriptionInfo is not an array with at least one element return null
+  if (!(subscriptionInfo && Array.isArray(subscriptionInfo) && subscriptionInfo.length > 0)) {
     return null;
   }
   return (
