@@ -108,7 +108,7 @@
       },
       {
         "id": "@shopgate-project/recharge",
-        "path": "@shopgate-project/recharge/lib/transferCart.js",
+        "path": "@shopgate-project/recharge/lib/createCheckoutToken.js",
         "type": "extension",
         "input": [
           {

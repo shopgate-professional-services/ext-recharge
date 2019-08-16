@@ -33,7 +33,7 @@ RechargePortalLink.propTypes = {
 
 RechargePortalLink.defaultProps = {
   customerHash: null,
-  openPortal: () => {},
-}
+  openPortal: () => { },
+};
 
 export default connect(RechargePortalLink);

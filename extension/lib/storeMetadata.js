@@ -5,10 +5,10 @@ module.exports = async (context, input) => {
   if (!input.products) {
     return {}
   }
-  let rechargeSubscriptionInfo = {}
+  let rechargeMetaInfo = {}
 
   try {
-    rechargeSubscriptionInfo = await context.storage.device.get(RECHARGE_INFO_KEY) || {}
+    rechargeMetaInfo = await context.storage.device.get(RECHARGE_INFO_KEY) || {}
   } catch (error) {
     context.log.error({ errorMessage: error.message }, 'coult not get recharge subscription data from device storage')
     return {}
@@ -18,15 +18,14 @@ module.exports = async (context, input) => {
     if (!product.metadata || !product.productId) {
       return
     }
-    rechargeSubscriptionInfo[product.productId] = metadataTranslation(product.metadata)
+    rechargeMetaInfo[product.productId] = metadataTranslation(product.metadata)
   })
 
-  if (isObjectEmpty(rechargeSubscriptionInfo)) {
+  if (isObjectEmpty(rechargeMetaInfo)) {
     return {}
   }
-
   try {
-    await context.storage.device.set(RECHARGE_INFO_KEY, rechargeSubscriptionInfo)
+    await context.storage.device.set(RECHARGE_INFO_KEY, rechargeMetaInfo)
   } catch (error) {
     context.log.error({ errorMessage: error.message }, 'could not set recharge subscription data from device storage')
   }
@@ -38,8 +37,12 @@ module.exports = async (context, input) => {
  * @param {Object} recharge recharge subscription info
  * @returns {Object}
  */
-const metadataTranslation = ({ recharge }) => (
-  {
-    rechargeInfo: recharge || false
+const metadataTranslation = ({ shopifyVariantId, recharge }) => {
+  const meta = {}
+  if (recharge) {
+    meta.recharge = recharge
+    return meta
   }
-)
+  meta.shopifyVariantId = shopifyVariantId
+  return meta
+}

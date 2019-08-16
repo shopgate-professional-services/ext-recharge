@@ -55,6 +55,7 @@ const RechargeOption = ({
   const handleSelection = (frequencyValue) => {
     setSelected(frequencyValue);
     const rechargeOptions = {
+      shopifyVariantId,
       frequencyValue,
       discountType,
       discountAmount,
@@ -68,7 +69,7 @@ const RechargeOption = ({
     setSelected(null);
     setSelectedRechargeSubscription(null);
     handleClose();
-  }
+  };
 
   const isSubscriptionOptional = purchaseOption !== REQUIRED_SUBSCRIPTION_TEXT;
 

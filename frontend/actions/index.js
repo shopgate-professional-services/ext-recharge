@@ -78,6 +78,7 @@ export const fetchRechargeCartToken = () => (dispatch, getState) => {
     .dispatch()
     .then((response) => {
       dispatch(receiveRechargeCartToken(response));
+      console.warn(response);
       LoadingProvider.unsetLoading(CART_PATH);
     })
     .catch((err) => {
@@ -87,8 +88,12 @@ export const fetchRechargeCartToken = () => (dispatch, getState) => {
     });
 };
 
+/**
+ * @param {string} productId productId
+ * @param {string} shopifyVariantId variantId
+ * @returns {Function}
+ */
 export const addShopifyVariantId = (productId, shopifyVariantId) => (dispatch) => {
-  console.warn('henlo');
   const metaData = {
     shopifyVariantId,
   };

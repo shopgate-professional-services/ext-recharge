@@ -111,14 +111,13 @@ class ReChargeApi {
   }
 
   async createOrderToken (checkoutParams) {
+    const { lineItems } = checkoutParams
     return this.call({
       path: 'checkouts',
       method: 'POST',
-      qs: {
-        line_items: {
-          quantity: checkoutParams.quantity,
-          variant_id: checkoutParams.variantId,
-          productId: checkoutParams.productId
+      body: {
+        'checkout': {
+          'line_items': lineItems
         }
       }
     })
