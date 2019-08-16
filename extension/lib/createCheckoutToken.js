@@ -10,7 +10,6 @@ module.exports = async (context, { cart }) => {
   const api = new RechargeApi(context)
   const response = await api.createOrderToken(checkoutParams)
   const { token } = response.checkout || {}
-  console.warn('token', token)
   return { cartToken: token }
 }
 

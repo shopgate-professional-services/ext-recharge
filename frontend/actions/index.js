@@ -78,7 +78,6 @@ export const fetchRechargeCartToken = () => (dispatch, getState) => {
     .dispatch()
     .then((response) => {
       dispatch(receiveRechargeCartToken(response));
-      console.warn(response);
       LoadingProvider.unsetLoading(CART_PATH);
     })
     .catch((err) => {
