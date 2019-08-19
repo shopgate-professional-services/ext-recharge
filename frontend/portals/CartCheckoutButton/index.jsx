@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import connect from './connector';
 import RechargeCheckoutButton from '../../components/RechargeCheckoutButton';
@@ -6,19 +6,22 @@ import RechargeCheckoutButton from '../../components/RechargeCheckoutButton';
 /**
  * @returns {JSX}
  */
-const CartCheckoutButton = ({ cartToken, isActive, children }) => (
-  // <RechargeCheckoutButton cartToken={cartToken} isActive={isActive} />
-  children
-);
+const CartCheckoutButton = ({ cartToken, disabled, children }) => {
+  if (!cartToken) {
+    return children;
+  }
+  return (<RechargeCheckoutButton cartToken={cartToken} disabled={disabled} />);
+};
 
 CartCheckoutButton.propTypes = {
+  children: PropTypes.node.isRequired,
   cartToken: PropTypes.string,
-  isActive: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 CartCheckoutButton.defaultProps = {
   cartToken: null,
-  isActive: false,
+  disabled: false,
 };
 
 export default connect(CartCheckoutButton);

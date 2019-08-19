@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { getRechargeCartToken, getIsCartBusy } from '../../selectors';
-import { fetchRechargeCartToken } from '../../actions';
 
 /**
  * @param {Object} state state
@@ -8,11 +7,7 @@ import { fetchRechargeCartToken } from '../../actions';
  */
 const mapStateToProps = state => ({
   cartToken: getRechargeCartToken(state),
-  isActive: getIsCartBusy(state),
+  disabled: getIsCartBusy(state),
 });
 
-const mapDispatchToProps = {
-  fetchRechargeCartToken,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps);
+export default connect(mapStateToProps);

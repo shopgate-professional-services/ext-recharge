@@ -34,7 +34,7 @@ export const getRechargeCartState = state =>
 
 export const getRechargeCartToken = createSelector(
   getRechargeCartState,
-  ({ cartToken }) => cartToken
+  ({ token }) => token || null
 );
 
 const isTokenFetching = createSelector(

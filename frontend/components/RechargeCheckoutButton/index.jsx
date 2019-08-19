@@ -8,12 +8,12 @@ import { RECHARGE_CHECKOUT_PATH, APPENDED_SHOPIFY_DOMAIN_INFO } from '../../cons
  * TO-DO: Add this to checkout page when recharge cart token
  * @returns {JSX}
  */
-const RechargeCheckoutButton = ({ cartToken, isActive }) => (
-  <Link href={`${RECHARGE_CHECKOUT_PATH}${cartToken}${APPENDED_SHOPIFY_DOMAIN_INFO}`} disabled={!isActive}>
+const RechargeCheckoutButton = ({ cartToken, disabled }) => (
+  <Link href={`${RECHARGE_CHECKOUT_PATH}${cartToken}?${APPENDED_SHOPIFY_DOMAIN_INFO}`} isActive={!disabled}>
     <RippleButton
-      disabled={!isActive}
+      isActive={!disabled}
       type="regular"
-      className={isActive ? styles.button : styles.disabledButton}
+      className={!disabled ? styles.button : styles.disabledButton}
     >
       <I18n.Text string="cart.checkout" />
     </RippleButton>
@@ -22,7 +22,7 @@ const RechargeCheckoutButton = ({ cartToken, isActive }) => (
 
 RechargeCheckoutButton.propTypes = {
   cartToken: PropTypes.string.isRequired,
-  isActive: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default RechargeCheckoutButton;
