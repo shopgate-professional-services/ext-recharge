@@ -1,34 +1,34 @@
 import {
-  RECEIVE_RECHARGE_CART_TOKEN,
-  REQUEST_RECHARGE_CART_TOKEN,
-  ERROR_RECHARGE_CART_TOKEN,
+  RECEIVE_RECHARGE_CART,
+  REQUEST_RECHARGE_CART,
+  ERROR_RECHARGE_CART,
 } from '../constants';
 
 /**
- * Bolt Cart Token Reducer
+ * Recharge Cart Info Reducer
  * @param {Object} state State.
  * @param {Object} action Action.
  * @returns {Object}
  */
-const rechargeTokenReducer = (
+const rechargeCartReducer = (
   state = {
-    cartToken: null,
+    rechargeCart: null,
     isFetching: false,
   },
   action
 ) => {
   switch (action.type) {
-    case REQUEST_RECHARGE_CART_TOKEN:
+    case REQUEST_RECHARGE_CART:
       return {
         ...state,
         isFetching: true,
       };
-    case RECEIVE_RECHARGE_CART_TOKEN:
+    case RECEIVE_RECHARGE_CART:
       return {
-        ...action.rechargeCartToken,
+        ...action.rechargeCart,
         isFetching: false,
       };
-    case ERROR_RECHARGE_CART_TOKEN:
+    case ERROR_RECHARGE_CART:
       return {
         ...state,
         isFetching: false,
@@ -38,4 +38,4 @@ const rechargeTokenReducer = (
   }
 };
 
-export default rechargeTokenReducer;
+export default rechargeCartReducer;

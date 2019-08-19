@@ -2,9 +2,9 @@ import {
   REQUEST_RECHARGE_SUBSCRIPTION_ITEMS,
   RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS,
   ERROR_RECHARGE_SUBSCRIPTION_ITEMS,
-  REQUEST_RECHARGE_CART_TOKEN,
-  RECEIVE_RECHARGE_CART_TOKEN,
-  ERROR_RECHARGE_CART_TOKEN,
+  REQUEST_RECHARGE_CART,
+  RECEIVE_RECHARGE_CART,
+  ERROR_RECHARGE_CART,
   REQUEST_RECHARGE_CUSTOMER_HASH,
   RECEIVE_RECHARGE_CUSTOMER_HASH,
   ERROR_RECHARGE_CUSTOMER_HASH,
@@ -43,26 +43,26 @@ export const errorRechargeSubscriptionItems = () => ({
  * Request recharge Cart Token action.
  * @returns {Object}
  */
-export const requestRechargeCartToken = () => ({
-  type: REQUEST_RECHARGE_CART_TOKEN,
+export const requestRechargeCart = () => ({
+  type: REQUEST_RECHARGE_CART,
 });
 
 /**
  * Receive recharge Cart Token action.
- * @param {string} rechargeCartToken recharge cart token
+ * @param {string} rechargeCart recharge cart
  * @returns {Object}
  */
-export const receiveRechargeCartToken = rechargeCartToken => ({
-  type: RECEIVE_RECHARGE_CART_TOKEN,
-  rechargeCartToken,
+export const receiveRechargeCart = rechargeCart => ({
+  type: RECEIVE_RECHARGE_CART,
+  rechargeCart,
 });
 
 /**
  * Error recharge Token action.
  * @returns {Object}
  */
-export const errorRechargetCartToken = () => ({
-  type: ERROR_RECHARGE_CART_TOKEN,
+export const errorRechargetCart = () => ({
+  type: ERROR_RECHARGE_CART,
 });
 
 /**

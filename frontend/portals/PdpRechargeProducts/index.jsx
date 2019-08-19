@@ -18,6 +18,7 @@ const PdpRechargeProducts = ({
   if (!(subscriptionInfo && Array.isArray(subscriptionInfo) && subscriptionInfo.length > 0)) {
     return null;
   }
+
   return (
     <Fragment>
       <SubscriptionDetailsBadge />
@@ -32,6 +33,8 @@ const PdpRechargeProducts = ({
               id={id}
               discountAmount={discount_amount}
               discountType={discount_type}
+              chargeIntervalFrequency={subscription_defaults.charge_interval_frequency}
+              orderIntervalFrequency={subscription_defaults.order_interval_frequency}
               frequencyValues={subscription_defaults.order_interval_frequency_options}
               intervalUnit={subscription_defaults.order_interval_unit}
               purchaseOption={subscription_defaults.storefront_purchase_options}

@@ -4,7 +4,7 @@ import { getIsFetching } from '@shopgate/engage/cart';
 import parseJson from '../helpers/parseJson';
 import {
   REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS,
-  REDUX_NAMESPACE_RECHARGE_CART_TOKEN,
+  REDUX_NAMESPACE_RECHARGE_CART,
   REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH,
 } from '../constants';
 
@@ -29,17 +29,17 @@ export const getRechargeSubscriptionItems = createSelector(
  * @param {Object} state state
  * @return {Object}
  */
-export const getRechargeCartTokenState = state =>
-  state.extensions[REDUX_NAMESPACE_RECHARGE_CART_TOKEN];
+export const getRechargeCartState = state =>
+  state.extensions[REDUX_NAMESPACE_RECHARGE_CART];
 
 export const getRechargeCartToken = createSelector(
-  getRechargeCartTokenState,
+  getRechargeCartState,
   ({ cartToken }) => cartToken
 );
 
 const isTokenFetching = createSelector(
-  getRechargeCartTokenState,
-  tokenState => tokenState.isFetching
+  getRechargeCartState,
+  cartState => cartState.isFetching
 );
 
 export const getIsCartBusy = createSelector(

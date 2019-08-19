@@ -4,16 +4,16 @@ import { CART_PATH } from '@shopgate/engage/cart';
 import { ERROR_HANDLE_SUPPRESS } from '@shopgate/pwa-core/constants/ErrorHandleTypes';
 import {
   getRechargeSubscriptionItemsState,
-  getRechargeCartTokenState,
+  getRechargeCartState,
 } from '../selectors';
-import { GET_SUBSCRIPTION_PRODUCT, CREATE_CHECKOUT_TOKEN, GET_CUSTOMER_HASH } from '../constants';
+import { GET_SUBSCRIPTION_PRODUCT, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
 import {
   receiveRechargeSubscriptionItems,
   requestRechargeSubscriptionItems,
   errorRechargeSubscriptionItems,
-  receiveRechargeCartToken,
-  requestRechargeCartToken,
-  errorRechargetCartToken,
+  receiveRechargeCart,
+  requestRechargeCart,
+  errorRechargetCart,
   requestRechargeCustomerHash,
   receiveRechargeCustomerHash,
   errorRechargeCustomerHash,
@@ -61,28 +61,27 @@ export const fetchSubscriptionProducts = (productId = null) => (dispatch, getSta
 /**
  * @returns {Function}
  */
-export const fetchRechargeCartToken = () => (dispatch, getState) => {
+export const fetchRechargeCart = () => (dispatch, getState) => {
   const state = getState();
-  const rechargeCartTokenState = getRechargeCartTokenState(state);
+  const rechargeCartState = getRechargeCartState(state);
 
-  if (rechargeCartTokenState.isFetching) {
+  if (rechargeCartState.isFetching) {
     return;
   }
 
   LoadingProvider.setLoading(CART_PATH);
 
-  dispatch(requestRechargeCartToken());
-
-  new PipelineRequest(CREATE_CHECKOUT_TOKEN)
+  dispatch(requestRechargeCart());
+  new PipelineRequest(CREATE_CHECKOUT)
     .setHandleErrors(ERROR_HANDLE_SUPPRESS)
     .dispatch()
     .then((response) => {
-      dispatch(receiveRechargeCartToken(response));
+      dispatch(receiveRechargeCart(response.rechargeCart));
       LoadingProvider.unsetLoading(CART_PATH);
     })
     .catch((err) => {
       logger.error(err);
-      dispatch(errorRechargetCartToken());
+      dispatch(errorRechargetCart());
       LoadingProvider.unsetLoading(CART_PATH);
     });
 };

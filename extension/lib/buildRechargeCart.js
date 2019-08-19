@@ -21,6 +21,7 @@ module.exports = async function buildRechargeCart (context, input) {
     const product = cartItem.product
     const rechargeInfo = product.additionalInfo.find(({ recharge }) => recharge) || null
     const shopifyVariantId = product.additionalInfo.find(({ shopifyVariantId }) => shopifyVariantId) || null
+
     if (!rechargeInfo) {
       return {
         name: product.name,
@@ -39,6 +40,7 @@ module.exports = async function buildRechargeCart (context, input) {
     if (discountPercentage) {
       const deductedPrice = product.price.unit - (product.price.unit * (discountPercentage / 100))
       totalAmount = updateTotalAmount(totalAmount, product.price.unit, deductedPrice)
+
       return {
         name: product.name,
         reference: cartItem.id,

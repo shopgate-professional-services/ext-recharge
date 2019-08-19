@@ -15,9 +15,13 @@ export const REQUEST_RECHARGE_CUSTOMER_HASH = 'REQUEST_RECHARGE_CUSTOMER_HASH';
 export const ERROR_RECHARGE_CUSTOMER_HASH = 'ERROR_RECHARGE_CUSTOMER_HASH';
 export const REMOVE_RECHARGE_CUSTOMER_HASH = 'REMOVE_RECHARGE_CUSTOMER_HASH';
 
+export const RECEIVE_RECHARGE_CART = 'RECEIVE_RECHARGE_CART';
+export const REQUEST_RECHARGE_CART = 'REQUEST_RECHARGE_CART';
+export const ERROR_RECHARGE_CART = 'ERROR_RECHARGE_CART';
+
 // Redux namespace
 export const REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS = '@shopgate-project/recharge/rechargeSubscriptionItems';
-export const REDUX_NAMESPACE_RECHARGE_CART_TOKEN = '@shopgate-project/recharge/rechargeCartToken';
+export const REDUX_NAMESPACE_RECHARGE_CART = '@shopgate-project/recharge/rechargeCart';
 export const REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH = '@shopgate-project/recharge/rechargeCustomerHash';
 
 export const REQUIRED_SUBSCRIPTION_TEXT = 'subscription_only';
@@ -25,7 +29,7 @@ export const DISCOUNT_TYPE_PERCENTAGE = 'percentage';
 
 // Pipelines
 export const GET_SUBSCRIPTION_PRODUCT = 'shopgate-project.recharge.getSubscriptionProduct';
-export const CREATE_CHECKOUT_TOKEN = 'shopgate-project.recharge.createCheckoutToken';
+export const CREATE_CHECKOUT = 'shopgate-project.recharge.createCheckout';
 export const GET_CUSTOMER_HASH = 'shopgate-project.recharge.getCustomerHash';
 
 export const RECHARGE_CHECKOUT_PATH = 'https://checkout.rechargeapps.com/r/checkout/';

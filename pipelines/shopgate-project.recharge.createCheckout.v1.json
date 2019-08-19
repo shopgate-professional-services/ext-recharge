@@ -1,7 +1,7 @@
 {
   "version": "1",
   "pipeline": {
-    "id": "shopgate-project.recharge.createCheckoutToken.v1",
+    "id": "shopgate-project.recharge.createCheckout.v1",
     "public": true,
     "input": [
       {
@@ -12,7 +12,7 @@
     "output": [
       {
         "id": "2010",
-        "key": "cartToken"
+        "key": "rechargeCart"
       }
     ],
     "steps": [
@@ -108,7 +108,7 @@
       },
       {
         "id": "@shopgate-project/recharge",
-        "path": "@shopgate-project/recharge/lib/createCheckoutToken.js",
+        "path": "@shopgate-project/recharge/lib/createRechargeCart.js",
         "type": "extension",
         "input": [
           {
@@ -119,7 +119,7 @@
         "output": [
           {
             "id": "2010",
-            "key": "cartToken"
+            "key": "rechargeCart"
           }
         ]
       }

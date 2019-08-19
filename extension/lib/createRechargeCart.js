@@ -2,15 +2,16 @@ const RechargeApi = require('../utilities/ReChargeApi')
 
 module.exports = async (context, { cart }) => {
   if (!cart) {
-    return { cartToken: null }
+    return { rechargeCart: null }
   }
+
   const checkoutParams = {
     lineItems: createLineItems(cart.items)
   }
   const api = new RechargeApi(context)
   const response = await api.createOrderToken(checkoutParams)
-  const { token } = response.checkout || {}
-  return { cartToken: token }
+  const { checkout } = response || {}
+  return { rechargeCart: checkout }
 }
 
 const createLineItems = (items) => {
@@ -22,7 +23,10 @@ const createLineItems = (items) => {
       lineItems.push({
         price: item.unit_price,
         variant_id: rechargeInfo.recharge.shopifyVariantId,
-        quantity: item.quantity
+        quantity: item.quantity,
+        order_interval_frequency: rechargeInfo.recharge.orderIntervalFrequency,
+        charge_interval_frequency: rechargeInfo.recharge.chargeIntervalFrequency,
+        order_interval_unit: rechargeInfo.recharge.intervalUnit === 'Days' ? 'day' : 'month'
       })
     }
     if (shopifyVariantId) {

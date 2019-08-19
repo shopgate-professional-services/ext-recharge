@@ -31,8 +31,8 @@
       "type": "reducers"
     },
     {
-      "id": "rechargeCartToken",
-      "path": "frontend/reducers/rechargeCartToken.js",
+      "id": "rechargeCart",
+      "path": "frontend/reducers/rechargeCart.js",
       "type": "reducers"
     },
     {
@@ -200,4 +200,3 @@
     }
   ]
 }
-

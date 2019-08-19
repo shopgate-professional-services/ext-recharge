@@ -18,10 +18,12 @@ const { rechargeCurrency } = getConfig();
  * @returns {JSX}
  */
 const RechargeOption = ({
+  chargeIntervalFrequency,
   discountAmount,
   discountType,
   frequencyValues,
   intervalUnit,
+  orderIntervalFrequency,
   purchaseOption,
   shopifyVariantId,
   setSelectedRechargeSubscription,
@@ -53,8 +55,14 @@ const RechargeOption = ({
    * @param {string} frequencyValue selected frequencyValue
    */
   const handleSelection = (frequencyValue) => {
+    /**
+     * TO-DO: add subscription quantity tracking.
+     */
     setSelected(frequencyValue);
     const rechargeOptions = {
+      chargeIntervalFrequency,
+      orderIntervalFrequency,
+      intervalUnit,
       shopifyVariantId,
       frequencyValue,
       discountType,
@@ -65,6 +73,9 @@ const RechargeOption = ({
     handleClose();
   };
 
+  /**
+   * Removes selected recharge subsription
+   */
   const removeSelection = () => {
     setSelected(null);
     setSelectedRechargeSubscription(null);
@@ -167,10 +178,12 @@ const RechargeOption = ({
 };
 
 RechargeOption.propTypes = {
+  chargeIntervalFrequency: PropTypes.number.isRequired,
   discountAmount: PropTypes.number.isRequired,
   discountType: PropTypes.string.isRequired,
   frequencyValues: PropTypes.arrayOf(PropTypes.string).isRequired,
   intervalUnit: PropTypes.string.isRequired,
+  orderIntervalFrequency: PropTypes.number.isRequired,
   purchaseOption: PropTypes.string.isRequired,
   setSelectedRechargeSubscription: PropTypes.func.isRequired,
   shopifyVariantId: PropTypes.string.isRequired,

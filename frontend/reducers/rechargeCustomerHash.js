@@ -6,7 +6,7 @@ import {
 } from '../constants';
 
 /**
- * Bolt Cart Token Reducer
+ * Recharge Customer Hash Reducer
  * @param {Object} state State.
  * @param {Object} action Action.
  * @returns {Object}
