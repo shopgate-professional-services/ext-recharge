@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
-import { getAddToCartMetadata } from '@shopgate/pwa-common-commerce/cart/selectors';
-import { setSelectedRechargeSubscription } from '../../actions';
-import { getRechargeSubscriptionItems, getVariantId } from '../../selectors';
+import { updateRechargePDPInfoReducer } from '../../actions';
+import { getRechargeSubscriptionItems, getVariantId, getSelectedSubscriptionsInfo } from '../../selectors';
 
 /**
  * @param {Object} state state
@@ -9,9 +8,9 @@ import { getRechargeSubscriptionItems, getVariantId } from '../../selectors';
  * @returns {Object}
  */
 const mapStateToProps = (state, props) => ({
-  subscriptionInfo: getRechargeSubscriptionItems(state, props),
+  selectedSubscriptionsInfo: getSelectedSubscriptionsInfo(state, props),
   shopifyVariantId: getVariantId(state, props),
-  metaData: getAddToCartMetadata(state, props),
+  subscriptionInfo: getRechargeSubscriptionItems(state, props),
 
 });
 
@@ -21,8 +20,8 @@ const mapStateToProps = (state, props) => ({
  * @returns {Object}
  */
 const mapDispatchToProps = (dispatch, props) => ({
-  setSelectedRechargeSubscription: (currentlySelectedFrequency, recharge) =>
-    dispatch(setSelectedRechargeSubscription(
+  updateRechargePDPInfo: (currentlySelectedFrequency, recharge) =>
+    dispatch(updateRechargePDPInfoReducer(
       props.productId,
       currentlySelectedFrequency,
       recharge

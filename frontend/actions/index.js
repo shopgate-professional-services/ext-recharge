@@ -12,6 +12,10 @@ import {
   receiveRechargeSubscriptionItems,
   requestRechargeSubscriptionItems,
   errorRechargeSubscriptionItems,
+  requestRechargePdpInfo,
+  receiveRechargePdpInfo,
+  errorRechargePdpInfo,
+  updateRechargePdpInfo,
   receiveRechargeCart,
   requestRechargeCart,
   errorRechargetCart,
@@ -23,41 +27,53 @@ import {
 /**
  * @param {string} productId productId
  * @param {string} currentlySelectedFrequency currently selected frequency
+ * @param {Object} rechargeInfo recharge info
+ * @returns {Function}
+ */
+export const updateRechargePDPInfoReducer = (productId, currentlySelectedFrequency, rechargeInfo) =>
+  (dispatch) => {
+    dispatch(updateRechargePdpInfo(productId, currentlySelectedFrequency, rechargeInfo));
+  };
+
+/**
+ * @param {string} productId productId
+ * @param {string} currentlySelectedFrequency currently selected frequency
  * @param {Object} recharge recharge info
  * @returns {Function}
  */
-export const setSelectedRechargeSubscription = (productId, currentlySelectedFrequency, recharge) =>
-  (dispatch) => {
-    const metaData = {
-      currentlySelectedFrequency,
-      recharge,
-    };
+// export const setSelectedRechargeSubscription = (productId, currentlySelectedFrequency, recharge) =>
+//   (dispatch) => {
+//     const metaData = {
+//       currentlySelectedFrequency,
+//       recharge,
+//     };
 
-    dispatch(updateMetaData(productId, metaData));
-  };
+//     dispatch(updateMetaData(productId, metaData));
+//   };
 
 /**
  * @param {Array} products products
  * @returns {Function}
  */
-export const updateSelectedRechargeSubscriptionQuantity = products => (dispatch) => {
-  console.warn(products);
-  const quantityToUpdate = products.find(product => product.metadata.recharge);
-  if (!quantityToUpdate) {
-    return;
-  }
-  console.warn(quantityToUpdate);
+// export const updateSelectedRechargeSubscriptionQuantity = products => (dispatch) => {
+//   const quantityToUpdate = products.find(product => product.metadata.recharge);
+//   if (!quantityToUpdate) {
+//     return;
+//   }
 
-  const metaData = {
-    ...quantityToUpdate.recharge,
+/**
+ * TO-DO: ADD QUANTITY TO META DATA OBJECT
+ */
 
-  };
-  console.warn(metaData);
+// const metaData = {
+//   ...quantityToUpdate.recharge,
 
-  // console.warn(metaData);
+// };
 
-  // dispatch(updateMetaData(productId, metaData));
-};
+// console.warn(metaData);
+
+// dispatch(updateMetaData(productId, metaData));
+// };
 
 /**
  * Fetches subscription product information

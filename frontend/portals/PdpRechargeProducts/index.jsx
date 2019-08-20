@@ -10,10 +10,10 @@ import connect from './connector';
  * @returns {JSX}
  */
 const PdpRechargeProducts = ({
-  metaData,
+  selectedSubscriptionsInfo,
   shopifyVariantId,
   subscriptionInfo,
-  setSelectedRechargeSubscription,
+  updateRechargePDPInfo,
 }) => {
   // if subscriptionInfo is not an array with at least one element return null
   if (!(subscriptionInfo && Array.isArray(subscriptionInfo) && subscriptionInfo.length > 0)) {
@@ -60,12 +60,12 @@ const PdpRechargeProducts = ({
                * We can maybe use as additional label like stock of subscription
                */
               numberChargesUntilExpiration={number_charges_until_expiration}
-              metaData={metaData}
+              selectedSubscriptionsInfo={selectedSubscriptionsInfo}
               orderDayOfMonth={order_day_of_month}
               orderDayOfWeek={order_day_of_week}
               orderIntervalFrequency={order_interval_frequency}
               purchaseOption={storefront_purchase_options}
-              setSelectedRechargeSubscription={setSelectedRechargeSubscription}
+              updateRechargePDPInfo={updateRechargePDPInfo}
               shopifyVariantId={shopifyVariantId}
             />
           );
@@ -76,17 +76,17 @@ const PdpRechargeProducts = ({
 };
 
 PdpRechargeProducts.propTypes = {
-  metaData: PropTypes.shape(),
-  setSelectedRechargeSubscription: PropTypes.func,
+  selectedSubscriptionsInfo: PropTypes.arrayOf(PropTypes.shape()),
   shopifyVariantId: PropTypes.string,
   subscriptionInfo: PropTypes.arrayOf(PropTypes.shape()),
+  updateRechargePDPInfo: PropTypes.func,
 };
 
 PdpRechargeProducts.defaultProps = {
-  metaData: null,
-  setSelectedRechargeSubscription: () => { },
+  selectedSubscriptionsInfo: null,
   shopifyVariantId: null,
   subscriptionInfo: null,
+  updateRechargePDPInfo: () => { },
 };
 
 export default withCurrentProduct(connect(memo(PdpRechargeProducts)));

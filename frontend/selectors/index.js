@@ -6,11 +6,12 @@ import {
   REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS,
   REDUX_NAMESPACE_RECHARGE_CART,
   REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH,
+  REDUX_NAMESPACE_RECHARGE_PDP_INFO,
 } from '../constants';
 
 /**
  * @param {Object} state state
- * @return {Object}
+ * @returns {Object}
  */
 export const getRechargeSubscriptionItemsState = state =>
   state.extensions[REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS];
@@ -22,6 +23,51 @@ export const getRechargeSubscriptionItems = createSelector(
     const { subscriptionInfo } = subscriptionItems[baseProductId] || {};
 
     return subscriptionInfo || null;
+  }
+);
+
+export const getIsRechargeOptional = createSelector(
+  getRechargeSubscriptionItems,
+  (subscriptionInfo) => {
+    if (!subscriptionInfo) {
+      const isRechargeOptional = null;
+
+      return isRechargeOptional;
+    }
+
+    const isRechargeOptional = subscriptionInfo.find(arr => arr.subscription_defaults);
+
+    if (!isRechargeOptional) {
+      return null;
+    }
+
+    return isRechargeOptional.subscription_defaults.storefront_purchase_options;
+  }
+);
+
+/**
+ *
+ * @param {Object} state state
+ * @returns {Object}
+ */
+export const getRechargePDPInfoState = state =>
+  state.extensions[REDUX_NAMESPACE_RECHARGE_PDP_INFO];
+
+export const getSelectedSubscriptionsInfo = createSelector(
+  getRechargePDPInfoState,
+  getBaseProductId,
+  (rechargePDPInfo, baseProductId) => {
+    const { rechargeInfo } = rechargePDPInfo[baseProductId] || {};
+    return rechargeInfo || null;
+  }
+);
+
+export const getCurrentlySelectedFrequency = createSelector(
+  getRechargePDPInfoState,
+  getBaseProductId,
+  (rechargePDPInfo, baseProductId) => {
+    const { currentlySelectedFrequency } = rechargePDPInfo[baseProductId] || {};
+    return currentlySelectedFrequency || null;
   }
 );
 

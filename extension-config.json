@@ -21,6 +21,12 @@
       "type": "portals"
     },
     {
+      "id": "AddToCartButtonCta",
+      "path": "frontend/portals/CtaAddToCart",
+      "target": "product.ctas.add-to-cart",
+      "type": "portals"
+    },
+    {
       "id": "subscriptions",
       "path": "frontend/subscriptions/index.js",
       "type": "subscribers"
@@ -38,6 +44,11 @@
     {
       "id": "rechargeCustomerHash",
       "path": "frontend/reducers/rechargeCustomerHash.js",
+      "type": "reducers"
+    },
+    {
+      "id": "rechargePDPInfo",
+      "path": "frontend/reducers/rechargePDPInfo.js",
       "type": "reducers"
     },
     {

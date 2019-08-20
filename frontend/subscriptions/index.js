@@ -50,7 +50,7 @@ export default (subscribe) => {
     dispatch(removeRechargeCustomerHash());
   });
 
-  subscribe(productsAdded$, ({ action, dispatch }) => {
-    dispatch(updateSelectedRechargeSubscriptionQuantity(action.products));
-  });
+  // subscribe(productsAdded$, ({ action, dispatch }) => {
+  //   dispatch(updateSelectedRechargeSubscriptionQuantity(action.products));
+  // });
 };
