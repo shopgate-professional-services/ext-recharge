@@ -5,6 +5,7 @@ import { ERROR_HANDLE_SUPPRESS } from '@shopgate/pwa-core/constants/ErrorHandleT
 import {
   getRechargeSubscriptionItemsState,
   getRechargeCartState,
+  getVariantId,
 } from '../selectors';
 import { GET_SUBSCRIPTION_PRODUCT, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
 import {
@@ -21,15 +22,41 @@ import {
 
 /**
  * @param {string} productId productId
+ * @param {string} currentlySelectedFrequency currently selected frequency
  * @param {Object} recharge recharge info
  * @returns {Function}
  */
-export const setSelectedRechargeSubscription = (productId, recharge) => (dispatch) => {
-  const metaData = {
-    recharge,
+export const setSelectedRechargeSubscription = (productId, currentlySelectedFrequency, recharge) =>
+  (dispatch) => {
+    const metaData = {
+      currentlySelectedFrequency,
+      recharge,
+    };
+
+    dispatch(updateMetaData(productId, metaData));
   };
 
-  dispatch(updateMetaData(productId, metaData));
+/**
+ * @param {Array} products products
+ * @returns {Function}
+ */
+export const updateSelectedRechargeSubscriptionQuantity = products => (dispatch) => {
+  console.warn(products);
+  const quantityToUpdate = products.find(product => product.metadata.recharge);
+  if (!quantityToUpdate) {
+    return;
+  }
+  console.warn(quantityToUpdate);
+
+  const metaData = {
+    ...quantityToUpdate.recharge,
+
+  };
+  console.warn(metaData);
+
+  // console.warn(metaData);
+
+  // dispatch(updateMetaData(productId, metaData));
 };
 
 /**

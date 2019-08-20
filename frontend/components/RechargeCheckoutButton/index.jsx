@@ -5,7 +5,6 @@ import styles from './styles';
 import { RECHARGE_CHECKOUT_PATH, APPENDED_SHOPIFY_DOMAIN_INFO } from '../../constants';
 
 /**
- * TO-DO: Add this to checkout page when recharge cart token
  * @returns {JSX}
  */
 const RechargeCheckoutButton = ({ cartToken, disabled }) => (

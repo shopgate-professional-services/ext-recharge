@@ -12,6 +12,8 @@ module.exports = async (context, { cartItems }) => {
       return { cartItems }
     }
 
+    console.warn(cartItems)
+
     cartItems.forEach(({ product }) => {
       if (!product || !product.id || !rechargeSubscriptionInfo[product.id]) {
         return

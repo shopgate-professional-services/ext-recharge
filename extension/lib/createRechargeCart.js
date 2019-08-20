@@ -16,25 +16,48 @@ module.exports = async (context, { cart }) => {
 
 const createLineItems = (items) => {
   const lineItems = []
+  let orderIntervalUnit = null
   items.map((item) => {
     const { rechargeInfo } = item || null
     const { shopifyVariantId } = item || null
     if (rechargeInfo) {
+      switch (rechargeInfo.recharge.intervalUnit) {
+        case 'Days':
+          orderIntervalUnit = 'day'
+          break
+        case 'Weeks':
+          orderIntervalUnit = 'week'
+          break
+        case 'Months':
+          orderIntervalUnit = 'month'
+          break
+        default:
+          orderIntervalUnit = null
+      }
+      if (rechargeInfo.recharge.orderDayOfMonth === 0) {
+        rechargeInfo.recharge.orderDayOfMonth = null
+      }
       lineItems.push({
-        price: item.unit_price,
-        variant_id: rechargeInfo.recharge.shopifyVariantId,
-        quantity: item.quantity,
-        order_interval_frequency: rechargeInfo.recharge.orderIntervalFrequency,
         charge_interval_frequency: rechargeInfo.recharge.chargeIntervalFrequency,
-        order_interval_unit: rechargeInfo.recharge.intervalUnit === 'Days' ? 'day' : 'month'
+        cutoff_day_month: rechargeInfo.recharge.cutoffDayOfMonth,
+        cutoff_day_week: rechargeInfo.recharge.cutoffDayOfWeek,
+        expire_after_specific_number_of_charges: rechargeInfo.recharge.expireAfterSpecificNumberOfCharges,
+        order_day_of_month: rechargeInfo.recharge.orderDayOfMonth,
+        order_day_of_week: rechargeInfo.recharge.orderDayOfWeek,
+        order_interval_frequency: rechargeInfo.recharge.orderIntervalFrequency,
+        order_interval_unit: orderIntervalUnit,
+        price: item.unit_price,
+        quantity: item.quantity,
+        variant_id: rechargeInfo.recharge.shopifyVariantId
       })
     }
     if (shopifyVariantId) {
       lineItems.push({
-        variant_id: shopifyVariantId,
-        quantity: item.quantity
+        quantity: item.quantity,
+        variant_id: shopifyVariantId
       })
     }
   })
+  console.warn(lineItems)
   return lineItems
 }
