@@ -1,10 +1,10 @@
+import { PRODUCT_LIFETIME } from '@shopgate/engage/product';
 import {
   RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS,
   REQUEST_RECHARGE_SUBSCRIPTION_ITEMS,
   ERROR_RECHARGE_SUBSCRIPTION_ITEMS,
 } from '../constants';
-
-import { PRODUCT_LIFETIME } from '@shopgate/engage/product';
+import handleReChargeProducts from './helpers/handleReChargeProducts';
 
 /**
  * Recharge Subscription Items Reducer
@@ -21,19 +21,18 @@ const rechargeSubscriptionItemsReducer = (
     case REQUEST_RECHARGE_SUBSCRIPTION_ITEMS:
       return {
         ...state,
-        [action.productId]: {
-          isFetching: true,
-          expires: 0,
-        },
+        ...action.productIds.reduce((collectedProducts, productId) => ({
+          ...collectedProducts,
+          [productId]: {
+            isFetching: false,
+            expires: Date.now() + PRODUCT_LIFETIME,
+          },
+        }), {}),
       };
     case RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS:
       return {
         ...state,
-        [action.productId]: {
-          subscriptionInfo: action.products,
-          isFetching: false,
-          expires: Date.now() + PRODUCT_LIFETIME,
-        },
+        ...handleReChargeProducts(action.productIds, action.products),
       };
     case ERROR_RECHARGE_SUBSCRIPTION_ITEMS:
       return {
