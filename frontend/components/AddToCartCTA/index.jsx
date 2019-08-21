@@ -14,14 +14,18 @@ const { colors } = themeConfig;
  * @returns {JSX}
  */
 const AddToCartCTA = ({
-  isRechargeOptional,
-  productId,
-  options,
-  conditioner,
-  disabled,
-  loading,
   addToCart,
+  conditioner,
+  currentlySelectedFrequency,
+  disabled,
+  isRechargeOptional,
+  loading,
+  options,
+  productId,
   quantity,
+  rechargePDPInfo,
+  subscriptionItemsFetching,
+  updateRechargePDPInfoReducer,
 }) => {
   const [clicked, setClicked] = useState(false);
 
@@ -39,6 +43,13 @@ const AddToCartCTA = ({
   const getColor = () => {
     if (clicked) {
       return colors.light;
+    }
+    if (subscriptionItemsFetching) {
+      return colors.shade5;
+    }
+    if (!isRechargeOptional) {
+      return (!disabled && !loading && !currentlySelectedFrequency)
+        ? colors.shade5 : colors.primary;
     }
     return (disabled && !loading) ? colors.shade5 : colors.primary;
   };
@@ -71,7 +82,7 @@ const AddToCartCTA = ({
       return;
     }
 
-    if (disabled) {
+    if (disabled || (!disabled && !isRechargeOptional && !currentlySelectedFrequency)) {
       return;
     }
 
@@ -81,6 +92,24 @@ const AddToCartCTA = ({
       }
 
       setClicked(true);
+
+      if (currentlySelectedFrequency) {
+        const index = rechargePDPInfo.findIndex(val =>
+          val.frequencyValue === currentlySelectedFrequency);
+
+        const selectedSubscriptionInfo = rechargePDPInfo.splice(index, 1);
+        const toIncrement = selectedSubscriptionInfo[0].subscriptionInfo.quantity + quantity;
+
+        const subscriptionInfo = {
+          ...selectedSubscriptionInfo[0].subscriptionInfo,
+          quantity: toIncrement,
+        };
+        rechargePDPInfo.push({
+          ...selectedSubscriptionInfo[0], subscriptionInfo,
+        });
+
+        updateRechargePDPInfoReducer(currentlySelectedFrequency, rechargePDPInfo);
+      }
 
       addToCart({
         productId,
@@ -110,6 +139,16 @@ AddToCartCTA.propTypes = {
   options: PropTypes.shape().isRequired,
   productId: PropTypes.string.isRequired,
   quantity: PropTypes.number.isRequired,
+  updateRechargePDPInfoReducer: PropTypes.func.isRequired,
+  currentlySelectedFrequency: PropTypes.string,
+  rechargePDPInfo: PropTypes.arrayOf(PropTypes.shape()),
+  subscriptionItemsFetching: PropTypes.bool,
+};
+
+AddToCartCTA.defaultProps = {
+  currentlySelectedFrequency: null,
+  rechargePDPInfo: null,
+  subscriptionItemsFetching: true,
 };
 
 export default connect(AddToCartCTA);

@@ -12,20 +12,33 @@ const CtaAddToCart = ({
   isRechargeOptional,
   children,
   conditioner,
+  productId,
   options,
   quantity,
-  productId,
+  subscriptionItemsFetching,
   variantId,
 }) => {
+  if (subscriptionItemsFetching) {
+    return (<AddToCartCTA
+      conditioner={conditioner}
+      isRechargeOptional={isRechargeOptional !== REQUIRED_SUBSCRIPTION_TEXT}
+      subscriptionItemsFetching={subscriptionItemsFetching}
+      options={options}
+      quantity={quantity}
+      productId={variantId || productId}
+    />);
+  }
+
   if (!isRechargeOptional) {
     return (children);
   }
 
   return (<AddToCartCTA
     conditioner={conditioner}
-    isRechargeOptional={isRechargeOptional === REQUIRED_SUBSCRIPTION_TEXT}
+    isRechargeOptional={isRechargeOptional !== REQUIRED_SUBSCRIPTION_TEXT}
     options={options}
     quantity={quantity}
+    subscriptionItemsFetching={subscriptionItemsFetching}
     productId={variantId || productId}
   />);
 };
@@ -37,11 +50,13 @@ CtaAddToCart.propTypes = {
   productId: PropTypes.string.isRequired,
   quantity: PropTypes.number.isRequired,
   isRechargeOptional: PropTypes.string,
+  subscriptionItemsFetching: PropTypes.bool,
   variantId: PropTypes.string,
 };
 
 CtaAddToCart.defaultProps = {
   isRechargeOptional: null,
+  subscriptionItemsFetching: true,
   variantId: null,
 };
 

@@ -26,6 +26,11 @@ export const getRechargeSubscriptionItems = createSelector(
   }
 );
 
+export const isRechargeSubscriptionItemsFetching = createSelector(
+  getRechargeSubscriptionItemsState,
+  subscriptionItemsState => subscriptionItemsState.isFetching
+);
+
 export const getIsRechargeOptional = createSelector(
   getRechargeSubscriptionItems,
   (subscriptionInfo) => {

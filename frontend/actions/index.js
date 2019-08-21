@@ -7,7 +7,7 @@ import {
   getRechargeCartState,
   getVariantId,
 } from '../selectors';
-import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
+import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH, RECHARGE_ERROR_ADD_PRODUCTS_TO_CART } from '../constants';
 import {
   receiveRechargeSubscriptionItems,
   requestRechargeSubscriptionItems,
@@ -32,48 +32,14 @@ import {
  */
 export const updateRechargePDPInfoReducer = (productId, currentlySelectedFrequency, rechargeInfo) =>
   (dispatch) => {
+    const metaData = {
+      currentlySelectedFrequency,
+      rechargeInfo,
+    };
+
+    dispatch(updateMetaData(productId, metaData));
     dispatch(updateRechargePdpInfo(productId, currentlySelectedFrequency, rechargeInfo));
   };
-
-/**
- * @param {string} productId productId
- * @param {string} currentlySelectedFrequency currently selected frequency
- * @param {Object} recharge recharge info
- * @returns {Function}
- */
-// export const setSelectedRechargeSubscription = (productId, currentlySelectedFrequency, recharge) =>
-//   (dispatch) => {
-//     const metaData = {
-//       currentlySelectedFrequency,
-//       recharge,
-//     };
-
-//     dispatch(updateMetaData(productId, metaData));
-//   };
-
-/**
- * @param {Array} products products
- * @returns {Function}
- */
-// export const updateSelectedRechargeSubscriptionQuantity = products => (dispatch) => {
-//   const quantityToUpdate = products.find(product => product.metadata.recharge);
-//   if (!quantityToUpdate) {
-//     return;
-//   }
-
-/**
- * TO-DO: ADD QUANTITY TO META DATA OBJECT
- */
-
-// const metaData = {
-//   ...quantityToUpdate.recharge,
-
-// };
-
-// console.warn(metaData);
-
-// dispatch(updateMetaData(productId, metaData));
-// };
 
 /**
  * Fetches subscription product information
@@ -154,4 +120,36 @@ export const fetchRechargeCustomerHash = () => (dispatch) => {
       logger.error(err);
       dispatch(errorRechargeCustomerHash());
     });
+};
+
+/**
+ * Corrects reducer information for recharge subscription quantity
+ * @param {Array} products products
+ * @returns {Function}
+ */
+export const rechargeErrorAddProductsToCart = products => (dispatch) => {
+  dispatch({
+    type: RECHARGE_ERROR_ADD_PRODUCTS_TO_CART,
+    products,
+  });
+  const { productId } = products[0];
+  const { rechargeInfo, currentlySelectedFrequency } = products[0].metadata;
+
+  if (currentlySelectedFrequency) {
+    const index = rechargeInfo.findIndex(val =>
+      val.frequencyValue === currentlySelectedFrequency);
+
+    const selectedSubscriptionInfo = rechargeInfo.splice(index, 1);
+
+    const toDecrement = selectedSubscriptionInfo[0].subscriptionInfo.quantity - 1;
+
+    const subscriptionInfo = {
+      ...selectedSubscriptionInfo[0].subscriptionInfo,
+      quantity: toDecrement,
+    };
+    rechargeInfo.push({
+      ...selectedSubscriptionInfo[0], subscriptionInfo,
+    });
+    updateRechargePDPInfoReducer(productId, currentlySelectedFrequency, rechargeInfo);
+  }
 };

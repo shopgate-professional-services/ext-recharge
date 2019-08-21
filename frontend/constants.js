@@ -24,6 +24,8 @@ export const REQUEST_RECHARGE_PDP_INFO = 'REQUEST_RECHARGE_PDP_INFO';
 export const ERROR_RECHARGE_PDP_INFO = 'ERROR_RECHARGE_PDP_INFO';
 export const UPDATE_RECHARGE_PDP_INFO = 'UPDATE_RECHARGE_PDP_INFO';
 
+export const RECHARGE_ERROR_ADD_PRODUCTS_TO_CART = 'RECHARGE_ERROR_ADD_PRODUCTS_TO_CART';
+
 // Redux namespace
 export const REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS = '@shopgate-project/recharge/rechargeSubscriptionItems';
 export const REDUX_NAMESPACE_RECHARGE_CART = '@shopgate-project/recharge/rechargeCart';

@@ -13,6 +13,7 @@ import {
  */
 const rechargePDPInfoReducer = (
   state = {
+    isFetching: false,
   },
   action
 ) => {

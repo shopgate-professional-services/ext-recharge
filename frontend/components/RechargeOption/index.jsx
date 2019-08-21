@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/Transition';
 import { i18n } from '@shopgate/engage/core';
@@ -40,6 +40,13 @@ const RechargeOption = ({
   const [showSheet, setShowSheet] = useState(false);
   const [selected, setSelected] = useState(null);
   const [highlight, setHighlight] = useState(false);
+
+  // ComponentWillUnmount - reset selected to null
+  useEffect(() => {
+    setSelected(null);
+    const currentlySelectedFrequency = null;
+    updateRechargePDPInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
+  }, []);
 
   /**
    * Remove highlight for transitioner
