@@ -4,6 +4,8 @@ import {
   ERROR_RECHARGE_SUBSCRIPTION_ITEMS,
 } from '../constants';
 
+import { PRODUCT_LIFETIME } from '@shopgate/engage/product';
+
 /**
  * Recharge Subscription Items Reducer
  * @param {Object} state state
@@ -21,6 +23,7 @@ const rechargeSubscriptionItemsReducer = (
         ...state,
         [action.productId]: {
           isFetching: true,
+          expires: 0,
         },
       };
     case RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS:
@@ -29,6 +32,7 @@ const rechargeSubscriptionItemsReducer = (
         [action.productId]: {
           subscriptionInfo: action.products,
           isFetching: false,
+          expires: Date.now() + PRODUCT_LIFETIME,
         },
       };
     case ERROR_RECHARGE_SUBSCRIPTION_ITEMS:
