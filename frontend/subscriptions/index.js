@@ -21,7 +21,7 @@ export default (subscribe) => {
       variantId, productId: hex2bin(productId),
     });
 
-    dispatch(fetchSubscriptionProducts(baseProductId));
+    dispatch(fetchSubscriptionProducts([baseProductId]));
   });
 
   subscribe(receivedVisibleProduct$, ({ action, dispatch, getState }) => {

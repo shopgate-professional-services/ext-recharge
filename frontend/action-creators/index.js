@@ -17,22 +17,24 @@ import {
 
 /**
  * Request Recharge Subscription Items
+ * @param {string[]} productIds product ids used for fetching
  * @returns {Object}
  */
-export const requestRechargeSubscriptionItems = () => ({
+export const requestRechargeSubscriptionItems = productIds => ({
   type: REQUEST_RECHARGE_SUBSCRIPTION_ITEMS,
+  productIds,
 });
 
 /**
  * Receive Recharge Subscription Items
- * @param {string} productId product id used for fetching
- * @param {Object} products subscription products
+ * @param {string[]} productIds product ids used for fetching
+ * @param {Object[]} products subscription products
  * @returns {Object}
  */
-export const receiveRechargeSubscriptionItems = (productId, products) => ({
+export const receiveRechargeSubscriptionItems = (productIds, products) => ({
   type: RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS,
   products,
-  productId,
+  productIds,
 });
 
 /**

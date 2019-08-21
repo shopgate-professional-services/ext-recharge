@@ -35,13 +35,14 @@ export const getIsRechargeOptional = createSelector(
       return isRechargeOptional;
     }
 
-    const isRechargeOptional = subscriptionInfo.find(arr => arr.subscription_defaults);
+    const isRechargeOptional =
+      subscriptionInfo.subscription_defaults.storefront_purchase_options || null;
 
     if (!isRechargeOptional) {
       return null;
     }
 
-    return isRechargeOptional.subscription_defaults.storefront_purchase_options;
+    return isRechargeOptional;
   }
 );
 
