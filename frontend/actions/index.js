@@ -6,7 +6,7 @@ import {
   getRechargeSubscriptionItemsState,
   getRechargeCartState,
 } from '../selectors';
-import { GET_SUBSCRIPTION_PRODUCT, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
+import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
 import {
   receiveRechargeSubscriptionItems,
   requestRechargeSubscriptionItems,
@@ -34,23 +34,18 @@ export const setSelectedRechargeSubscription = (productId, recharge) => (dispatc
 
 /**
  * Fetches subscription product information
- * @param {string} productId product id used to fetch subscription
+ * @param {string[]} productIds product ids used to fetch subscription
  * @returns {Function}
  */
-export const fetchSubscriptionProducts = (productId = null) => (dispatch, getState) => {
-  const state = getState();
-  const rechargeSubscriptionItemsState = getRechargeSubscriptionItemsState(state);
+export const fetchSubscriptionProducts = (productIds = []) => (dispatch) => {
+  // todo check state to find products that are not already cashed before fetching
+  dispatch(requestRechargeSubscriptionItems(productIds));
 
-  if (rechargeSubscriptionItemsState.isFetching) {
-    return;
-  }
-  dispatch(requestRechargeSubscriptionItems);
-
-  new PipelineRequest(GET_SUBSCRIPTION_PRODUCT)
-    .setInput({ productId })
+  new PipelineRequest(GET_SUBSCRIPTION_PRODUCTS)
+    .setInput({ productIds })
     .dispatch()
     .then(({ products }) => {
-      dispatch(receiveRechargeSubscriptionItems(productId, products));
+      dispatch(receiveRechargeSubscriptionItems(productIds, products));
     })
     .catch((error) => {
       logger.error(error);

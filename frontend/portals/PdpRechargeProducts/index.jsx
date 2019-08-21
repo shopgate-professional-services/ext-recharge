@@ -15,35 +15,30 @@ const PdpRechargeProducts = ({
   setSelectedRechargeSubscription,
 }) => {
   // if subscriptionInfo is not an array with at least one element return null
-  if (!(subscriptionInfo && Array.isArray(subscriptionInfo) && subscriptionInfo.length > 0)) {
+  if (!subscriptionInfo) {
     return null;
   }
+
+  const {
+    id, discount_amount, discount_type, subscription_defaults,
+  } = subscriptionInfo;
 
   return (
     <Fragment>
       <SubscriptionDetailsBadge />
-      {
-        subscriptionInfo.map((option) => {
-          const {
-            id, discount_amount, discount_type, subscription_defaults,
-          } = option;
-          return (
-            <RechargeOption
-              key={id}
-              id={id}
-              discountAmount={discount_amount}
-              discountType={discount_type}
-              chargeIntervalFrequency={subscription_defaults.charge_interval_frequency}
-              orderIntervalFrequency={subscription_defaults.order_interval_frequency}
-              frequencyValues={subscription_defaults.order_interval_frequency_options}
-              intervalUnit={subscription_defaults.order_interval_unit}
-              purchaseOption={subscription_defaults.storefront_purchase_options}
-              setSelectedRechargeSubscription={setSelectedRechargeSubscription}
-              shopifyVariantId={shopifyVariantId}
-            />
-          );
-        })
-      }
+      <RechargeOption
+        key={id}
+        id={id}
+        discountAmount={discount_amount}
+        discountType={discount_type}
+        chargeIntervalFrequency={subscription_defaults.charge_interval_frequency}
+        orderIntervalFrequency={subscription_defaults.order_interval_frequency}
+        frequencyValues={subscription_defaults.order_interval_frequency_options}
+        intervalUnit={subscription_defaults.order_interval_unit}
+        purchaseOption={subscription_defaults.storefront_purchase_options}
+        setSelectedRechargeSubscription={setSelectedRechargeSubscription}
+        shopifyVariantId={shopifyVariantId}
+      />
     </Fragment>
   );
 };
@@ -51,7 +46,7 @@ const PdpRechargeProducts = ({
 PdpRechargeProducts.propTypes = {
   setSelectedRechargeSubscription: PropTypes.func,
   shopifyVariantId: PropTypes.string,
-  subscriptionInfo: PropTypes.arrayOf(PropTypes.shape()),
+  subscriptionInfo: PropTypes.shape(),
 };
 
 PdpRechargeProducts.defaultProps = {

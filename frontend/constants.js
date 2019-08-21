@@ -28,7 +28,7 @@ export const REQUIRED_SUBSCRIPTION_TEXT = 'subscription_only';
 export const DISCOUNT_TYPE_PERCENTAGE = 'percentage';
 
 // Pipelines
-export const GET_SUBSCRIPTION_PRODUCT = 'shopgate-project.recharge.getSubscriptionProduct';
+export const GET_SUBSCRIPTION_PRODUCTS = 'shopgate-project.recharge.getSubscriptionProducts';
 export const CREATE_CHECKOUT = 'shopgate-project.recharge.createCheckout';
 export const GET_CUSTOMER_HASH = 'shopgate-project.recharge.getCustomerHash';
 

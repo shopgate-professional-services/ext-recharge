@@ -1,11 +1,11 @@
 {
   "version": "1",
   "pipeline": {
-    "id": "shopgate-project.recharge.getSubscriptionProduct.v1",
+    "id": "shopgate-project.recharge.getSubscriptionProducts.v1",
     "public": true,
     "input": [
       {
-        "key": "productId",
+        "key": "productIds",
         "id": "1000"
       }
     ],
@@ -19,10 +19,10 @@
       {
         "type": "extension",
         "id": "@shopgate-project/recharge",
-        "path": "@shopgate-project/recharge/lib/getSubscriptionProduct.js",
+        "path": "@shopgate-project/recharge/lib/getSubscriptionProducts.js",
         "input": [
           {
-            "key": "productId",
+            "key": "productIds",
             "id": "1000"
           }
         ],
