@@ -19,7 +19,7 @@ export const getRechargeSubscriptionItemsState = state =>
  * Get Full ReCharge Subscription item
  * @param {Object} state Redux state,
  * @param {Object} props Component props
- * @return {string}
+ * @return {Object|null}
  */
 export const getReChargeFullSubscriptionItem = createSelector(
   getRechargeSubscriptionItemsState,
@@ -31,7 +31,7 @@ export const getReChargeFullSubscriptionItem = createSelector(
  * Get ReCharge Subscription item
  * @param {Object} state Redux state,
  * @param {Object} props Component props
- * @return {string}
+ * @return {Object|null}
  */
 export const getRechargeSubscriptionItems = createSelector(
   getReChargeFullSubscriptionItem,
