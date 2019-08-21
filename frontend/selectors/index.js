@@ -15,11 +15,28 @@ import {
 export const getRechargeSubscriptionItemsState = state =>
   state.extensions[REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS];
 
-export const getRechargeSubscriptionItems = createSelector(
+/**
+ * Get Full ReCharge Subscription item
+ * @param {Object} state Redux state,
+ * @param {Object} props Component props
+ * @return {string}
+ */
+export const getReChargeFullSubscriptionItem = createSelector(
   getRechargeSubscriptionItemsState,
   getBaseProductId,
-  (subscriptionItems, baseProductId) => {
-    const { subscriptionInfo } = subscriptionItems[baseProductId] || {};
+  (rechargeSubscriptionState, productId) => rechargeSubscriptionState[productId] || null
+);
+
+/**
+ * Get ReCharge Subscription item
+ * @param {Object} state Redux state,
+ * @param {Object} props Component props
+ * @return {string}
+ */
+export const getRechargeSubscriptionItems = createSelector(
+  getReChargeFullSubscriptionItem,
+  (fullSubscriptionItem) => {
+    const { subscriptionInfo } = fullSubscriptionItem || {};
 
     return subscriptionInfo || null;
   }
