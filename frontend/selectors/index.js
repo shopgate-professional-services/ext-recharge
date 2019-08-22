@@ -6,6 +6,7 @@ import {
   REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS,
   REDUX_NAMESPACE_RECHARGE_CART,
   REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH,
+  REQUIRED_SUBSCRIPTION_TEXT,
 } from '../constants';
 
 /**
@@ -39,6 +40,28 @@ export const getRechargeSubscriptionItems = createSelector(
     const { subscriptionInfo } = fullSubscriptionItem || {};
 
     return subscriptionInfo || null;
+  }
+);
+
+/**
+ * Determine if product is subscription only
+ * @param {Object} state Redux state,
+ * @param {Object} props Component props
+ * @return {boolean}
+ */
+export const getIsReChargeSubscriptionOnly = createSelector(
+  getRechargeSubscriptionItems,
+  (subscriptionInfo) => {
+    if (!subscriptionInfo) {
+      return false;
+    }
+    const {
+      subscription_defaults: {
+        storefront_purchase_options: storefrontPurchaseOption = null,
+      },
+    } = subscriptionInfo;
+
+    return storefrontPurchaseOption === REQUIRED_SUBSCRIPTION_TEXT;
   }
 );
 

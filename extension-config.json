@@ -21,6 +21,12 @@
       "type": "portals"
     },
     {
+      "id": "FavoritesAddToCart",
+      "path": "frontend/portals/FavoritesAddToCart/index.jsx",
+      "target": "favorites.add-to-cart",
+      "type": "portals"
+    },
+    {
       "id": "subscriptions",
       "path": "frontend/subscriptions/index.js",
       "type": "subscribers"

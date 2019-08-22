@@ -39,8 +39,8 @@ export const setSelectedRechargeSubscription = (productId, recharge) => (dispatc
  */
 export const fetchSubscriptionProducts = (productIds = []) => (dispatch, getState) => {
   const state = getState();
-
-  const productIdsToRequest = productIds.filter((productId) => {
+  // find products not already in redux state
+  const productIdsToFetch = productIds.filter((productId) => {
     const storedSubscriptionProduct = getReChargeFullSubscriptionItem(state, { productId });
 
     if (!storedSubscriptionProduct) {
@@ -48,18 +48,18 @@ export const fetchSubscriptionProducts = (productIds = []) => (dispatch, getStat
     }
     return !storedSubscriptionProduct.isFetching && storedSubscriptionProduct.expires <= Date.now();
   });
-
-  if (!productIdsToRequest.length) {
+  // return if there are no products to fetch from ReCharge API
+  if (!productIdsToFetch.length) {
     return;
   }
 
-  dispatch(requestRechargeSubscriptionItems(productIdsToRequest));
+  dispatch(requestRechargeSubscriptionItems(productIdsToFetch));
 
   new PipelineRequest(GET_SUBSCRIPTION_PRODUCTS)
     .setInput({ productIds })
     .dispatch()
     .then(({ products }) => {
-      dispatch(receiveRechargeSubscriptionItems(productIdsToRequest, products));
+      dispatch(receiveRechargeSubscriptionItems(productIdsToFetch, products));
     })
     .catch((error) => {
       logger.error(error);
