@@ -1,7 +1,13 @@
 import { PRODUCT_LIFETIME } from '@shopgate/engage/product';
 
-export default (requestedProductIds, recievedProducts) => {
-  const returnedProductsObj = recievedProducts.reduce((collectedProducts, product) => ({
+/**
+ *
+ * @param {string[]} requestedProductIds Product ids originally requested from ReCharge api
+ * @param {Object[]} receivedProducts ReCharge Product objects
+ * @return {Object}
+ */
+export default (requestedProductIds, receivedProducts) => {
+  const returnedProductsObj = receivedProducts.reduce((collectedProducts, product) => ({
     ...collectedProducts,
     [product.shopify_product_id]: {
       subscriptionInfo: product,

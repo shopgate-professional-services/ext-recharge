@@ -2,7 +2,13 @@ import { productWillEnter$, getBaseProductId, receivedVisibleProduct$ } from '@s
 import { hex2bin } from '@shopgate/engage/core';
 import { cartReceived$ } from '@shopgate/engage/cart';
 import { userDataReceived$, userDidLogout$ } from '@shopgate/engage/user';
-import { fetchSubscriptionProducts, fetchRechargeCart, addShopifyVariantId, fetchRechargeCustomerHash } from '../actions';
+import { receiveFavorites$ } from '@shopgate/engage/favorites';
+import {
+  fetchSubscriptionProducts,
+  fetchRechargeCart,
+  addShopifyVariantId,
+  fetchRechargeCustomerHash,
+} from '../actions';
 import { getVariantId } from '../selectors';
 import { removeRechargeCustomerHash } from '../action-creators';
 
@@ -42,5 +48,11 @@ export default (subscribe) => {
 
   subscribe(userDidLogout$, ({ dispatch }) => {
     dispatch(removeRechargeCustomerHash());
+  });
+
+  subscribe(receiveFavorites$, ({ action, dispatch }) => {
+    const { products } = action || {};
+    const productIds = products.map(product => product.baseProductId || product.id);
+    dispatch(fetchSubscriptionProducts(productIds));
   });
 };

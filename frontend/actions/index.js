@@ -3,7 +3,7 @@ import updateMetaData from '@shopgate/pwa-common-commerce/product/actions/update
 import { CART_PATH } from '@shopgate/engage/cart';
 import { ERROR_HANDLE_SUPPRESS } from '@shopgate/pwa-core/constants/ErrorHandleTypes';
 import {
-  getRechargeSubscriptionItemsState,
+  getReChargeFullSubscriptionItem,
   getRechargeCartState,
 } from '../selectors';
 import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
@@ -37,15 +37,29 @@ export const setSelectedRechargeSubscription = (productId, recharge) => (dispatc
  * @param {string[]} productIds product ids used to fetch subscription
  * @returns {Function}
  */
-export const fetchSubscriptionProducts = (productIds = []) => (dispatch) => {
-  // todo check state to find products that are not already cashed before fetching
-  dispatch(requestRechargeSubscriptionItems(productIds));
+export const fetchSubscriptionProducts = (productIds = []) => (dispatch, getState) => {
+  const state = getState();
+  // find products not already in redux state
+  const productIdsToFetch = productIds.filter((productId) => {
+    const storedSubscriptionProduct = getReChargeFullSubscriptionItem(state, { productId });
+
+    if (!storedSubscriptionProduct) {
+      return true;
+    }
+    return !storedSubscriptionProduct.isFetching && storedSubscriptionProduct.expires <= Date.now();
+  });
+  // return if there are no products to fetch from ReCharge API
+  if (!productIdsToFetch.length) {
+    return;
+  }
+
+  dispatch(requestRechargeSubscriptionItems(productIdsToFetch));
 
   new PipelineRequest(GET_SUBSCRIPTION_PRODUCTS)
     .setInput({ productIds })
     .dispatch()
     .then(({ products }) => {
-      dispatch(receiveRechargeSubscriptionItems(productIds, products));
+      dispatch(receiveRechargeSubscriptionItems(productIdsToFetch, products));
     })
     .catch((error) => {
       logger.error(error);

@@ -6,6 +6,7 @@ import {
   REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS,
   REDUX_NAMESPACE_RECHARGE_CART,
   REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH,
+  REQUIRED_SUBSCRIPTION_TEXT,
 } from '../constants';
 
 /**
@@ -15,13 +16,52 @@ import {
 export const getRechargeSubscriptionItemsState = state =>
   state.extensions[REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS];
 
-export const getRechargeSubscriptionItems = createSelector(
+/**
+ * Get Full ReCharge Subscription item
+ * @param {Object} state Redux state,
+ * @param {Object} props Component props
+ * @return {Object|null}
+ */
+export const getReChargeFullSubscriptionItem = createSelector(
   getRechargeSubscriptionItemsState,
   getBaseProductId,
-  (subscriptionItems, baseProductId) => {
-    const { subscriptionInfo } = subscriptionItems[baseProductId] || {};
+  (rechargeSubscriptionState, productId) => rechargeSubscriptionState[productId] || null
+);
+
+/**
+ * Get ReCharge Subscription item
+ * @param {Object} state Redux state,
+ * @param {Object} props Component props
+ * @return {Object|null}
+ */
+export const getRechargeSubscriptionItems = createSelector(
+  getReChargeFullSubscriptionItem,
+  (fullSubscriptionItem) => {
+    const { subscriptionInfo } = fullSubscriptionItem || {};
 
     return subscriptionInfo || null;
+  }
+);
+
+/**
+ * Determine if product is subscription only
+ * @param {Object} state Redux state,
+ * @param {Object} props Component props
+ * @return {boolean}
+ */
+export const getIsReChargeSubscriptionOnly = createSelector(
+  getRechargeSubscriptionItems,
+  (subscriptionInfo) => {
+    if (!subscriptionInfo) {
+      return false;
+    }
+    const {
+      subscription_defaults: {
+        storefront_purchase_options: storefrontPurchaseOption = null,
+      },
+    } = subscriptionInfo;
+
+    return storefrontPurchaseOption === REQUIRED_SUBSCRIPTION_TEXT;
   }
 );
 
