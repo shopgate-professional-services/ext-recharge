@@ -32,7 +32,7 @@ const RechargeOption = ({
   purchaseOption,
   selectedSubscriptionsInfo,
   shopifyVariantId,
-  updateRechargePDPInfo,
+  updateRechargeInfo,
 }) => {
   if (!shopifyVariantId) {
     return null;
@@ -45,7 +45,7 @@ const RechargeOption = ({
   useEffect(() => {
     setSelected(null);
     const currentlySelectedFrequency = null;
-    updateRechargePDPInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
+    updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
   }, []);
 
   /**
@@ -91,7 +91,7 @@ const RechargeOption = ({
           quantity: 0,
         },
       });
-      updateRechargePDPInfo(currentlySelectedFrequency, subscriptionInfo);
+      updateRechargeInfo(currentlySelectedFrequency, subscriptionInfo);
 
       handleClose();
 
@@ -119,14 +119,14 @@ const RechargeOption = ({
           quantity: 0,
         },
       });
-      updateRechargePDPInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
+      updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
 
       handleClose();
 
       return;
     }
 
-    updateRechargePDPInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
+    updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
     handleClose();
   };
 
@@ -136,7 +136,7 @@ const RechargeOption = ({
   const removeSelection = () => {
     setSelected(null);
     const currentlySelectedFrequency = null;
-    updateRechargePDPInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
+    updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
     handleClose();
   };
 
@@ -244,7 +244,7 @@ RechargeOption.propTypes = {
   orderIntervalFrequency: PropTypes.number.isRequired,
   purchaseOption: PropTypes.string.isRequired,
   shopifyVariantId: PropTypes.string.isRequired,
-  updateRechargePDPInfo: PropTypes.func.isRequired,
+  updateRechargeInfo: PropTypes.func.isRequired,
   cutoffDayOfMonth: PropTypes.number,
   cutoffDayOfWeek: PropTypes.number,
   expireAfterSpecificNumberOfCharges: PropTypes.number,

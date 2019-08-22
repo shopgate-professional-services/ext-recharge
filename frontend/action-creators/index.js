@@ -9,10 +9,7 @@ import {
   RECEIVE_RECHARGE_CUSTOMER_HASH,
   ERROR_RECHARGE_CUSTOMER_HASH,
   REMOVE_RECHARGE_CUSTOMER_HASH,
-  RECEIVE_RECHARGE_PDP_INFO,
-  REQUEST_RECHARGE_PDP_INFO,
-  ERROR_RECHARGE_PDP_INFO,
-  UPDATE_RECHARGE_PDP_INFO,
+  UPDATE_RECHARGE_INFO,
 } from '../constants';
 
 /**
@@ -46,38 +43,14 @@ export const errorRechargeSubscriptionItems = () => ({
 });
 
 /**
- * Request Recharge Info for the PDP
- * @returns { Object }
- */
-export const requestRechargePdpInfo = () => ({
-  type: REQUEST_RECHARGE_PDP_INFO,
-});
-
-/**
- * Receive Recharge Info for the PDP
- * @returns { Object }
- */
-export const receiveRechargePdpInfo = () => ({
-  type: RECEIVE_RECHARGE_PDP_INFO,
-});
-
-/**
- * Error Recharge Info for the PDP
- * @returns { Object }
- */
-export const errorRechargePdpInfo = () => ({
-  type: ERROR_RECHARGE_PDP_INFO,
-});
-
-/**
- * Update Recharge Info for the PDP
+ * Update Recharge Info
  * @param {string} productId productId
  * @param {string} currentlySelectedFrequency currentlyl selected frequency
  * @param {Object} rechargeInfo recharge subcriptionInfo
  * @returns { Object }
  */
-export const updateRechargePdpInfo = (productId, currentlySelectedFrequency, rechargeInfo) => ({
-  type: UPDATE_RECHARGE_PDP_INFO,
+export const updateRechargeInfo = (productId, currentlySelectedFrequency, rechargeInfo) => ({
+  type: UPDATE_RECHARGE_INFO,
   productId,
   currentlySelectedFrequency,
   rechargeInfo,

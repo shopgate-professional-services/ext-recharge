@@ -2,20 +2,13 @@ import { PipelineRequest, LoadingProvider, logger } from '@shopgate/engage/core'
 import updateMetaData from '@shopgate/pwa-common-commerce/product/actions/updateMetadata';
 import { CART_PATH } from '@shopgate/engage/cart';
 import { ERROR_HANDLE_SUPPRESS } from '@shopgate/pwa-core/constants/ErrorHandleTypes';
-import {
-  getRechargeSubscriptionItemsState,
-  getRechargeCartState,
-  getVariantId,
-} from '../selectors';
+import {getRechargeCartState,} from '../selectors';
 import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH, RECHARGE_ERROR_ADD_PRODUCTS_TO_CART } from '../constants';
 import {
   receiveRechargeSubscriptionItems,
   requestRechargeSubscriptionItems,
   errorRechargeSubscriptionItems,
-  requestRechargePdpInfo,
-  receiveRechargePdpInfo,
-  errorRechargePdpInfo,
-  updateRechargePdpInfo,
+  updateRechargeInfo,
   receiveRechargeCart,
   requestRechargeCart,
   errorRechargetCart,
@@ -30,7 +23,7 @@ import {
  * @param {Object} rechargeInfo recharge info
  * @returns {Function}
  */
-export const updateRechargePDPInfoReducer = (productId, currentlySelectedFrequency, rechargeInfo) =>
+export const updateRechargeInfoReducer = (productId, currentlySelectedFrequency, rechargeInfo) =>
   (dispatch) => {
     const metaData = {
       currentlySelectedFrequency,
@@ -38,7 +31,7 @@ export const updateRechargePDPInfoReducer = (productId, currentlySelectedFrequen
     };
 
     dispatch(updateMetaData(productId, metaData));
-    dispatch(updateRechargePdpInfo(productId, currentlySelectedFrequency, rechargeInfo));
+    dispatch(updateRechargeInfo(productId, currentlySelectedFrequency, rechargeInfo));
   };
 
 /**
@@ -150,6 +143,6 @@ export const rechargeErrorAddProductsToCart = products => (dispatch) => {
     rechargeInfo.push({
       ...selectedSubscriptionInfo[0], subscriptionInfo,
     });
-    updateRechargePDPInfoReducer(productId, currentlySelectedFrequency, rechargeInfo);
+    updateRechargeInfoReducer(productId, currentlySelectedFrequency, rechargeInfo);
   }
 };

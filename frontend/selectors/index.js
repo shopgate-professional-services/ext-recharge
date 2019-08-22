@@ -6,7 +6,7 @@ import {
   REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS,
   REDUX_NAMESPACE_RECHARGE_CART,
   REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH,
-  REDUX_NAMESPACE_RECHARGE_PDP_INFO,
+  REDUX_NAMESPACE_RECHARGE_INFO,
 } from '../constants';
 
 /**
@@ -56,23 +56,23 @@ export const getIsRechargeOptional = createSelector(
  * @param {Object} state state
  * @returns {Object}
  */
-export const getRechargePDPInfoState = state =>
-  state.extensions[REDUX_NAMESPACE_RECHARGE_PDP_INFO];
+export const getRechargeInfoState = state =>
+  state.extensions[REDUX_NAMESPACE_RECHARGE_INFO];
 
 export const getSelectedSubscriptionsInfo = createSelector(
-  getRechargePDPInfoState,
+  getRechargeInfoState,
   getBaseProductId,
-  (rechargePDPInfo, baseProductId) => {
-    const { rechargeInfo } = rechargePDPInfo[baseProductId] || {};
+  (recharge, baseProductId) => {
+    const { rechargeInfo } = recharge[baseProductId] || {};
     return rechargeInfo || null;
   }
 );
 
 export const getCurrentlySelectedFrequency = createSelector(
-  getRechargePDPInfoState,
+  getRechargeInfoState,
   getBaseProductId,
-  (rechargePDPInfo, baseProductId) => {
-    const { currentlySelectedFrequency } = rechargePDPInfo[baseProductId] || {};
+  (recharge, baseProductId) => {
+    const { currentlySelectedFrequency } = recharge[baseProductId] || {};
     return currentlySelectedFrequency || null;
   }
 );

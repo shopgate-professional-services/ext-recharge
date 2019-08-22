@@ -5,7 +5,7 @@ import {
 } from '@shopgate/pwa-common-commerce/product/selectors/product';
 import { isProductPageLoading } from '@shopgate/pwa-common-commerce/product/selectors/page';
 import { getCurrentlySelectedFrequency, getSelectedSubscriptionsInfo } from '../../selectors';
-import { updateRechargePDPInfoReducer } from '../../actions';
+import { updateRechargeInfoReducer } from '../../actions';
 import { addProductToCart } from './actions';
 
 /**
@@ -21,7 +21,7 @@ const mapStateToProps = (state, props) => ({
   disabled: !isProductOrderable(state, props) && !hasProductVariants(state, props),
   loading: isProductPageLoading(state, props),
   currentlySelectedFrequency: getCurrentlySelectedFrequency(state, props),
-  rechargePDPInfo: getSelectedSubscriptionsInfo(state, props),
+  rechargeInfo: getSelectedSubscriptionsInfo(state, props),
 });
 
 /**
@@ -33,8 +33,8 @@ const mapDispatchToProps = (dispatch, props) => ({
   addToCart: (product) => {
     dispatch(addProductToCart(product));
   },
-  updateRechargePDPInfoReducer: (currentlySelectedFrequency, recharge) => {
-    dispatch(updateRechargePDPInfoReducer(
+  updateRechargeInfoReducer: (currentlySelectedFrequency, recharge) => {
+    dispatch(updateRechargeInfoReducer(
       props.productId,
       currentlySelectedFrequency,
       recharge

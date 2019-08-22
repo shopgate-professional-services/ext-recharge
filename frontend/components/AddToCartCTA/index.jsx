@@ -23,9 +23,9 @@ const AddToCartCTA = ({
   options,
   productId,
   quantity,
-  rechargePDPInfo,
+  rechargeInfo,
   subscriptionItemsFetching,
-  updateRechargePDPInfoReducer,
+  updateRechargeInfoReducer,
 }) => {
   const [clicked, setClicked] = useState(false);
 
@@ -94,21 +94,21 @@ const AddToCartCTA = ({
       setClicked(true);
 
       if (currentlySelectedFrequency) {
-        const index = rechargePDPInfo.findIndex(val =>
+        const index = rechargeInfo.findIndex(val =>
           val.frequencyValue === currentlySelectedFrequency);
 
-        const selectedSubscriptionInfo = rechargePDPInfo.splice(index, 1);
+        const selectedSubscriptionInfo = rechargeInfo.splice(index, 1);
         const toIncrement = selectedSubscriptionInfo[0].subscriptionInfo.quantity + quantity;
 
         const subscriptionInfo = {
           ...selectedSubscriptionInfo[0].subscriptionInfo,
           quantity: toIncrement,
         };
-        rechargePDPInfo.push({
+        rechargeInfo.push({
           ...selectedSubscriptionInfo[0], subscriptionInfo,
         });
 
-        updateRechargePDPInfoReducer(currentlySelectedFrequency, rechargePDPInfo);
+        updateRechargeInfoReducer(currentlySelectedFrequency, rechargeInfo);
       }
 
       addToCart({
@@ -139,15 +139,15 @@ AddToCartCTA.propTypes = {
   options: PropTypes.shape().isRequired,
   productId: PropTypes.string.isRequired,
   quantity: PropTypes.number.isRequired,
-  updateRechargePDPInfoReducer: PropTypes.func.isRequired,
+  updateRechargeInfoReducer: PropTypes.func.isRequired,
   currentlySelectedFrequency: PropTypes.string,
-  rechargePDPInfo: PropTypes.arrayOf(PropTypes.shape()),
+  rechargeInfo: PropTypes.arrayOf(PropTypes.shape()),
   subscriptionItemsFetching: PropTypes.bool,
 };
 
 AddToCartCTA.defaultProps = {
   currentlySelectedFrequency: null,
-  rechargePDPInfo: null,
+  rechargeInfo: null,
   subscriptionItemsFetching: true,
 };
 

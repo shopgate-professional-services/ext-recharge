@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { updateRechargePDPInfoReducer } from '../../actions';
+import { updateRechargeInfoReducer } from '../../actions';
 import { getRechargeSubscriptionItems, getVariantId, getSelectedSubscriptionsInfo } from '../../selectors';
 
 /**
@@ -20,8 +20,8 @@ const mapStateToProps = (state, props) => ({
  * @returns {Object}
  */
 const mapDispatchToProps = (dispatch, props) => ({
-  updateRechargePDPInfo: (currentlySelectedFrequency, recharge) =>
-    dispatch(updateRechargePDPInfoReducer(
+  updateRechargeInfo: (currentlySelectedFrequency, recharge) =>
+    dispatch(updateRechargeInfoReducer(
       props.productId,
       currentlySelectedFrequency,
       recharge

@@ -47,8 +47,8 @@
       "type": "reducers"
     },
     {
-      "id": "rechargePDPInfo",
-      "path": "frontend/reducers/rechargePDPInfo.js",
+      "id": "rechargeInfo",
+      "path": "frontend/reducers/rechargeInfo.js",
       "type": "reducers"
     },
     {
