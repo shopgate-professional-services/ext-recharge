@@ -39,6 +39,12 @@
       "type": "portals"
     },
     {
+      "id": "CartItemSubscriptionInfo",
+      "path": "frontend/portals/CartItemSubscriptionInfo",
+      "target": "cart.item.name.after",
+      "type": "portals"
+    },
+    {
       "id": "subscriptions",
       "path": "frontend/subscriptions/index.js",
       "type": "subscribers"

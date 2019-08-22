@@ -1,6 +1,11 @@
 import { createSelector } from 'reselect';
-import { getBaseProductId, getProductById, getProductId, hasProductVariants } from '@shopgate/engage/product';
-import { getIsFetching } from '@shopgate/engage/cart';
+import {
+  getBaseProductId,
+  getProductById,
+  getProductId,
+  hasProductVariants,
+} from '@shopgate/engage/product';
+import { getIsFetching, getCartItemById } from '@shopgate/engage/cart';
 import parseJson from '../helpers/parseJson';
 import {
   REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS,
@@ -193,4 +198,99 @@ export const getRechargeCustomerHashState = state =>
 export const getRechargeCustomerHash = createSelector(
   getRechargeCustomerHashState,
   customerHashState => customerHashState.customerHash
+);
+
+/**
+ * Get cart item quantity
+ * @param {Object} state Redux state
+ * @param {Object} props Component props
+ * @return {Object|null}
+ */
+export const getCartItemQuantity = createSelector(
+  getCartItemById,
+  (cartItem) => {
+    const { quantity = null } = cartItem || {};
+
+    return quantity;
+  }
+);
+
+/**
+ * Get cart item product
+ * @param {Object} state Redux state
+ * @param {Object} props Component props
+ * @return {Object|null}
+ */
+export const getCartItemProduct = createSelector(
+  getCartItemById,
+  (cartItem) => {
+    const { product = null } = cartItem || {};
+
+    return product;
+  }
+);
+
+/**
+ * Get cart item product's additional information
+ * @param {Object} state Redux state
+ * @param {Object} props Component props
+ * @return {Object[]|null}
+ */
+export const getCartItemProductAdditionalInformation = createSelector(
+  getCartItemProduct,
+  (cartItemProduct) => {
+    const { additionalInfo = null } = cartItemProduct || {};
+
+    return additionalInfo;
+  }
+);
+
+/**
+ * Get cart item product's price
+ * @param {Object} state Redux state
+ * @param {Object} props Component props
+ * @return {Object|null}
+ */
+export const getCartItemProductPrice = createSelector(
+  getCartItemProduct,
+  (cartItemProduct) => {
+    const { price = null } = cartItemProduct || {};
+
+    return price;
+  }
+);
+
+/**
+ * Get cart item product's price
+ * @param {Object} state Redux state
+ * @param {Object} props Component props
+ * @return {Object|null}
+ */
+export const getCartItemProductUnitPrice = createSelector(
+  getCartItemProductPrice,
+  (priceObject) => {
+    const { unit = 0 } = priceObject || {};
+
+    return unit;
+  }
+);
+
+/**
+ * Get cart item product's recharge subscriptions
+ * @param {Object} state Redux state
+ * @param {Object} props Component props
+ * @return {Object[]|null}
+ */
+export const getCartItemRechargeInfo = createSelector(
+  getCartItemProductAdditionalInformation,
+  (additionalInformation = []) => {
+    const rechargeInfoContainer = additionalInformation
+      .find(info => typeof info === 'object' && info.hasOwnProperty('recharge'))
+
+    if (!rechargeInfoContainer) {
+      return null;
+    }
+
+    return rechargeInfoContainer.recharge || null;
+  }
 );
