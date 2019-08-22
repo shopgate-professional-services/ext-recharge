@@ -6,11 +6,12 @@ import {
   getReChargeFullSubscriptionItem,
   getRechargeCartState,
 } from '../selectors';
-import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
+import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH, RECHARGE_ERROR_ADD_PRODUCTS_TO_CART } from '../constants';
 import {
   receiveRechargeSubscriptionItems,
   requestRechargeSubscriptionItems,
   errorRechargeSubscriptionItems,
+  updateRechargeInfo,
   receiveRechargeCart,
   requestRechargeCart,
   errorRechargetCart,
@@ -21,16 +22,20 @@ import {
 
 /**
  * @param {string} productId productId
- * @param {Object} recharge recharge info
+ * @param {string} currentlySelectedFrequency currently selected frequency
+ * @param {Object} rechargeInfo recharge info
  * @returns {Function}
  */
-export const setSelectedRechargeSubscription = (productId, recharge) => (dispatch) => {
-  const metaData = {
-    recharge,
-  };
+export const updateRechargeInfoReducer = (productId, currentlySelectedFrequency, rechargeInfo) =>
+  (dispatch) => {
+    const metaData = {
+      currentlySelectedFrequency,
+      rechargeInfo,
+    };
 
-  dispatch(updateMetaData(productId, metaData));
-};
+    dispatch(updateMetaData(productId, metaData));
+    dispatch(updateRechargeInfo(productId, currentlySelectedFrequency, rechargeInfo));
+  };
 
 /**
  * Fetches subscription product information
@@ -125,4 +130,36 @@ export const fetchRechargeCustomerHash = () => (dispatch) => {
       logger.error(err);
       dispatch(errorRechargeCustomerHash());
     });
+};
+
+/**
+ * Corrects reducer information for recharge subscription quantity
+ * @param {Array} products products
+ * @returns {Function}
+ */
+export const rechargeErrorAddProductsToCart = products => (dispatch) => {
+  dispatch({
+    type: RECHARGE_ERROR_ADD_PRODUCTS_TO_CART,
+    products,
+  });
+  const { productId } = products[0];
+  const { rechargeInfo, currentlySelectedFrequency } = products[0].metadata;
+
+  if (currentlySelectedFrequency) {
+    const index = rechargeInfo.findIndex(val =>
+      val.frequencyValue === currentlySelectedFrequency);
+
+    const selectedSubscriptionInfo = rechargeInfo.splice(index, 1);
+
+    const toDecrement = selectedSubscriptionInfo[0].subscriptionInfo.quantity - 1;
+
+    const subscriptionInfo = {
+      ...selectedSubscriptionInfo[0].subscriptionInfo,
+      quantity: toDecrement,
+    };
+    rechargeInfo.push({
+      ...selectedSubscriptionInfo[0], subscriptionInfo,
+    });
+    updateRechargeInfoReducer(productId, currentlySelectedFrequency, rechargeInfo);
+  }
 };

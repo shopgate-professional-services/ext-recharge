@@ -19,10 +19,15 @@ export const RECEIVE_RECHARGE_CART = 'RECEIVE_RECHARGE_CART';
 export const REQUEST_RECHARGE_CART = 'REQUEST_RECHARGE_CART';
 export const ERROR_RECHARGE_CART = 'ERROR_RECHARGE_CART';
 
+export const UPDATE_RECHARGE_INFO = 'UPDATE_RECHARGE_INFO';
+
+export const RECHARGE_ERROR_ADD_PRODUCTS_TO_CART = 'RECHARGE_ERROR_ADD_PRODUCTS_TO_CART';
+
 // Redux namespace
 export const REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS = '@shopgate-project/recharge/rechargeSubscriptionItems';
 export const REDUX_NAMESPACE_RECHARGE_CART = '@shopgate-project/recharge/rechargeCart';
 export const REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH = '@shopgate-project/recharge/rechargeCustomerHash';
+export const REDUX_NAMESPACE_RECHARGE_INFO = '@shopgate-project/recharge/rechargeInfo';
 
 export const REQUIRED_SUBSCRIPTION_TEXT = 'subscription_only';
 export const DISCOUNT_TYPE_PERCENTAGE = 'percentage';

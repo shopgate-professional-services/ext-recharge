@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { setSelectedRechargeSubscription } from '../../actions';
-import { getRechargeSubscriptionItems, getVariantId } from '../../selectors';
+import { updateRechargeInfoReducer } from '../../actions';
+import { getRechargeSubscriptionItems, getVariantId, getSelectedSubscriptionsInfo } from '../../selectors';
 
 /**
  * @param {Object} state state
@@ -8,8 +8,9 @@ import { getRechargeSubscriptionItems, getVariantId } from '../../selectors';
  * @returns {Object}
  */
 const mapStateToProps = (state, props) => ({
-  subscriptionInfo: getRechargeSubscriptionItems(state, props),
+  selectedSubscriptionsInfo: getSelectedSubscriptionsInfo(state, props),
   shopifyVariantId: getVariantId(state, props),
+  subscriptionInfo: getRechargeSubscriptionItems(state, props),
 
 });
 
@@ -19,8 +20,12 @@ const mapStateToProps = (state, props) => ({
  * @returns {Object}
  */
 const mapDispatchToProps = (dispatch, props) => ({
-  setSelectedRechargeSubscription: recharge =>
-    dispatch(setSelectedRechargeSubscription(props.productId, recharge)),
+  updateRechargeInfo: (currentlySelectedFrequency, recharge) =>
+    dispatch(updateRechargeInfoReducer(
+      props.productId,
+      currentlySelectedFrequency,
+      recharge
+    )),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);

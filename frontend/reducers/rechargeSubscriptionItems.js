@@ -14,6 +14,7 @@ import handleReChargeProducts from './helpers/handleReChargeProducts';
  */
 const rechargeSubscriptionItemsReducer = (
   state = {
+    isFetching: false,
   },
   action
 ) => {
@@ -24,19 +25,21 @@ const rechargeSubscriptionItemsReducer = (
         ...action.productIds.reduce((collectedProducts, productId) => ({
           ...collectedProducts,
           [productId]: {
-            isFetching: false,
             expires: Date.now() + PRODUCT_LIFETIME,
           },
         }), {}),
+        isFetching: true,
       };
     case RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS:
       return {
         ...state,
         ...handleReChargeProducts(action.productIds, action.products),
+        isFetching: false,
       };
     case ERROR_RECHARGE_SUBSCRIPTION_ITEMS:
       return {
         ...state,
+        isFetching: false,
       };
     default:
       return state;

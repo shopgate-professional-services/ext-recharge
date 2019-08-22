@@ -16,23 +16,46 @@ module.exports = async (context, { cart }) => {
 
 const createLineItems = (items) => {
   const lineItems = []
+  let orderIntervalUnit = null
   items.map((item) => {
-    const { rechargeInfo } = item || null
+    const { subscriptionInfo } = item || null
     const { shopifyVariantId } = item || null
-    if (rechargeInfo) {
+    if (subscriptionInfo) {
+      switch (subscriptionInfo.intervalUnit) {
+        case 'Days':
+          orderIntervalUnit = 'day'
+          break
+        case 'Weeks':
+          orderIntervalUnit = 'week'
+          break
+        case 'Months':
+          orderIntervalUnit = 'month'
+          break
+        default:
+          orderIntervalUnit = null
+      }
+      if (subscriptionInfo.orderDayOfMonth === 0) {
+        subscriptionInfo.orderDayOfMonth = null
+      }
       lineItems.push({
+        charge_interval_frequency: subscriptionInfo.chargeIntervalFrequency,
+        cutoff_day_month: subscriptionInfo.cutoffDayOfMonth,
+        cutoff_day_week: subscriptionInfo.cutoffDayOfWeek,
+        expire_after_specific_number_of_charges: subscriptionInfo.expireAfterSpecificNumberOfCharges,
+        order_day_of_month: subscriptionInfo.orderDayOfMonth,
+        order_day_of_week: subscriptionInfo.orderDayOfWeek,
+        order_interval_frequency: subscriptionInfo.orderIntervalFrequency,
+        order_interval_unit: orderIntervalUnit,
         price: item.unit_price,
-        variant_id: rechargeInfo.recharge.shopifyVariantId,
         quantity: item.quantity,
-        order_interval_frequency: rechargeInfo.recharge.orderIntervalFrequency,
-        charge_interval_frequency: rechargeInfo.recharge.chargeIntervalFrequency,
-        order_interval_unit: rechargeInfo.recharge.intervalUnit === 'Days' ? 'day' : 'month'
+        variant_id: subscriptionInfo.shopifyVariantId
       })
     }
     if (shopifyVariantId) {
       lineItems.push({
-        variant_id: shopifyVariantId,
-        quantity: item.quantity
+        quantity: item.quantity,
+        price: item.unit_price,
+        variant_id: shopifyVariantId
       })
     }
   })

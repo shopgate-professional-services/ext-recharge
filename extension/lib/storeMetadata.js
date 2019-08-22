@@ -37,10 +37,10 @@ module.exports = async (context, input) => {
  * @param {Object} recharge recharge subscription info
  * @returns {Object}
  */
-const metadataTranslation = ({ shopifyVariantId, recharge }) => {
+const metadataTranslation = ({ shopifyVariantId, rechargeInfo }) => {
   const meta = {}
-  if (recharge) {
-    meta.recharge = recharge
+  if (rechargeInfo) {
+    meta.recharge = rechargeInfo
     return meta
   }
   meta.shopifyVariantId = shopifyVariantId

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/Transition';
 import { i18n } from '@shopgate/engage/core';
@@ -19,14 +19,20 @@ const { rechargeCurrency } = getConfig();
  */
 const RechargeOption = ({
   chargeIntervalFrequency,
+  cutoffDayOfMonth,
+  cutoffDayOfWeek,
   discountAmount,
   discountType,
+  expireAfterSpecificNumberOfCharges,
   frequencyValues,
   intervalUnit,
+  orderDayOfMonth,
+  orderDayOfWeek,
   orderIntervalFrequency,
   purchaseOption,
+  selectedSubscriptionsInfo,
   shopifyVariantId,
-  setSelectedRechargeSubscription,
+  updateRechargeInfo,
 }) => {
   if (!shopifyVariantId) {
     return null;
@@ -34,6 +40,13 @@ const RechargeOption = ({
   const [showSheet, setShowSheet] = useState(false);
   const [selected, setSelected] = useState(null);
   const [highlight, setHighlight] = useState(false);
+
+  // ComponentWillUnmount - reset selected to null
+  useEffect(() => {
+    setSelected(null);
+    const currentlySelectedFrequency = null;
+    updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
+  }, []);
 
   /**
    * Remove highlight for transitioner
@@ -55,21 +68,65 @@ const RechargeOption = ({
    * @param {string} frequencyValue selected frequencyValue
    */
   const handleSelection = (frequencyValue) => {
-    /**
-     * TO-DO: add subscription quantity tracking.
-     */
     setSelected(frequencyValue);
-    const rechargeOptions = {
-      chargeIntervalFrequency,
-      orderIntervalFrequency,
-      intervalUnit,
-      shopifyVariantId,
-      frequencyValue,
-      discountType,
-      discountAmount,
-      quantity: 1,
-    };
-    setSelectedRechargeSubscription(rechargeOptions);
+
+    const currentlySelectedFrequency = frequencyValue;
+
+    if (!selectedSubscriptionsInfo) {
+      const subscriptionInfo = [];
+      subscriptionInfo.push({
+        frequencyValue,
+        subscriptionInfo: {
+          chargeIntervalFrequency,
+          cutoffDayOfMonth,
+          cutoffDayOfWeek,
+          discountType,
+          discountAmount,
+          expireAfterSpecificNumberOfCharges,
+          orderDayOfMonth,
+          orderDayOfWeek,
+          orderIntervalFrequency,
+          intervalUnit,
+          shopifyVariantId,
+          quantity: 0,
+        },
+      });
+      updateRechargeInfo(currentlySelectedFrequency, subscriptionInfo);
+
+      handleClose();
+
+      return;
+    }
+
+    const findFreq = selectedSubscriptionsInfo
+      .some(arr => arr.frequencyValue === frequencyValue) || false;
+
+    if (!findFreq) {
+      selectedSubscriptionsInfo.push({
+        frequencyValue,
+        subscriptionInfo: {
+          chargeIntervalFrequency,
+          cutoffDayOfMonth,
+          cutoffDayOfWeek,
+          discountType,
+          discountAmount,
+          expireAfterSpecificNumberOfCharges,
+          orderDayOfMonth,
+          orderDayOfWeek,
+          orderIntervalFrequency,
+          intervalUnit,
+          shopifyVariantId,
+          quantity: 0,
+        },
+      });
+      updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
+
+      handleClose();
+
+      return;
+    }
+
+    updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
     handleClose();
   };
 
@@ -78,7 +135,8 @@ const RechargeOption = ({
    */
   const removeSelection = () => {
     setSelected(null);
-    setSelectedRechargeSubscription(null);
+    const currentlySelectedFrequency = null;
+    updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
     handleClose();
   };
 
@@ -118,10 +176,10 @@ const RechargeOption = ({
   };
 
   /**
- * Renders the transition contents.
- * @param {string} state The current transition state.
- * @returns {JSX}
- */
+  * Renders the transition contents.
+  * @param {string} state The current transition state.
+  * @returns {JSX}
+  */
   const transitionRenderer = (state) => {
     const buttonLabel = getButtonLabel(optionLabel);
 
@@ -185,8 +243,23 @@ RechargeOption.propTypes = {
   intervalUnit: PropTypes.string.isRequired,
   orderIntervalFrequency: PropTypes.number.isRequired,
   purchaseOption: PropTypes.string.isRequired,
-  setSelectedRechargeSubscription: PropTypes.func.isRequired,
   shopifyVariantId: PropTypes.string.isRequired,
+  updateRechargeInfo: PropTypes.func.isRequired,
+  cutoffDayOfMonth: PropTypes.number,
+  cutoffDayOfWeek: PropTypes.number,
+  expireAfterSpecificNumberOfCharges: PropTypes.number,
+  orderDayOfMonth: PropTypes.number,
+  orderDayOfWeek: PropTypes.number,
+  selectedSubscriptionsInfo: PropTypes.arrayOf(PropTypes.shape()),
+};
+
+RechargeOption.defaultProps = {
+  cutoffDayOfMonth: null,
+  cutoffDayOfWeek: null,
+  expireAfterSpecificNumberOfCharges: null,
+  orderDayOfMonth: null,
+  orderDayOfWeek: null,
+  selectedSubscriptionsInfo: null,
 };
 
 export default RechargeOption;
