@@ -3,6 +3,12 @@
   "id": "@shopgate-project/recharge",
   "components": [
     {
+      "id": "ProductPrice",
+      "path": "frontend/portals/ProductPrice/index.jsx",
+      "target": "product.price",
+      "type": "portals"
+    },
+    {
       "id": "PdpRechargeProducts",
       "path": "frontend/portals/PdpRechargeProducts/index.jsx",
       "target": "product.description.before",
