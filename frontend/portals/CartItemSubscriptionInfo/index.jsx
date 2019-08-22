@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import connect from './connector';
 import Label from './components/Label';
 import calculateDiscountedPrice from '../../helpers/calculateDiscountedPrice';
@@ -29,7 +30,7 @@ const distillSubscriptions = (subscriptions, itemUnitPrice) => subscriptions
     const totalPrice = price * quantity;
 
     return {
-      title: `Ever ${frequencyValue} ${intervalUnit}`,
+      title: `Every ${frequencyValue} ${intervalUnit}`,
       quantity,
       price,
       totalPrice,
@@ -93,6 +94,20 @@ const CartItemSubscriptionInfo = ({
       }
     </div>
   );
+};
+
+CartItemSubscriptionInfo.propTypes = {
+  cartItemId: PropTypes.string.isRequired,
+  currency: PropTypes.string.isRequired,
+  itemUnitPrice: PropTypes.number,
+  subscriptions: PropTypes.arrayOf(PropTypes.shape()),
+  totalQuantity: PropTypes.number,
+};
+
+CartItemSubscriptionInfo.defaultProps = {
+  itemUnitPrice: 0,
+  subscriptions: [],
+  totalQuantity: 0,
 }
 
 export default connect(CartItemSubscriptionInfo);

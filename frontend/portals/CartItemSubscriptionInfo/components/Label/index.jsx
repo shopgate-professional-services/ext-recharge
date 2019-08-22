@@ -47,5 +47,6 @@ Label.propTypes = {
   quantity: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   totalPrice: PropTypes.number.isRequired,
-}
+};
+
 export default Label;
