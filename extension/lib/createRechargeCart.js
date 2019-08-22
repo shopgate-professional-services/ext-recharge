@@ -54,10 +54,10 @@ const createLineItems = (items) => {
     if (shopifyVariantId) {
       lineItems.push({
         quantity: item.quantity,
+        price: item.unit_price,
         variant_id: shopifyVariantId
       })
     }
   })
-  console.warn(lineItems)
   return lineItems
 }

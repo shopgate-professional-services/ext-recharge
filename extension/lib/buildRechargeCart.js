@@ -20,9 +20,7 @@ module.exports = async function buildRechargeCart (context, input) {
   const items = cartItems.map((cartItem) => {
     const product = cartItem.product
     const rechargeInfo = product.additionalInfo.find(({ recharge }) => recharge) || null
-    const shopifyVariantId = product.additionalInfo.find(({ shopifyVariantId }) => shopifyVariantId) || null
-    const { subscriptionInfo } = rechargeInfo.recharge[0]
-    console.warn(subscriptionInfo)
+    const { shopifyVariantId } = product.additionalInfo.find(({ shopifyVariantId }) => shopifyVariantId) || {}
     if (!rechargeInfo) {
       return {
         name: product.name,
@@ -36,6 +34,7 @@ module.exports = async function buildRechargeCart (context, input) {
       }
     }
 
+    const { subscriptionInfo } = rechargeInfo.recharge[0]
     const discountPercentage = subscriptionInfo.discountAmount || null
 
     if (discountPercentage) {

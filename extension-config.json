@@ -27,6 +27,12 @@
       "type": "portals"
     },
     {
+      "id": "AddToCartBar",
+      "path": "frontend/portals/AddToCartBar",
+      "target": "product.add-to-cart-bar",
+      "type": "portals"
+    },
+    {
       "id": "subscriptions",
       "path": "frontend/subscriptions/index.js",
       "type": "subscribers"
