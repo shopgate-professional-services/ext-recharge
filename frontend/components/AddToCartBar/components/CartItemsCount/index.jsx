@@ -20,7 +20,6 @@ class CartItemsCount extends Component {
    */
   constructor(props) {
     super(props);
-    console.warn(props.itemCount);
     this.state = {
       numItems: props.itemCount,
       isVisible: props.itemCount > 0,

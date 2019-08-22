@@ -165,7 +165,7 @@ class AddToCartBar extends Component {
       this.props.addToCart({
         productId: this.props.productId,
         options: this.props.options,
-        quantity: this.context.quantity,
+        quantity: this.props.quantity,
       });
 
       if (this.moreButtonRef.current) {
