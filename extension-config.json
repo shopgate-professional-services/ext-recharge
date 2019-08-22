@@ -21,6 +21,18 @@
       "type": "portals"
     },
     {
+      "id": "RechargeCheckoutSubtotal",
+      "path": "frontend/portals/CartPaymentBarSubtotal",
+      "target": "cart.payment-bar.totals.sub-total",
+      "type": "portals"
+    },
+    {
+      "id": "RechargeCheckoutTotal",
+      "path": "frontend/portals/CartPaymentBarTotal",
+      "target": "cart.payment-bar.totals.grand-total",
+      "type": "portals"
+    },
+    {
       "id": "RechargePortalLink",
       "path": "frontend/portals/RechargePortalLink/index.jsx",
       "target": "nav-menu.imprint.after",

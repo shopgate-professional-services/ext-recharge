@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { createSelector } from 'reselect';
 import { getBaseProductId, getProductById, getProductId, hasProductVariants } from '@shopgate/engage/product';
 import { getIsFetching } from '@shopgate/engage/cart';
@@ -127,6 +128,16 @@ export const getRechargeCartState = state =>
 export const getRechargeCartToken = createSelector(
   getRechargeCartState,
   ({ token }) => token || null
+);
+
+export const getRechargeSubtotalPrice = createSelector(
+  getRechargeCartState,
+  ({ subtotal_price }) => parseInt(subtotal_price, 10) || null
+);
+
+export const getRechargeTotalPrice = createSelector(
+  getRechargeCartState,
+  ({ total_price }) => parseInt(total_price, 10) || null
 );
 
 const isTokenFetching = createSelector(
