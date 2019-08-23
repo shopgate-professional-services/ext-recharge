@@ -1,0 +1,43 @@
+<script>
+  var isShopgateApp = navigator.userAgent.indexOf('libshopgate') !== -1;
+
+  if (isShopgateApp) {
+    var ready = function(){
+      document.querySelector('#checkout .btn').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        window.SGAppConnector.sendAppCommand(
+          {
+            c: 'broadcastEvent',
+            p: {
+              event: 'closeInAppBrowser'
+            }
+          }
+        );
+
+      }, false);
+    };
+
+    if (
+      document.readyState === "complete" ||
+      (document.readyState !== "loading" && !document.documentElement.doScroll)
+    ) {
+      ready();
+    } else {
+      document.addEventListener("DOMContentLoaded", ready);
+    }
+
+    window.sgOrder = {
+      // TODO: Shopify.checkout.order_id+'' ??
+      orderNumber: document.querySelector('.thank-you__order__number').innerText.split('#')[1],
+      currency: document.querySelector('.payment-due__currency').innerText,
+      totals: {
+        shippingPrice: 0,
+        taxPrice: 0,
+        totalPrice: 0
+      },
+      lineItems: []
+    }
+  }
+</script>
+<script type='text/javascript' src='https://s3-eu-west-1.amazonaws.com/shopgate-public/webcheckout/shopify/checkout-script_v2.js'></script>
