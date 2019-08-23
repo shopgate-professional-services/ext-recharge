@@ -18,6 +18,7 @@ module.exports = async (context, input) => {
     if (!product.metadata || !product.productId) {
       return
     }
+
     rechargeMetaInfo[product.productId] = metadataTranslation(product.metadata)
   })
 

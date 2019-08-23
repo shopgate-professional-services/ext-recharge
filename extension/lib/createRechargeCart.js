@@ -15,9 +15,8 @@ module.exports = async (context, { cart }) => {
 }
 
 const createLineItems = (items) => {
-  const lineItems = []
   let orderIntervalUnit = null
-  items.map((item) => {
+  return items.map((item) => {
     const { subscriptionInfo } = item || null
     const { shopifyVariantId } = item || null
     if (subscriptionInfo) {
@@ -37,7 +36,9 @@ const createLineItems = (items) => {
       if (subscriptionInfo.orderDayOfMonth === 0) {
         subscriptionInfo.orderDayOfMonth = null
       }
-      lineItems.push({
+    }
+    if (subscriptionInfo) {
+      return ({
         charge_interval_frequency: subscriptionInfo.chargeIntervalFrequency,
         cutoff_day_month: subscriptionInfo.cutoffDayOfMonth,
         cutoff_day_week: subscriptionInfo.cutoffDayOfWeek,
@@ -51,13 +52,10 @@ const createLineItems = (items) => {
         variant_id: subscriptionInfo.shopifyVariantId
       })
     }
-    if (shopifyVariantId) {
-      lineItems.push({
-        quantity: item.quantity,
-        price: item.unit_price,
-        variant_id: shopifyVariantId
-      })
-    }
+    return ({
+      quantity: item.quantity,
+      price: item.unit_price,
+      variant_id: shopifyVariantId
+    })
   })
-  return lineItems
 }

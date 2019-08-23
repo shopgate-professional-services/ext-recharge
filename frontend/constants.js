@@ -31,6 +31,7 @@ export const REDUX_NAMESPACE_RECHARGE_INFO = '@shopgate-project/recharge/recharg
 
 export const REQUIRED_SUBSCRIPTION_TEXT = 'subscription_only';
 export const DISCOUNT_TYPE_PERCENTAGE = 'percentage';
+export const NO_SUBSCRIPTION_FREQUENCY_VALUE = 'No Subscription';
 
 // Pipelines
 export const GET_SUBSCRIPTION_PRODUCTS = 'shopgate-project.recharge.getSubscriptionProducts';

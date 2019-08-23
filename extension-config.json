@@ -63,6 +63,18 @@
       "type": "portals"
     },
     {
+      "id": "CartItemPrice",
+      "path": "frontend/portals/CartItemPrices/CartItemPrice",
+      "target": "cart.item.price",
+      "type": "portals"
+    },
+    {
+      "id": "CartItemStrikePrice",
+      "path": "frontend/portals/CartItemPrices/CartItemStrikePrice",
+      "target": "cart.item.price-striked",
+      "type": "portals"
+    },
+    {
       "id": "subscriptions",
       "path": "frontend/subscriptions/index.js",
       "type": "subscribers"

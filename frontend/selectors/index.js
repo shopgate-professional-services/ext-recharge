@@ -7,6 +7,7 @@ import {
   hasProductVariants,
 } from '@shopgate/engage/product';
 import { getIsFetching, getCartItemById } from '@shopgate/engage/cart';
+import { getDiscountToPrice } from '../helpers/rechargeDiscountPriceTools';
 import parseJson from '../helpers/parseJson';
 import {
   REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS,
@@ -14,6 +15,7 @@ import {
   REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH,
   REQUIRED_SUBSCRIPTION_TEXT,
   REDUX_NAMESPACE_RECHARGE_INFO,
+  NO_SUBSCRIPTION_FREQUENCY_VALUE,
 } from '../constants';
 
 /**
@@ -290,7 +292,7 @@ export const getCartItemProductUnitPrice = createSelector(
  * Get cart item product's recharge subscriptions
  * @param {Object} state Redux state
  * @param {Object} props Component props
- * @return {Object[]|null}
+ * @return {Object[]}
  */
 export const getCartItemRechargeInfo = createSelector(
   getCartItemProductAdditionalInformation,
@@ -299,9 +301,54 @@ export const getCartItemRechargeInfo = createSelector(
       .find(info => typeof info === 'object' && info.hasOwnProperty('recharge'))
 
     if (!rechargeInfoContainer) {
-      return null;
+      return [];
     }
-
-    return rechargeInfoContainer.recharge || null;
+    const { recharge } = rechargeInfoContainer;
+    return Array.isArray(recharge) ? recharge : [];
   }
 );
+
+/**
+ * Get cart item product's price discounted recharge subscriptions
+ * @param {Object} state Redux state
+ * @param {Object} props Component props
+ * @return {Object}
+ */
+export const getCartLineItemPriceDiscountedBySubscriptions = createSelector(
+  getCartItemRechargeInfo,
+  getCartItemProductPrice,
+  getCartItemProductUnitPrice,
+  (subscriptions, price, unitPrice) => {
+    if (!subscriptions.length) {
+      return price;
+    }
+
+    const totalSubscriptionDiscount = subscriptions
+      .filter(subscription => (
+        typeof subscription === 'object'
+        && subscription.frequencyValue !== NO_SUBSCRIPTION_FREQUENCY_VALUE
+        && typeof subscription.subscriptionInfo === 'object'
+        && subscription.subscriptionInfo.discountAmount
+        && subscription.subscriptionInfo.discountType
+        && subscription.subscriptionInfo.quantity
+      ))
+      .map(({ subscriptionInfo: { discountAmount, discountType, quantity } }) => (
+        getDiscountToPrice(unitPrice, discountType, discountAmount) * quantity
+      ))
+      .reduce((total, subscriptionDiscount) => total + subscriptionDiscount, 0);
+    const { default: originalDefaultPrice, special: originalSpecialPrice } = price;
+    const priceToBeCharged = originalSpecialPrice || originalDefaultPrice;
+
+    if (!(totalSubscriptionDiscount && totalSubscriptionDiscount < priceToBeCharged)) {
+      return price;
+    }
+    const subscriptionDiscountedPrice = priceToBeCharged - totalSubscriptionDiscount;
+
+    return {
+      unit: unitPrice,
+      special: subscriptionDiscountedPrice,
+      default: originalDefaultPrice,
+    };
+  }
+);
+

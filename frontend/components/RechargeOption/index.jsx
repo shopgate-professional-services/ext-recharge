@@ -18,7 +18,6 @@ const { rechargeCurrency } = getConfig();
  * @returns {JSX}
  */
 const RechargeOption = ({
-  chargeIntervalFrequency,
   cutoffDayOfMonth,
   cutoffDayOfWeek,
   discountAmount,
@@ -28,7 +27,6 @@ const RechargeOption = ({
   intervalUnit,
   orderDayOfMonth,
   orderDayOfWeek,
-  orderIntervalFrequency,
   purchaseOption,
   selectedSubscriptionsInfo,
   shopifyVariantId,
@@ -77,7 +75,7 @@ const RechargeOption = ({
       subscriptionInfo.push({
         frequencyValue,
         subscriptionInfo: {
-          chargeIntervalFrequency,
+          chargeIntervalFrequency: frequencyValue,
           cutoffDayOfMonth,
           cutoffDayOfWeek,
           discountType,
@@ -85,7 +83,7 @@ const RechargeOption = ({
           expireAfterSpecificNumberOfCharges,
           orderDayOfMonth,
           orderDayOfWeek,
-          orderIntervalFrequency,
+          orderIntervalFrequency: frequencyValue,
           intervalUnit,
           shopifyVariantId,
           quantity: 0,
@@ -105,7 +103,7 @@ const RechargeOption = ({
       selectedSubscriptionsInfo.push({
         frequencyValue,
         subscriptionInfo: {
-          chargeIntervalFrequency,
+          chargeIntervalFrequency: frequencyValue,
           cutoffDayOfMonth,
           cutoffDayOfWeek,
           discountType,
@@ -113,7 +111,7 @@ const RechargeOption = ({
           expireAfterSpecificNumberOfCharges,
           orderDayOfMonth,
           orderDayOfWeek,
-          orderIntervalFrequency,
+          orderIntervalFrequency: frequencyValue,
           intervalUnit,
           shopifyVariantId,
           quantity: 0,
@@ -126,16 +124,6 @@ const RechargeOption = ({
       return;
     }
 
-    updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
-    handleClose();
-  };
-
-  /**
-   * Removes selected recharge subsription
-   */
-  const removeSelection = () => {
-    setSelected(null);
-    const currentlySelectedFrequency = null;
     updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
     handleClose();
   };
@@ -167,9 +155,10 @@ const RechargeOption = ({
    * @returns {string}
    */
   const getButtonLabel = (defaultLabel) => {
-    if (!selected) {
+    if (!selected || selected === 'No Subscription') {
       return defaultLabel;
     }
+
     const valueLabel = frequencyValues.find(frequencyValue => frequencyValue === selected);
 
     return `${valueLabel} ${intervalUnit}`;
@@ -192,7 +181,7 @@ const RechargeOption = ({
         onClick={handleOpen}
         style={transition[state]}
       >
-        {selected && <div className={styles.label}>{optionLabel}</div>}
+        {selected && selected !== 'No Subscription' && <div className={styles.label}>{optionLabel}</div>}
         <div className={styles.selection}>{buttonLabel}</div>
       </div>
     );
@@ -225,7 +214,7 @@ const RechargeOption = ({
               item={i18n.text('recharge.subscription_option.no_subscription')}
               index={frequencyValues.length}
               key={frequencyValues.length.toString()}
-              onSelect={removeSelection}
+              onSelect={handleSelection}
               selected={false}
             />
           }
@@ -236,12 +225,10 @@ const RechargeOption = ({
 };
 
 RechargeOption.propTypes = {
-  chargeIntervalFrequency: PropTypes.number.isRequired,
   discountAmount: PropTypes.number.isRequired,
   discountType: PropTypes.string.isRequired,
   frequencyValues: PropTypes.arrayOf(PropTypes.string).isRequired,
   intervalUnit: PropTypes.string.isRequired,
-  orderIntervalFrequency: PropTypes.number.isRequired,
   purchaseOption: PropTypes.string.isRequired,
   shopifyVariantId: PropTypes.string.isRequired,
   updateRechargeInfo: PropTypes.func.isRequired,

@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import connect from './connector';
 import Label from './components/Label';
-import calculateDiscountedPrice from '../../helpers/calculateDiscountedPrice';
+import { getDiscountedPrice } from '../../helpers/rechargeDiscountPriceTools';
+import { NO_SUBSCRIPTION_FREQUENCY_VALUE } from '../../constants';
 
 /**
  * Distill subscriptions array to array of simpler objects
@@ -14,6 +15,7 @@ const distillSubscriptions = (subscriptions, itemUnitPrice) => subscriptions
   .filter(subscription => (
     typeof subscription === 'object'
     && subscription.frequencyValue
+    && subscription.frequencyValue !== NO_SUBSCRIPTION_FREQUENCY_VALUE
     && subscription.subscriptionInfo
   ))
   .map((subscription) => {
@@ -26,7 +28,7 @@ const distillSubscriptions = (subscriptions, itemUnitPrice) => subscriptions
         discountAmount,
       },
     } = subscription;
-    const price = calculateDiscountedPrice(itemUnitPrice, discountType, discountAmount);
+    const price = getDiscountedPrice(itemUnitPrice, discountType, discountAmount);
     const totalPrice = price * quantity;
 
     return {

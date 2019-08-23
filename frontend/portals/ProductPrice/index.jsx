@@ -33,7 +33,7 @@ const getDiscountedUnitPrice = (price, currentlySelectedFrequency, rechargeInfo)
 const ProductPrice = ({
   rechargeInfo, currentlySelectedFrequency, children, price, optionsPrices,
 }) => {
-  if (!rechargeInfo || !currentlySelectedFrequency) {
+  if (!rechargeInfo || !currentlySelectedFrequency || currentlySelectedFrequency === 'No Subscription') {
     return children;
   }
 
