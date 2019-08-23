@@ -15,8 +15,6 @@ module.exports = async function buildRechargeCart (context, input) {
 
   const tax = input.totals.find(({ type }) => type === 'tax')
   const discounts = input.totals.filter(({ type }) => type === 'discount')
-  let grandTotal = input.totals.find(({ type }) => type === 'grandTotal').amount
-  let discounted = false
 
   const items = []
   cartItems.forEach((cartItem) => {
@@ -62,8 +60,6 @@ module.exports = async function buildRechargeCart (context, input) {
       const discountPercentage = subscriptionInfo.discountAmount || null
       if (discountPercentage) {
         const deductedPrice = product.price.unit - (product.price.unit * (discountPercentage / 100))
-
-        discounted = true
 
         return {
           name: product.name,
