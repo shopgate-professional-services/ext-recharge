@@ -1,6 +1,10 @@
 import { productWillEnter$, getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
-import { hex2bin } from '@shopgate/engage/core';
-import { cartReceived$, cartUpdateFailed$ } from '@shopgate/engage/cart';
+import { cartReceived$, cartUpdateFailed$, fetchCart } from '@shopgate/engage/cart';
+import { hex2bin, PipelineRequest, logger } from '@shopgate/engage/core';
+import { navigate$ } from '@shopgate/pwa-common/streams/router';
+import getCart from '@shopgate/pwa-tracking/selectors/cart';
+import { checkoutSucceeded$ } from '@shopgate/pwa-common-commerce/checkout';
+import { track } from '@shopgate/pwa-tracking/helpers';
 import { userDataReceived$, userDidLogout$ } from '@shopgate/engage/user';
 import { receiveFavorites$ } from '@shopgate/engage/favorites';
 import {
@@ -12,6 +16,7 @@ import {
 } from '../actions';
 import { getVariantId } from '../selectors';
 import { removeRechargeCustomerHash } from '../action-creators';
+import { RECHARGE_CHECKOUT_PATH } from '../constants';
 
 export default (subscribe) => {
   subscribe(productWillEnter$, ({ action, dispatch, getState }) => {
@@ -60,5 +65,35 @@ export default (subscribe) => {
   subscribe(cartUpdateFailed$, ({ action, dispatch }) => {
     const { products } = action;
     dispatch(rechargeErrorAddProductsToCart(products));
+  });
+
+  const checkoutDidEnter$ = navigate$
+    .filter(({ action }) => action.params.pathname && action.params.pathname.includes(RECHARGE_CHECKOUT_PATH));
+
+  subscribe(checkoutDidEnter$, ({ getState }) => {
+    const state = getState();
+
+    track('initiatedCheckout', { cart: getCart(state) }, state);
+  });
+
+  subscribe(checkoutSucceeded$, ({ dispatch }) => {
+    // Create a new cart
+    new PipelineRequest('shopgate.cart.fetchShopifyCheckout')
+      .setInput({ createNew: true })
+      .dispatch()
+      .then(() => {
+        //dispatch(fetchCart());
+
+        // tODO: ticket request handling
+        // tODO: ticket fetchCart return request
+
+        dispatch(fetchRechargeCart());
+
+
+
+      })
+      .catch((error) => {
+        logger.error(error);
+      });
   });
 };
