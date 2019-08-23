@@ -1,9 +1,9 @@
 import { productWillEnter$, getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
-import { hex2bin } from '@shopgate/engage/core';
-import { cartReceived$, cartUpdateFailed$, fetchCart, getCart } from '@shopgate/engage/cart';
+import { cartReceived$, cartUpdateFailed$, fetchCart } from '@shopgate/engage/cart';
 import { hex2bin, PipelineRequest, logger } from '@shopgate/engage/core';
 import { navigate$ } from '@shopgate/pwa-common/streams/router';
-import { checkoutSucceeded$ } from '@shopgate/engage/checkout';
+import getCart from '@shopgate/pwa-tracking/selectors/cart';
+import { checkoutSucceeded$ } from '@shopgate/pwa-common-commerce/checkout';
 import { track } from '@shopgate/pwa-tracking/helpers';
 import { userDataReceived$, userDidLogout$ } from '@shopgate/engage/user';
 import { receiveFavorites$ } from '@shopgate/engage/favorites';
@@ -68,7 +68,7 @@ export default (subscribe) => {
   });
 
   const checkoutDidEnter$ = navigate$
-    .filter(({ action }) => action.params.pathname.includes(RECHARGE_CHECKOUT_PATH));
+    .filter(({ action }) => action.params.pathname && action.params.pathname.includes(RECHARGE_CHECKOUT_PATH));
 
   subscribe(checkoutDidEnter$, ({ getState }) => {
     const state = getState();
@@ -82,7 +82,15 @@ export default (subscribe) => {
       .setInput({ createNew: true })
       .dispatch()
       .then(() => {
-        dispatch(fetchCart());
+        //dispatch(fetchCart());
+
+        // tODO: ticket request handling
+        // tODO: ticket fetchCart return request
+
+        dispatch(fetchRechargeCart());
+
+
+
       })
       .catch((error) => {
         logger.error(error);
