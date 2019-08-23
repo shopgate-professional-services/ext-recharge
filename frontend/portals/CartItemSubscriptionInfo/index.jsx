@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import connect from './connector';
 import Label from './components/Label';
-import calculateDiscountedPrice from '../../helpers/calculateDiscountedPrice';
+import { getDiscountedPrice } from '../../helpers/rechargeDiscountPriceTools';
 
 /**
  * Distill subscriptions array to array of simpler objects
@@ -26,7 +26,7 @@ const distillSubscriptions = (subscriptions, itemUnitPrice) => subscriptions
         discountAmount,
       },
     } = subscription;
-    const price = calculateDiscountedPrice(itemUnitPrice, discountType, discountAmount);
+    const price = getDiscountedPrice(itemUnitPrice, discountType, discountAmount);
     const totalPrice = price * quantity;
 
     return {
