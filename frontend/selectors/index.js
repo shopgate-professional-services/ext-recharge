@@ -15,6 +15,7 @@ import {
   REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH,
   REQUIRED_SUBSCRIPTION_TEXT,
   REDUX_NAMESPACE_RECHARGE_INFO,
+  NO_SUBSCRIPTION_FREQUENCY_VALUE,
 } from '../constants';
 
 /**
@@ -300,7 +301,7 @@ export const getCartItemRechargeInfo = createSelector(
       .find(info => typeof info === 'object' && info.hasOwnProperty('recharge'))
 
     if (!rechargeInfoContainer) {
-      return null;
+      return [];
     }
     const { recharge } = rechargeInfoContainer;
     return Array.isArray(recharge) ? recharge : [];
@@ -311,7 +312,7 @@ export const getCartItemRechargeInfo = createSelector(
  * Get cart item product's price discounted recharge subscriptions
  * @param {Object} state Redux state
  * @param {Object} props Component props
- * @return {Object[]}
+ * @return {Object}
  */
 export const getCartLineItemPriceDiscountedBySubscriptions = createSelector(
   getCartItemRechargeInfo,
@@ -325,6 +326,7 @@ export const getCartLineItemPriceDiscountedBySubscriptions = createSelector(
     const totalSubscriptionDiscount = subscriptions
       .filter(subscription => (
         typeof subscription === 'object'
+        && subscription.frequencyValue !== NO_SUBSCRIPTION_FREQUENCY_VALUE
         && typeof subscription.subscriptionInfo === 'object'
         && subscription.subscriptionInfo.discountAmount
         && subscription.subscriptionInfo.discountType
