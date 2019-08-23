@@ -1,6 +1,6 @@
 import { cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import connect from './connector';
+import connect from '../connector';
 
 /**
  * Determine if two price objects are equal
