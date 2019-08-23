@@ -9,26 +9,29 @@ import {
   RECEIVE_RECHARGE_CUSTOMER_HASH,
   ERROR_RECHARGE_CUSTOMER_HASH,
   REMOVE_RECHARGE_CUSTOMER_HASH,
+  UPDATE_RECHARGE_INFO,
 } from '../constants';
 
 /**
  * Request Recharge Subscription Items
+ * @param {string[]} productIds product ids used for fetching
  * @returns {Object}
  */
-export const requestRechargeSubscriptionItems = () => ({
+export const requestRechargeSubscriptionItems = productIds => ({
   type: REQUEST_RECHARGE_SUBSCRIPTION_ITEMS,
+  productIds,
 });
 
 /**
  * Receive Recharge Subscription Items
- * @param {string} productId product id used for fetching
- * @param {Object} products subscription products
+ * @param {string[]} productIds product ids used for fetching
+ * @param {Object[]} products subscription products
  * @returns {Object}
  */
-export const receiveRechargeSubscriptionItems = (productId, products) => ({
+export const receiveRechargeSubscriptionItems = (productIds, products) => ({
   type: RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS,
   products,
-  productId,
+  productIds,
 });
 
 /**
@@ -37,6 +40,20 @@ export const receiveRechargeSubscriptionItems = (productId, products) => ({
  */
 export const errorRechargeSubscriptionItems = () => ({
   type: ERROR_RECHARGE_SUBSCRIPTION_ITEMS,
+});
+
+/**
+ * Update Recharge Info
+ * @param {string} productId productId
+ * @param {string} currentlySelectedFrequency currentlyl selected frequency
+ * @param {Object} rechargeInfo recharge subcriptionInfo
+ * @returns { Object }
+ */
+export const updateRechargeInfo = (productId, currentlySelectedFrequency, rechargeInfo) => ({
+  type: UPDATE_RECHARGE_INFO,
+  productId,
+  currentlySelectedFrequency,
+  rechargeInfo,
 });
 
 /**

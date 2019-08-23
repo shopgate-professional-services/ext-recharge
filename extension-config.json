@@ -3,6 +3,12 @@
   "id": "@shopgate-project/recharge",
   "components": [
     {
+      "id": "ProductPrice",
+      "path": "frontend/portals/ProductPrice/index.jsx",
+      "target": "product.price",
+      "type": "portals"
+    },
+    {
       "id": "PdpRechargeProducts",
       "path": "frontend/portals/PdpRechargeProducts/index.jsx",
       "target": "product.description.before",
@@ -15,9 +21,45 @@
       "type": "portals"
     },
     {
+      "id": "RechargeCheckoutSubtotal",
+      "path": "frontend/portals/CartPaymentBarSubtotal",
+      "target": "cart.payment-bar.totals.sub-total",
+      "type": "portals"
+    },
+    {
+      "id": "RechargeCheckoutTotal",
+      "path": "frontend/portals/CartPaymentBarTotal",
+      "target": "cart.payment-bar.totals.grand-total",
+      "type": "portals"
+    },
+    {
       "id": "RechargePortalLink",
       "path": "frontend/portals/RechargePortalLink/index.jsx",
       "target": "nav-menu.imprint.after",
+      "type": "portals"
+    },
+    {
+      "id": "FavoritesAddToCart",
+      "path": "frontend/portals/FavoritesAddToCart/index.jsx",
+      "target": "favorites.add-to-cart",
+      "type": "portals"
+    },
+    {
+      "id": "AddToCartButtonCta",
+      "path": "frontend/portals/CtaAddToCart",
+      "target": "product.ctas.add-to-cart",
+      "type": "portals"
+    },
+    {
+      "id": "AddToCartBar",
+      "path": "frontend/portals/AddToCartBar",
+      "target": "product.add-to-cart-bar",
+      "type": "portals"
+    },
+    {
+      "id": "CartItemSubscriptionInfo",
+      "path": "frontend/portals/CartItemSubscriptionInfo",
+      "target": "cart.item.name.after",
       "type": "portals"
     },
     {
@@ -38,6 +80,11 @@
     {
       "id": "rechargeCustomerHash",
       "path": "frontend/reducers/rechargeCustomerHash.js",
+      "type": "reducers"
+    },
+    {
+      "id": "rechargeInfo",
+      "path": "frontend/reducers/rechargeInfo.js",
       "type": "reducers"
     },
     {

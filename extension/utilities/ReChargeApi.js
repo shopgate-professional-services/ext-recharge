@@ -100,12 +100,17 @@ class ReChargeApi {
     })
   }
 
-  async getProducts (productId) {
+  /**
+   * Get product subscription data from ReCharge API
+   * @param {Object[]} productIds
+   * @return {Promise<any>}
+   */
+  async getProducts (productIds = []) {
     return this.call({
       path: 'products',
       method: 'GET',
       qs: {
-        shopify_product_ids: productId
+        shopify_product_ids: productIds.join(',')
       }
     })
   }

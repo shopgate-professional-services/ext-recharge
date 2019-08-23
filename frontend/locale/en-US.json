@@ -8,6 +8,13 @@
     },
     "customer_portal": {
       "manage_subscriptions": "Manage Subscriptions"
+    },
+    "favorite_list": {
+      "modal": {
+        "message": "To add this product to your cart please select a subscription option",
+        "confirm": "SELECT SUBSCRIPTION",
+        "dismiss": "CANCEL"
+      }
     }
   }
 }

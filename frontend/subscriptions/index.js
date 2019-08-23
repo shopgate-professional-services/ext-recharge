@@ -1,11 +1,19 @@
 import { productWillEnter$, getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
+import { hex2bin } from '@shopgate/engage/core';
+import { cartReceived$, cartUpdateFailed$, fetchCart, getCart } from '@shopgate/engage/cart';
 import { hex2bin, PipelineRequest, logger } from '@shopgate/engage/core';
 import { navigate$ } from '@shopgate/pwa-common/streams/router';
-import { cartReceived$, fetchCart, getCart } from '@shopgate/engage/cart';
 import { checkoutSucceeded$ } from '@shopgate/engage/checkout';
 import { track } from '@shopgate/pwa-tracking/helpers';
 import { userDataReceived$, userDidLogout$ } from '@shopgate/engage/user';
-import { fetchSubscriptionProducts, fetchRechargeCart, addShopifyVariantId, fetchRechargeCustomerHash } from '../actions';
+import { receiveFavorites$ } from '@shopgate/engage/favorites';
+import {
+  fetchSubscriptionProducts,
+  fetchRechargeCart,
+  addShopifyVariantId,
+  fetchRechargeCustomerHash,
+  rechargeErrorAddProductsToCart,
+} from '../actions';
 import { getVariantId } from '../selectors';
 import { removeRechargeCustomerHash } from '../action-creators';
 import { RECHARGE_CHECKOUT_PATH } from '../constants';
@@ -19,7 +27,7 @@ export default (subscribe) => {
       variantId, productId: hex2bin(productId),
     });
 
-    dispatch(fetchSubscriptionProducts(baseProductId));
+    dispatch(fetchSubscriptionProducts([baseProductId]));
   });
 
   subscribe(receivedVisibleProduct$, ({ action, dispatch, getState }) => {
@@ -46,6 +54,17 @@ export default (subscribe) => {
 
   subscribe(userDidLogout$, ({ dispatch }) => {
     dispatch(removeRechargeCustomerHash());
+  });
+
+  subscribe(receiveFavorites$, ({ action, dispatch }) => {
+    const { products } = action || {};
+    const productIds = products.map(product => product.baseProductId || product.id);
+    dispatch(fetchSubscriptionProducts(productIds));
+  });
+
+  subscribe(cartUpdateFailed$, ({ action, dispatch }) => {
+    const { products } = action;
+    dispatch(rechargeErrorAddProductsToCart(products));
   });
 
   const checkoutDidEnter$ = navigate$

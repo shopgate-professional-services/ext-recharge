@@ -10,54 +10,75 @@ import connect from './connector';
  * @returns {JSX}
  */
 const PdpRechargeProducts = ({
+  selectedSubscriptionsInfo,
   shopifyVariantId,
   subscriptionInfo,
-  setSelectedRechargeSubscription,
+  updateRechargeInfo,
 }) => {
   // if subscriptionInfo is not an array with at least one element return null
-  if (!(subscriptionInfo && Array.isArray(subscriptionInfo) && subscriptionInfo.length > 0)) {
+  if (!subscriptionInfo) {
     return null;
   }
 
+  const {
+    id, discount_amount, discount_type, subscription_defaults,
+  } = subscriptionInfo;
+  const {
+    charge_interval_frequency,
+    cutoff_day_of_month,
+    cutoff_day_of_week,
+    expire_after_spefific_number_of_charges,
+    number_charges_until_expiration,
+    order_day_of_month,
+    order_day_of_week,
+    order_interval_frequency,
+    order_interval_frequency_options,
+    order_interval_unit,
+    storefront_purchase_options,
+  } = subscription_defaults;
   return (
     <Fragment>
       <SubscriptionDetailsBadge />
-      {
-        subscriptionInfo.map((option) => {
-          const {
-            id, discount_amount, discount_type, subscription_defaults,
-          } = option;
-          return (
-            <RechargeOption
-              key={id}
-              id={id}
-              discountAmount={discount_amount}
-              discountType={discount_type}
-              chargeIntervalFrequency={subscription_defaults.charge_interval_frequency}
-              orderIntervalFrequency={subscription_defaults.order_interval_frequency}
-              frequencyValues={subscription_defaults.order_interval_frequency_options}
-              intervalUnit={subscription_defaults.order_interval_unit}
-              purchaseOption={subscription_defaults.storefront_purchase_options}
-              setSelectedRechargeSubscription={setSelectedRechargeSubscription}
-              shopifyVariantId={shopifyVariantId}
-            />
-          );
-        })
-      }
+      <RechargeOption
+        key={id}
+        id={id}
+        chargeIntervalFrequency={charge_interval_frequency}
+        cutoffDayOfMonth={cutoff_day_of_month}
+        cutoffDayOfWeek={cutoff_day_of_week}
+        discountAmount={discount_amount}
+        discountType={discount_type}
+        expireAfterSpecificNumberOfCharges={expire_after_spefific_number_of_charges}
+        frequencyValues={order_interval_frequency_options}
+        intervalUnit={order_interval_unit}
+        /**
+         * numberChargesUntilExpiration currently not used
+         * We can maybe use as additional label like stock of subscription
+         */
+        numberChargesUntilExpiration={number_charges_until_expiration}
+        selectedSubscriptionsInfo={selectedSubscriptionsInfo}
+        orderDayOfMonth={order_day_of_month}
+        orderDayOfWeek={order_day_of_week}
+        orderIntervalFrequency={order_interval_frequency}
+        purchaseOption={storefront_purchase_options}
+        updateRechargeInfo={updateRechargeInfo}
+        shopifyVariantId={shopifyVariantId}
+      />
     </Fragment>
   );
 };
 
 PdpRechargeProducts.propTypes = {
-  setSelectedRechargeSubscription: PropTypes.func,
+  selectedSubscriptionsInfo: PropTypes.arrayOf(PropTypes.shape()),
   shopifyVariantId: PropTypes.string,
-  subscriptionInfo: PropTypes.arrayOf(PropTypes.shape()),
+  subscriptionInfo: PropTypes.shape(),
+  updateRechargeInfo: PropTypes.func,
 };
 
 PdpRechargeProducts.defaultProps = {
-  setSelectedRechargeSubscription: () => { },
+  selectedSubscriptionsInfo: null,
   shopifyVariantId: null,
   subscriptionInfo: null,
+  updateRechargeInfo: () => { },
 };
 
 export default withCurrentProduct(connect(memo(PdpRechargeProducts)));
