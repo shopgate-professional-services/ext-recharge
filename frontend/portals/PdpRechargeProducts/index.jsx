@@ -38,7 +38,6 @@ const PdpRechargeProducts = ({
   } = subscription_defaults;
   return (
     <Fragment>
-      <SubscriptionDetailsBadge />
       <RechargeOption
         key={id}
         id={id}
@@ -63,6 +62,7 @@ const PdpRechargeProducts = ({
         updateRechargeInfo={updateRechargeInfo}
         shopifyVariantId={shopifyVariantId}
       />
+      <SubscriptionDetailsBadge />
     </Fragment>
   );
 };
