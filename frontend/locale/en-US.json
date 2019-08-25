@@ -4,7 +4,9 @@
       "and_save": "and save",
       "subscription": "Select subscription",
       "optional": "optional",
-      "no_subscription": "No Subscription"
+      "no_subscription": "No Subscription",
+      "subscribe_and_save": "Subscribe & save",
+      "subscribe": "Subscribe"
     },
     "customer_portal": {
       "manage_subscriptions": "Manage Subscriptions"

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { withCurrentProduct } from '@shopgate/engage/core';
 import RechargeOption from '../../components/RechargeOption';
 import SubscriptionDetailsBadge from '../../components/SubscriptionDetailsBadge';
+import PdpSubscriptionHeader from '../../components/PdpSubscriptionHeader';
 import connect from './connector';
 
 /**
@@ -38,6 +39,10 @@ const PdpRechargeProducts = ({
   } = subscription_defaults;
   return (
     <Fragment>
+      <PdpSubscriptionHeader
+        discountAmount={discount_amount}
+        discountType={discount_type}
+      />
       <RechargeOption
         key={id}
         id={id}
