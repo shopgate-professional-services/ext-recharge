@@ -82,15 +82,10 @@ export default (subscribe) => {
       .setInput({ createNew: true })
       .dispatch()
       .then(() => {
-        //dispatch(fetchCart());
-
         // tODO: ticket request handling
         // tODO: ticket fetchCart return request
 
         dispatch(fetchRechargeCart());
-
-
-
       })
       .catch((error) => {
         logger.error(error);
