@@ -4,6 +4,7 @@ import {
   isProductOrderable,
 } from '@shopgate/pwa-common-commerce/product/selectors/product';
 import { isProductPageLoading } from '@shopgate/pwa-common-commerce/product/selectors/page';
+import { showModal } from '@shopgate/engage/core';
 import { getCurrentlySelectedFrequency, getSelectedSubscriptionsInfo } from '../../selectors';
 import { updateRechargeInfoReducer } from '../../actions';
 import { addProductToCart } from './actions';
@@ -40,6 +41,8 @@ const mapDispatchToProps = (dispatch, props) => ({
       recharge
     ));
   },
+  chooseSubscriptionAlert: () =>
+    dispatch(showModal({ message: 'recharge.add_to_cart.modal.choose_subscription' })),
 });
 
 /**

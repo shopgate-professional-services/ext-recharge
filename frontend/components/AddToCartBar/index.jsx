@@ -23,6 +23,7 @@ class AddToCartBar extends Component {
     updateRechargeInfoReducer: PropTypes.func.isRequired,
     visible: PropTypes.bool.isRequired,
     addToCart: PropTypes.func,
+    chooseSubscriptionAlert: PropTypes.func,
     currentlySelectedFrequency: PropTypes.string,
     disabled: PropTypes.bool,
     loading: PropTypes.bool,
@@ -32,6 +33,7 @@ class AddToCartBar extends Component {
 
   static defaultProps = {
     addToCart: () => { },
+    chooseSubscriptionAlert: () => { },
     currentlySelectedFrequency: null,
     disabled: false,
     loading: false,
@@ -128,6 +130,7 @@ class AddToCartBar extends Component {
       &&
       !this.props.currentlySelectedFrequency)
     ) {
+      this.props.chooseSubscriptionAlert();
       return;
     }
 
