@@ -1,5 +1,5 @@
 <script>
-  var isShopgateApp = navigator.userAgent.indexOf('libshopgate') !== -1;
+  var isShopgateApp = 1 || navigator.userAgent.indexOf('libshopgate') !== -1;
 
   console.warn(isShopgateApp);
 
@@ -32,16 +32,27 @@
     }
 
     window.sgOrder = {
-      // TODO: Shopify.checkout.order_id+'' ??
-      orderNumber: document.querySelector('.thank-you__order__number').innerText.split('#')[1],
+      orderNumber: "{{order_number}}",
       currency: document.querySelector('.payment-due__currency').innerText,
       totals: {
-        shippingPrice: 0,
-        taxPrice: 0,
-        totalPrice: 0
+        shippingPrice: {{ total_shipping }} * 100,
+        taxPrice: {{ total_tax }}  * 100 ,
+        totalPrice: {{total_price}}  * 100
       },
       lineItems: []
     }
+
+    {% for item in line_items %}
+      window.sgOrder.lineItems.push({
+        "product": {id: {{ item.product_id }} },
+        "id": "{{ item.product_id }}",
+        "variant_id": "{{ item.variant_id }}",
+        "title": "{{ item.name }}",
+        "quantity": {{ item.quantity }},
+        "price": {{ item.price }},
+      })
+    {% endfor %}
+
   }
 </script>
 <script type='text/javascript' src='https://s3-eu-west-1.amazonaws.com/shopgate-public/webcheckout/shopify/checkout-script_v2.js'></script>
