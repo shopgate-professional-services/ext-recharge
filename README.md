@@ -6,7 +6,8 @@ ReCharge integration
 ## Setup
 
 - Login to your shopify backend and navigate to admin/apps/shopify-recurring-payments/settings/checkout 
-- Copy the code from embed.html and add it to "Additional & scripts and trackers"
+- Copy the code from styles.css and add it to "CSS editor"
+- Copy the code from thank_you.html and add it to "Additional & scripts and trackers"
 
 
 ## About Shopgate
