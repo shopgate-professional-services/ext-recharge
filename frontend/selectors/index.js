@@ -139,12 +139,22 @@ export const getRechargeCartToken = createSelector(
 
 export const getRechargeSubtotalPrice = createSelector(
   getRechargeCartState,
-  ({ subtotal_price }) => parseInt(subtotal_price, 10) || null
+  ({ subtotal_price }) => {
+    if (!subtotal_price) {
+      return null;
+    }
+    return parseFloat(subtotal_price);
+  }
 );
 
 export const getRechargeTotalPrice = createSelector(
   getRechargeCartState,
-  ({ total_price }) => parseInt(total_price, 10) || null
+  ({ total_price }) => {
+    if (!total_price) {
+      return null;
+    }
+    return parseFloat(total_price);
+  }
 );
 
 const isTokenFetching = createSelector(
@@ -298,7 +308,7 @@ export const getCartItemRechargeInfo = createSelector(
   getCartItemProductAdditionalInformation,
   (additionalInformation = []) => {
     const rechargeInfoContainer = additionalInformation
-      .find(info => typeof info === 'object' && info.hasOwnProperty('recharge'))
+      .find(info => typeof info === 'object' && info.hasOwnProperty('recharge'));
 
     if (!rechargeInfoContainer) {
       return [];
