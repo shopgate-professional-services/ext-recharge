@@ -76,6 +76,21 @@ export default (subscribe) => {
     track('initiatedCheckout', { cart: getCart(state) }, state);
   });
 
+  window.shopifyCheckout = () => {
+    new PipelineRequest('shopgate.cart.fetchShopifyCheckout')
+      .setInput({ createNew: true })
+      .dispatch()
+      .then(() => {
+
+
+      })
+      .catch((error) => {
+        logger.error(error);
+      });
+
+  };
+
+
   subscribe(checkoutSucceeded$, ({ dispatch }) => {
     // Create a new cart
     new PipelineRequest('shopgate.cart.fetchShopifyCheckout')
