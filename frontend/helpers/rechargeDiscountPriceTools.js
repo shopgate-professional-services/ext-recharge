@@ -1,3 +1,4 @@
+import { i18n } from '@shopgate/engage/core';
 import { DISCOUNT_TYPE_PERCENTAGE } from '../constants';
 
 /**
@@ -37,4 +38,23 @@ export const getDiscountedPrice = (price, discountType, discountAmount) => {
   const discountToPrice = getDiscountToPrice(price, discountType, discountAmount);
 
   return price - discountToPrice;
+};
+
+/**
+ * Get display ReCharge discount
+ * @param {string} discountType Discount type
+ * @param {number} discountAmount Discount amount in percent or pennies
+ * @param {string} currency Currency code like EUR or USD
+ * @return {string}
+ */
+export const getDisplayDiscount = (discountType, discountAmount, currency) => {
+  if (!(discountAmount > 0 && discountType)) {
+    return '0%';
+  }
+
+  if (discountType === DISCOUNT_TYPE_PERCENTAGE) {
+    return `${discountAmount}%`;
+  }
+
+  return i18n.price(discountAmount / 100, currency, true);
 };

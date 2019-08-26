@@ -9,6 +9,7 @@ const popUpWrapper = css({
   marginTop: 6,
   padding: 0,
   color: '#FFF',
+  zIndex: 4,
   backgroundColor: rechargeGray,
   '&::before': {
     display: 'block',
@@ -19,7 +20,6 @@ const popUpWrapper = css({
     top: -20,
     left: 0,
     borderBottomColor: rechargeGray,
-
   },
 }).toString();
 

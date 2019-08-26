@@ -5,8 +5,8 @@ const wrapper = css({
 }).toString();
 
 const image = css({
-  height: 21,
-  width: 18,
+  height: 18,
+  width: 15,
   display: 'inline-block',
   backgroundColor: 'transparent !important',
   marginRight: 3,
@@ -15,6 +15,9 @@ const image = css({
 const button = css({
   display: 'flex',
   padding: 0,
+  fontSize: '.8em',
+  textDecoration: 'underline',
+  lineHeight: '18px',
 }).toString();
 
 export default {
