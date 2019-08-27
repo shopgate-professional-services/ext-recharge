@@ -5,8 +5,7 @@ import {
 } from '@shopgate/pwa-common-commerce/product/selectors/product';
 import { isProductPageLoading } from '@shopgate/pwa-common-commerce/product/selectors/page';
 import { showModal } from '@shopgate/engage/core';
-import { getCurrentlySelectedFrequency, getSelectedSubscriptionsInfo } from '../../selectors';
-import { updateRechargeInfoReducer } from '../../actions';
+import { getSelectedSubscriptionsInfo } from '../../selectors';
 import { addProductToCart } from './actions';
 
 /**
@@ -21,7 +20,6 @@ const mapStateToProps = (state, props) => ({
    */
   disabled: !isProductOrderable(state, props) && !hasProductVariants(state, props),
   loading: isProductPageLoading(state, props),
-  currentlySelectedFrequency: getCurrentlySelectedFrequency(state, props),
   rechargeInfo: getSelectedSubscriptionsInfo(state, props),
 });
 
@@ -30,16 +28,9 @@ const mapStateToProps = (state, props) => ({
  * @param {Function} props The component props.
  * @return {Object} The extended component props.
  */
-const mapDispatchToProps = (dispatch, props) => ({
+const mapDispatchToProps = dispatch => ({
   addToCart: (product) => {
     dispatch(addProductToCart(product));
-  },
-  updateRechargeInfoReducer: (currentlySelectedFrequency, recharge) => {
-    dispatch(updateRechargeInfoReducer(
-      props.productId,
-      currentlySelectedFrequency,
-      recharge
-    ));
   },
   chooseSubscriptionAlert: () =>
     dispatch(showModal({ message: 'recharge.add_to_cart.modal.choose_subscription' })),

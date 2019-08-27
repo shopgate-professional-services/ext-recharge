@@ -1,16 +1,18 @@
 const isObjectEmpty = require('../helpers/isObjectEmpty')
-const { RECHARGE_INFO_KEY } = require('../constants')
+const { RECHARGE_MIRROR_KEY } = require('../constants')
 
 module.exports = async (context, input) => {
   if (!input.products) {
     return {}
   }
-  let rechargeMetaInfo = {}
+
+  let rechargeMirrorCart = {}
 
   try {
-    rechargeMetaInfo = await context.storage.device.get(RECHARGE_INFO_KEY) || {}
+    rechargeMirrorCart = await context.storage.device.get(RECHARGE_MIRROR_KEY) || {}
   } catch (error) {
-    context.log.error({ errorMessage: error.message }, 'coult not get recharge subscription data from device storage')
+    context.log({ errorMessage: error.message }, 'could not get recharge mirrored cart data from device storage')
+
     return {}
   }
 
@@ -19,31 +21,75 @@ module.exports = async (context, input) => {
       return
     }
 
-    rechargeMetaInfo[product.productId] = metadataTranslation(product.metadata)
+    const productMetaData = metadataTranslation(product.metadata)
+
+    // Create array reference if doesn't exist
+    if (!rechargeMirrorCart[product.productId]) {
+      rechargeMirrorCart[product.productId] = []
+    }
+
+    // Copy any existing array reference
+    const existingSubscriptionInfo = rechargeMirrorCart[product.productId]
+
+    // If metadata doesn't contain a frequency value, then we only add shopifyVariantId for recharge mirror cart
+    if (!productMetaData.frequencyValue) {
+      const toIncrement = existingSubscriptionInfo.find(id => id.shopifyVariantId === productMetaData.shopifyVariantId) || null
+      if (!toIncrement) {
+        productMetaData.quantity = product.quantity
+
+        rechargeMirrorCart[product.productId].push(productMetaData)
+
+        return
+      }
+
+      const { quantity } = toIncrement
+
+      toIncrement.quantity = quantity + product.quantity
+
+      return
+    }
+
+    const toIncrement = existingSubscriptionInfo.find(subscription => subscription.frequencyValue === productMetaData.frequencyValue) || null
+
+    if (!toIncrement) {
+      productMetaData.subscriptionInfo.quantity = product.quantity
+
+      rechargeMirrorCart[product.productId].push(productMetaData)
+
+      return
+    }
+
+    const { quantity } = toIncrement.subscriptionInfo
+
+    toIncrement.subscriptionInfo.quantity = quantity + product.quantity
   })
 
-  if (isObjectEmpty(rechargeMetaInfo)) {
+  if (isObjectEmpty(rechargeMirrorCart)) {
     return {}
   }
   try {
-    await context.storage.device.set(RECHARGE_INFO_KEY, rechargeMetaInfo)
+    await context.storage.device.set(RECHARGE_MIRROR_KEY, rechargeMirrorCart)
   } catch (error) {
     context.log.error({ errorMessage: error.message }, 'could not set recharge subscription data from device storage')
   }
+
   return {}
 }
 
 /**
- * Makes tracking object.
+ * Determines metada being passed.
  * @param {Object} recharge recharge subscription info
  * @returns {Object}
  */
 const metadataTranslation = ({ shopifyVariantId, rechargeInfo }) => {
-  const meta = {}
   if (rechargeInfo) {
-    meta.recharge = rechargeInfo
+    const { frequencyValue, subscriptionInfo } = rechargeInfo || null
+    const meta = {
+      frequencyValue: frequencyValue,
+      subscriptionInfo: subscriptionInfo
+    }
     return meta
   }
-  meta.shopifyVariantId = shopifyVariantId
+  const meta = { shopifyVariantId: shopifyVariantId }
   return meta
 }

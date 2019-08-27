@@ -22,19 +22,16 @@ import {
 
 /**
  * @param {string} productId productId
- * @param {string} currentlySelectedFrequency currently selected frequency
  * @param {Object} rechargeInfo recharge info
  * @returns {Function}
  */
-export const updateRechargeInfoReducer = (productId, currentlySelectedFrequency, rechargeInfo) =>
+export const updateRechargeInfoReducer = (productId, rechargeInfo) =>
   (dispatch) => {
     const metaData = {
-      currentlySelectedFrequency,
       rechargeInfo,
     };
-
     dispatch(updateMetaData(productId, metaData));
-    dispatch(updateRechargeInfo(productId, currentlySelectedFrequency, rechargeInfo));
+    dispatch(updateRechargeInfo(productId, rechargeInfo));
   };
 
 /**

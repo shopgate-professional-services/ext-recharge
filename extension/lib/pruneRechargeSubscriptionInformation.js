@@ -1,13 +1,13 @@
 const isObjectEmpty = require('../helpers/isObjectEmpty')
-const { RECHARGE_INFO_KEY } = require('../constants')
+const { RECHARGE_MIRROR_KEY } = require('../constants')
 
 module.exports = async (context, { cartItems }) => {
   try {
     if (!cartItems || cartItems.length < 1) {
-      await context.storage.device.del(RECHARGE_INFO_KEY)
+      await context.storage.device.del(RECHARGE_MIRROR_KEY)
       return { cartItems }
     }
-    const rechargeSubscriptionInfo = await context.storage.device.get(RECHARGE_INFO_KEY)
+    const rechargeSubscriptionInfo = await context.storage.device.get(RECHARGE_MIRROR_KEY)
     if (!rechargeSubscriptionInfo || isObjectEmpty(rechargeSubscriptionInfo)) {
       return { cartItems }
     }
@@ -16,10 +16,11 @@ module.exports = async (context, { cartItems }) => {
       if (!product || !product.id || !rechargeSubscriptionInfo[product.id]) {
         return
       }
-      product.additionalInfo.push(rechargeSubscriptionInfo[product.id])
+      product.additionalInfo.push({ recharge: rechargeSubscriptionInfo[product.id] })
     })
   } catch (error) {
     context.log.error({ errorMessage: error.message }, 'trouble adding recharge subscription data from device storage')
   }
+
   return { cartItems }
 }

@@ -16,7 +16,7 @@ const { colors } = themeConfig;
 const AddToCartCTA = ({
   addToCart,
   conditioner,
-  currentlySelectedFrequency,
+  chooseSubscriptionAlert,
   disabled,
   isRechargeOptional,
   loading,
@@ -25,7 +25,6 @@ const AddToCartCTA = ({
   quantity,
   rechargeInfo,
   subscriptionItemsFetching,
-  updateRechargeInfoReducer,
 }) => {
   const [clicked, setClicked] = useState(false);
 
@@ -48,7 +47,7 @@ const AddToCartCTA = ({
       return colors.shade5;
     }
     if (!isRechargeOptional) {
-      return (!disabled && !loading && !currentlySelectedFrequency)
+      return (!disabled && !loading && !rechargeInfo)
         ? colors.shade5 : colors.primary;
     }
     return (disabled && !loading) ? colors.shade5 : colors.primary;
@@ -82,7 +81,12 @@ const AddToCartCTA = ({
       return;
     }
 
-    if (disabled || (!disabled && !isRechargeOptional && !currentlySelectedFrequency)) {
+    if (disabled) {
+      return;
+    }
+
+    if ((!disabled && !isRechargeOptional && !rechargeInfo)) {
+      chooseSubscriptionAlert();
       return;
     }
 
@@ -92,24 +96,6 @@ const AddToCartCTA = ({
       }
 
       setClicked(true);
-
-      if (currentlySelectedFrequency) {
-        const index = rechargeInfo.findIndex(val =>
-          val.frequencyValue === currentlySelectedFrequency);
-
-        const selectedSubscriptionInfo = rechargeInfo.splice(index, 1);
-        const toIncrement = selectedSubscriptionInfo[0].subscriptionInfo.quantity + quantity;
-
-        const subscriptionInfo = {
-          ...selectedSubscriptionInfo[0].subscriptionInfo,
-          quantity: toIncrement,
-        };
-        rechargeInfo.push({
-          ...selectedSubscriptionInfo[0], subscriptionInfo,
-        });
-
-        updateRechargeInfoReducer(currentlySelectedFrequency, rechargeInfo);
-      }
 
       addToCart({
         productId,
@@ -139,14 +125,13 @@ AddToCartCTA.propTypes = {
   options: PropTypes.shape().isRequired,
   productId: PropTypes.string.isRequired,
   quantity: PropTypes.number.isRequired,
-  updateRechargeInfoReducer: PropTypes.func.isRequired,
-  currentlySelectedFrequency: PropTypes.string,
+  chooseSubscriptionAlert: PropTypes.func,
   rechargeInfo: PropTypes.arrayOf(PropTypes.shape()),
   subscriptionItemsFetching: PropTypes.bool,
 };
 
 AddToCartCTA.defaultProps = {
-  currentlySelectedFrequency: null,
+  chooseSubscriptionAlert: () => { },
   rechargeInfo: null,
   subscriptionItemsFetching: true,
 };

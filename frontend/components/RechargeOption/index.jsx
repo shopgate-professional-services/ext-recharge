@@ -25,7 +25,6 @@ const RechargeOption = ({
   orderDayOfMonth,
   orderDayOfWeek,
   purchaseOption,
-  selectedSubscriptionsInfo,
   shopifyVariantId,
   updateRechargeInfo,
 }) => {
@@ -39,9 +38,17 @@ const RechargeOption = ({
   // ComponentWillUnmount - reset selected to null
   useEffect(() => {
     setSelected(isSubscriptionOptional ? NO_SUBSCRIPTION_FREQUENCY_VALUE : null);
-    const currentlySelectedFrequency = null;
-    updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
+    setSelected(null);
+    const subscriptionInfo = null;
+    updateRechargeInfo(subscriptionInfo);
   }, []);
+
+  useEffect(() => {
+    setSelected(isSubscriptionOptional ? NO_SUBSCRIPTION_FREQUENCY_VALUE : null);
+    setSelected(null);
+    const subscriptionInfo = null;
+    updateRechargeInfo(subscriptionInfo);
+  }, [shopifyVariantId]);
 
   /**
    * Remove highlight for transitioner
@@ -65,63 +72,32 @@ const RechargeOption = ({
   const handleSelection = (frequencyValue) => {
     setSelected(frequencyValue);
 
-    const currentlySelectedFrequency = frequencyValue;
-
-    if (!selectedSubscriptionsInfo) {
-      const subscriptionInfo = [];
-      subscriptionInfo.push({
-        frequencyValue,
-        subscriptionInfo: {
-          chargeIntervalFrequency: frequencyValue,
-          cutoffDayOfMonth,
-          cutoffDayOfWeek,
-          discountType,
-          discountAmount,
-          expireAfterSpecificNumberOfCharges,
-          orderDayOfMonth,
-          orderDayOfWeek,
-          orderIntervalFrequency: frequencyValue,
-          intervalUnit,
-          shopifyVariantId,
-          quantity: 0,
-        },
-      });
-      updateRechargeInfo(currentlySelectedFrequency, subscriptionInfo);
-
+    if (frequencyValue === 'No Subscription') {
+      setSelected(null);
+      const subscriptionInfo = null;
+      updateRechargeInfo(subscriptionInfo);
       handleClose();
-
       return;
     }
 
-    const findFreq = selectedSubscriptionsInfo
-      .some(arr => arr.frequencyValue === frequencyValue) || false;
+    const subscriptionInfo = {
+      frequencyValue,
+      subscriptionInfo: {
+        chargeIntervalFrequency: frequencyValue,
+        cutoffDayOfMonth,
+        cutoffDayOfWeek,
+        discountType,
+        discountAmount,
+        expireAfterSpecificNumberOfCharges,
+        orderDayOfMonth,
+        orderDayOfWeek,
+        orderIntervalFrequency: frequencyValue,
+        intervalUnit,
+        shopifyVariantId,
+      },
+    };
+    updateRechargeInfo(subscriptionInfo);
 
-    if (!findFreq) {
-      selectedSubscriptionsInfo.push({
-        frequencyValue,
-        subscriptionInfo: {
-          chargeIntervalFrequency: frequencyValue,
-          cutoffDayOfMonth,
-          cutoffDayOfWeek,
-          discountType,
-          discountAmount,
-          expireAfterSpecificNumberOfCharges,
-          orderDayOfMonth,
-          orderDayOfWeek,
-          orderIntervalFrequency: frequencyValue,
-          intervalUnit,
-          shopifyVariantId,
-          quantity: 0,
-        },
-      });
-      updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
-
-      handleClose();
-
-      return;
-    }
-
-    updateRechargeInfo(currentlySelectedFrequency, selectedSubscriptionsInfo);
     handleClose();
   };
 
@@ -217,7 +193,6 @@ RechargeOption.propTypes = {
   expireAfterSpecificNumberOfCharges: PropTypes.number,
   orderDayOfMonth: PropTypes.number,
   orderDayOfWeek: PropTypes.number,
-  selectedSubscriptionsInfo: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 RechargeOption.defaultProps = {
@@ -226,7 +201,6 @@ RechargeOption.defaultProps = {
   expireAfterSpecificNumberOfCharges: null,
   orderDayOfMonth: null,
   orderDayOfWeek: null,
-  selectedSubscriptionsInfo: null,
 };
 
 export default RechargeOption;

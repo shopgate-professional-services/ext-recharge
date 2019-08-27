@@ -19,6 +19,7 @@ import { removeRechargeCustomerHash } from '../action-creators';
 import { RECHARGE_CHECKOUT_PATH } from '../constants';
 
 export default (subscribe) => {
+  // Fetch recharge subscription options when product info is ready
   subscribe(productWillEnter$, ({ action, dispatch, getState }) => {
     const { productId } = action.route.params;
     const { productId: variantId } = action.route.state;
@@ -30,6 +31,7 @@ export default (subscribe) => {
     dispatch(fetchSubscriptionProducts([baseProductId]));
   });
 
+  // Adds Shopify variant_id on product entry
   subscribe(receivedVisibleProduct$, ({ action, dispatch, getState }) => {
     const productId = action.productData.id;
     const customData = JSON.parse(action.productData.customData);
@@ -68,7 +70,8 @@ export default (subscribe) => {
   });
 
   const checkoutDidEnter$ = navigate$
-    .filter(({ action }) => action.params.pathname && action.params.pathname.includes(RECHARGE_CHECKOUT_PATH));
+    .filter(({ action }) =>
+      action.params.pathname && action.params.pathname.includes(RECHARGE_CHECKOUT_PATH));
 
   subscribe(checkoutDidEnter$, ({ getState }) => {
     const state = getState();

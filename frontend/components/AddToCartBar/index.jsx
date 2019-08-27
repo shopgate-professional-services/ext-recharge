@@ -20,21 +20,18 @@ class AddToCartBar extends Component {
     options: PropTypes.shape().isRequired,
     productId: PropTypes.string.isRequired,
     quantity: PropTypes.number.isRequired,
-    updateRechargeInfoReducer: PropTypes.func.isRequired,
     visible: PropTypes.bool.isRequired,
     addToCart: PropTypes.func,
     chooseSubscriptionAlert: PropTypes.func,
-    currentlySelectedFrequency: PropTypes.string,
     disabled: PropTypes.bool,
     loading: PropTypes.bool,
-    rechargeInfo: PropTypes.arrayOf(PropTypes.shape()),
+    rechargeInfo: PropTypes.shape(),
     subscriptionItemsFetching: PropTypes.bool,
   };
 
   static defaultProps = {
     addToCart: () => { },
     chooseSubscriptionAlert: () => { },
-    currentlySelectedFrequency: null,
     disabled: false,
     loading: false,
     rechargeInfo: null,
@@ -127,9 +124,8 @@ class AddToCartBar extends Component {
       !this.props.disabled
       &&
       !this.props.isRechargeOptional
-      &&
-      !this.props.currentlySelectedFrequency)
-    ) {
+      && !this.props.rechargeInfo
+    )) {
       this.props.chooseSubscriptionAlert();
       return;
     }
@@ -140,30 +136,6 @@ class AddToCartBar extends Component {
       }
 
       this.setState({ clicked: true });
-
-      if (this.props.currentlySelectedFrequency) {
-        const index = this.props.rechargeInfo.findIndex(val =>
-          val.frequencyValue === this.props.currentlySelectedFrequency);
-
-        const selectedSubscriptionInfo = this.props.rechargeInfo.splice(index, 1);
-
-        const toIncrement = selectedSubscriptionInfo[0].subscriptionInfo.quantity
-          + this.props.quantity;
-
-        const subscriptionInfo = {
-          ...selectedSubscriptionInfo[0].subscriptionInfo,
-          quantity: toIncrement,
-        };
-
-        this.props.rechargeInfo.push({
-          ...selectedSubscriptionInfo[0], subscriptionInfo,
-        });
-
-        this.props.updateRechargeInfoReducer(
-          this.props.currentlySelectedFrequency,
-          this.props.rechargeInfo
-        );
-      }
 
       this.props.addToCart({
         productId: this.props.productId,
