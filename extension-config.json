@@ -256,6 +256,21 @@
           "addPipelineOutput": true
         }
       ]
+    },
+    {
+      "path": "extension/steps/enforceNoUpdateOnSubscriptionProducts.js",
+      "hooks": [
+        "shopgate.cart.updateProducts.v1:before"
+      ],
+      "input": [
+        {
+          "key": "CartItem"
+        },
+        {
+          "key": "cartItems"
+        }
+      ],
+      "output": []
     }
   ]
 }

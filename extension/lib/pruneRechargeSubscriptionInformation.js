@@ -1,4 +1,5 @@
 const isObjectEmpty = require('../helpers/isObjectEmpty')
+const { saveLineIdToProductIdMap } = require('../utilities/lineItemIdToProductMapper')
 const { RECHARGE_MIRROR_KEY } = require('../constants')
 
 module.exports = async (context, { cartItems }) => {
@@ -7,11 +8,12 @@ module.exports = async (context, { cartItems }) => {
       await context.storage.device.del(RECHARGE_MIRROR_KEY)
       return { cartItems }
     }
+    // save line item id to product id for update enforcement
+    await saveLineIdToProductIdMap(context, cartItems)
     const rechargeSubscriptionInfo = await context.storage.device.get(RECHARGE_MIRROR_KEY)
     if (!rechargeSubscriptionInfo || isObjectEmpty(rechargeSubscriptionInfo)) {
       return { cartItems }
     }
-
     cartItems.forEach(({ product }) => {
       if (!product || !product.id || !rechargeSubscriptionInfo[product.id]) {
         return
