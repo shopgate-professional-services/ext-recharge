@@ -45,14 +45,12 @@ export const errorRechargeSubscriptionItems = () => ({
 /**
  * Update Recharge Info
  * @param {string} productId productId
- * @param {string} currentlySelectedFrequency currentlyl selected frequency
  * @param {Object} rechargeInfo recharge subcriptionInfo
  * @returns { Object }
  */
-export const updateRechargeInfo = (productId, currentlySelectedFrequency, rechargeInfo) => ({
+export const updateRechargeInfo = (productId, rechargeInfo) => ({
   type: UPDATE_RECHARGE_INFO,
   productId,
-  currentlySelectedFrequency,
   rechargeInfo,
 });
 

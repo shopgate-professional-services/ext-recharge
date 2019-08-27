@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getCurrentlySelectedFrequency, getSelectedSubscriptionsInfo } from '../../selectors';
+import { getSelectedSubscriptionsInfo } from '../../selectors';
 
 /**
  * @param {Object} state The current application state.
@@ -7,7 +7,6 @@ import { getCurrentlySelectedFrequency, getSelectedSubscriptionsInfo } from '../
  * @return {Object} The extended component props.
  */
 const mapStateToProps = (state, props) => ({
-  currentlySelectedFrequency: getCurrentlySelectedFrequency(state, props),
   rechargeInfo: getSelectedSubscriptionsInfo(state, props),
 });
 

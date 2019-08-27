@@ -11,7 +11,6 @@ import connect from './connector';
  * @returns {JSX}
  */
 const PdpRechargeProducts = ({
-  selectedSubscriptionsInfo,
   shopifyVariantId,
   subscriptionInfo,
   updateRechargeInfo,
@@ -59,7 +58,6 @@ const PdpRechargeProducts = ({
          * We can maybe use as additional label like stock of subscription
          */
         numberChargesUntilExpiration={number_charges_until_expiration}
-        selectedSubscriptionsInfo={selectedSubscriptionsInfo}
         orderDayOfMonth={order_day_of_month}
         orderDayOfWeek={order_day_of_week}
         orderIntervalFrequency={order_interval_frequency}
@@ -73,14 +71,12 @@ const PdpRechargeProducts = ({
 };
 
 PdpRechargeProducts.propTypes = {
-  selectedSubscriptionsInfo: PropTypes.arrayOf(PropTypes.shape()),
   shopifyVariantId: PropTypes.string,
   subscriptionInfo: PropTypes.shape(),
   updateRechargeInfo: PropTypes.func,
 };
 
 PdpRechargeProducts.defaultProps = {
-  selectedSubscriptionsInfo: null,
   shopifyVariantId: null,
   subscriptionInfo: null,
   updateRechargeInfo: () => { },

@@ -4,10 +4,18 @@ module.exports = async function buildRechargeCart (context, input) {
   }
 
   const cartItems = input.cartItems.filter(({ type }) => type === 'product')
+
+  // Check if we need to generate a recharge cart
   const isRecharge = cartItems.some(
     ({ product }) =>
       product.additionalInfo.some(
-        ({ recharge }) => recharge))
+        (val) => {
+          const { recharge } = val || null
+          if (recharge) {
+            return recharge.some(({ frequencyValue }) => frequencyValue)
+          }
+        }
+      ))
 
   if (!isRecharge) {
     return { cart: null }
@@ -19,53 +27,34 @@ module.exports = async function buildRechargeCart (context, input) {
   const items = []
   cartItems.forEach((cartItem) => {
     const product = cartItem.product
-    const rechargeInfo = product.additionalInfo.find(({ recharge }) => recharge) || null
-    const { shopifyVariantId } = product.additionalInfo.find(({ shopifyVariantId }) => shopifyVariantId) || {}
-    // Should be used to add non recharge applicable products - need the shopfiy variant_id to create a recharge checkout line item
-    if (!rechargeInfo) {
-      items.push({
-        order_reference: cartItem.id,
-        name: product.name,
-        reference: cartItem.id,
-        total_amount: product.price.unit * cartItem.quantity,
-        unit_price: product.price.unit,
-        quantity: cartItem.quantity,
-        image_url: product.featuredImageUrl ? product.featuredImageUrl : undefined,
-        properties: product.properties.map(({ label: key, value }) => ({ key, value })),
-        shopifyVariantId
-      })
-      return
-    }
+    const rechargeInfo = product.additionalInfo.find(({ recharge }) => recharge).recharge || null
+    const mappedSubscriptions = rechargeInfo.map(subOption => {
+      if (subOption.subscriptionInfo) {
+        const { subscriptionInfo } = subOption || null
+        const { shopifyVariantId } = subscriptionInfo || null
+        const discountPercentage = subscriptionInfo.discountAmount || null
 
-    // should be used to add recharge applicable items based on selected or non selected subscription.
-    const mappedSubscriptions = rechargeInfo.recharge.map((info) => {
-      const { subscriptionInfo } = info || null
-      const { frequencyValue } = info || null
-      const { shopifyVariantId } = subscriptionInfo || null
+        if (discountPercentage) {
+          const deductedPrice = product.price.unit - (product.price.unit * (discountPercentage / 100))
 
-      if (frequencyValue === 'No Subscription') {
+          return {
+            name: product.name,
+            reference: cartItem.id,
+            total_amount: deductedPrice * subscriptionInfo.quantity,
+            unit_price: deductedPrice,
+            quantity: subscriptionInfo.quantity,
+            image_url: product.featuredImageUrl ? product.featuredImageUrl : undefined,
+            properties: product.properties.map(({ label: key, value }) => ({ key, value })),
+            shopifyVariantId,
+            subscriptionInfo
+          }
+        }
+
         return {
-          order_reference: cartItem.id,
           name: product.name,
           reference: cartItem.id,
           total_amount: product.price.unit * subscriptionInfo.quantity,
           unit_price: product.price.unit,
-          quantity: subscriptionInfo.quantity,
-          image_url: product.featuredImageUrl ? product.featuredImageUrl : undefined,
-          properties: product.properties.map(({ label: key, value }) => ({ key, value })),
-          shopifyVariantId
-        }
-      }
-
-      const discountPercentage = subscriptionInfo.discountAmount || null
-      if (discountPercentage) {
-        const deductedPrice = product.price.unit - (product.price.unit * (discountPercentage / 100))
-
-        return {
-          name: product.name,
-          reference: cartItem.id,
-          total_amount: deductedPrice * subscriptionInfo.quantity,
-          unit_price: deductedPrice,
           quantity: subscriptionInfo.quantity,
           image_url: product.featuredImageUrl ? product.featuredImageUrl : undefined,
           properties: product.properties.map(({ label: key, value }) => ({ key, value })),
@@ -74,19 +63,21 @@ module.exports = async function buildRechargeCart (context, input) {
         }
       }
 
+      const { shopifyVariantId } = subOption || null
+      const { quantity } = subOption || null
+
       return {
+        order_reference: cartItem.id,
         name: product.name,
         reference: cartItem.id,
-        total_amount: product.price.unit * subscriptionInfo.quantity,
+        total_amount: product.price.unit * quantity,
         unit_price: product.price.unit,
-        quantity: subscriptionInfo.quantity,
+        quantity: quantity,
         image_url: product.featuredImageUrl ? product.featuredImageUrl : undefined,
         properties: product.properties.map(({ label: key, value }) => ({ key, value })),
-        shopifyVariantId,
-        subscriptionInfo
+        shopifyVariantId
       }
     })
-
     items.push(...mappedSubscriptions)
   })
 

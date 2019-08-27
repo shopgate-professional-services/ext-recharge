@@ -7,13 +7,11 @@ import connect from './connector';
 /**
  * Updates unit price with discounted recharge amount
  * @param {Object} price price
- * @param {string} currentlySelectedFrequency currently selected frequency
  * @param {Object} rechargeInfo recharge info
  * @returns {Object}
  */
-const getDiscountedUnitPrice = (price, currentlySelectedFrequency, rechargeInfo) => {
-  const rechargeDiscountPercentage = rechargeInfo.find(({ frequencyValue }) =>
-    frequencyValue === currentlySelectedFrequency).subscriptionInfo.discountAmount;
+const getDiscountedUnitPrice = (price, rechargeInfo) => {
+  const rechargeDiscountPercentage = rechargeInfo.subscriptionInfo.discountAmount;
 
   if (!rechargeDiscountPercentage) {
     return price;
@@ -31,27 +29,25 @@ const getDiscountedUnitPrice = (price, currentlySelectedFrequency, rechargeInfo)
  * @returns {JSX}
  */
 const ProductPrice = ({
-  rechargeInfo, currentlySelectedFrequency, children, price, optionsPrices,
+  rechargeInfo, children, price, optionsPrices,
 }) => {
-  if (!rechargeInfo || !currentlySelectedFrequency || currentlySelectedFrequency === 'No Subscription') {
+  if (!rechargeInfo || rechargeInfo.frequencyValue === 'No Subscription') {
     return children;
   }
 
-  const updatedPrice = getDiscountedUnitPrice(price, currentlySelectedFrequency, rechargeInfo);
+  const updatedPrice = getDiscountedUnitPrice(price, rechargeInfo);
 
   return <RechargeProductPrice price={updatedPrice} optionsPrices={optionsPrices} />;
 };
 
 ProductPrice.propTypes = {
   children: PropTypes.node.isRequired,
-  currentlySelectedFrequency: PropTypes.string,
   optionsPrices: PropTypes.shape(),
   price: PropTypes.shape(),
-  rechargeInfo: PropTypes.arrayOf(PropTypes.shape()),
+  rechargeInfo: PropTypes.shape(),
 };
 
 ProductPrice.defaultProps = {
-  currentlySelectedFrequency: null,
   optionsPrices: null,
   price: null,
   rechargeInfo: null,

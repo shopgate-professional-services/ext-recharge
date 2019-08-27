@@ -44,7 +44,11 @@ const RechargeProductPrice = ({ price, optionsPrices }) => (
 
 RechargeProductPrice.propTypes = {
   optionsPrices: PropTypes.shape().isRequired,
-  price: PropTypes.shape().isRequired,
+  price: PropTypes.shape(),
+};
+
+RechargeProductPrice.defaultProps = {
+  price: null,
 };
 
 export default RechargeProductPrice;

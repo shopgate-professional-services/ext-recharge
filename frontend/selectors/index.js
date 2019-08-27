@@ -90,6 +90,7 @@ export const getSelectedSubscriptionsInfo = createSelector(
   getBaseProductId,
   (recharge, baseProductId) => {
     const { rechargeInfo } = recharge[baseProductId] || {};
+
     return rechargeInfo || null;
   }
 );
@@ -99,6 +100,7 @@ export const getCurrentlySelectedFrequency = createSelector(
   getBaseProductId,
   (recharge, baseProductId) => {
     const { currentlySelectedFrequency } = recharge[baseProductId] || {};
+
     return currentlySelectedFrequency || null;
   }
 );

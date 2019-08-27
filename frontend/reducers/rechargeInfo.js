@@ -17,7 +17,6 @@ const rechargeInfoReducer = (
       return {
         ...state,
         [action.productId]: {
-          currentlySelectedFrequency: action.currentlySelectedFrequency,
           rechargeInfo: action.rechargeInfo,
           isFetching: false,
         },
