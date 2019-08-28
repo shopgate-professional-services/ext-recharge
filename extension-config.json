@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-rc.1",
   "id": "@shopgate-project/recharge",
   "components": [
     {
@@ -109,7 +109,7 @@
     "apiToken": {
       "type": "admin",
       "destination": "backend",
-      "default": "66bf89e72b05c085f289fe43542659e6fd0e56888ef52fc0ff825a03",
+      "default": "",
       "params": {
         "label": "ReCharge API token",
         "type": "text",
@@ -202,7 +202,7 @@
     "shopifyAlias": {
       "type": "bigApi",
       "destination": "both",
-      "default": "shopgate-recharge-sandbox",
+      "default": "",
       "params": {
         "method": "GET",
         "service": "config",
