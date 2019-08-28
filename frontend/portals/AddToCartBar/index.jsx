@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withCurrentProduct } from '@shopgate/engage/core';
 import AddToCartBar from '../../components/AddToCartBar/index';
-import { REQUIRED_SUBSCRIPTION_TEXT } from '../../constants';
 import connect from './connector';
 
 /**
  * @returns {JSX}
  */
 const CtaAddToCart = ({
-  isRechargeOptional,
+  isSubscriptionOnly,
   children,
   conditioner,
   productId,
@@ -21,7 +20,7 @@ const CtaAddToCart = ({
   if (subscriptionItemsFetching) {
     return (<AddToCartBar
       conditioner={conditioner}
-      isRechargeOptional={isRechargeOptional !== REQUIRED_SUBSCRIPTION_TEXT}
+      isRechargeOptional={!isSubscriptionOnly}
       subscriptionItemsFetching={subscriptionItemsFetching}
       options={options}
       quantity={quantity}
@@ -29,13 +28,13 @@ const CtaAddToCart = ({
     />);
   }
 
-  if (!isRechargeOptional) {
+  if (!isSubscriptionOnly) {
     return (children);
   }
 
   return (<AddToCartBar
     conditioner={conditioner}
-    isRechargeOptional={isRechargeOptional !== REQUIRED_SUBSCRIPTION_TEXT}
+    isRechargeOptional={!isSubscriptionOnly}
     options={options}
     quantity={quantity}
     subscriptionItemsFetching={subscriptionItemsFetching}
@@ -49,13 +48,13 @@ CtaAddToCart.propTypes = {
   options: PropTypes.shape().isRequired,
   productId: PropTypes.string.isRequired,
   quantity: PropTypes.number.isRequired,
-  isRechargeOptional: PropTypes.string,
+  isSubscriptionOnly: PropTypes.bool,
   subscriptionItemsFetching: PropTypes.bool,
   variantId: PropTypes.string,
 };
 
 CtaAddToCart.defaultProps = {
-  isRechargeOptional: null,
+  isSubscriptionOnly: null,
   subscriptionItemsFetching: true,
   variantId: null,
 };

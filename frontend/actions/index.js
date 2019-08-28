@@ -6,14 +6,14 @@ import {
   getReChargeFullSubscriptionItem,
   getRechargeCartState,
 } from '../selectors';
-import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH, RECHARGE_ERROR_ADD_PRODUCTS_TO_CART } from '../constants';
+import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
 import {
-  receiveRechargeSubscriptionItems,
   requestRechargeSubscriptionItems,
+  receiveRechargeSubscriptionItems,
   errorRechargeSubscriptionItems,
   updateRechargeInfo,
-  receiveRechargeCart,
   requestRechargeCart,
+  receiveRechargeCart,
   errorRechargetCart,
   requestRechargeCustomerHash,
   receiveRechargeCustomerHash,
@@ -84,7 +84,6 @@ export const fetchRechargeCart = () => (dispatch, getState) => {
 
   dispatch(requestRechargeCart());
   new PipelineRequest(CREATE_CHECKOUT)
-    .setHandleErrors(ERROR_HANDLE_SUPPRESS)
     .dispatch()
     .then((response) => {
       dispatch(receiveRechargeCart(response.rechargeCart));
@@ -127,36 +126,4 @@ export const fetchRechargeCustomerHash = () => (dispatch) => {
       logger.error(err);
       dispatch(errorRechargeCustomerHash());
     });
-};
-
-/**
- * Corrects reducer information for recharge subscription quantity
- * @param {Array} products products
- * @returns {Function}
- */
-export const rechargeErrorAddProductsToCart = products => (dispatch) => {
-  dispatch({
-    type: RECHARGE_ERROR_ADD_PRODUCTS_TO_CART,
-    products,
-  });
-  const { productId } = products[0];
-  const { rechargeInfo, currentlySelectedFrequency } = products[0].metadata;
-
-  if (currentlySelectedFrequency) {
-    const index = rechargeInfo.findIndex(val =>
-      val.frequencyValue === currentlySelectedFrequency);
-
-    const selectedSubscriptionInfo = rechargeInfo.splice(index, 1);
-
-    const toDecrement = selectedSubscriptionInfo[0].subscriptionInfo.quantity - 1;
-
-    const subscriptionInfo = {
-      ...selectedSubscriptionInfo[0].subscriptionInfo,
-      quantity: toDecrement,
-    };
-    rechargeInfo.push({
-      ...selectedSubscriptionInfo[0], subscriptionInfo,
-    });
-    updateRechargeInfoReducer(productId, currentlySelectedFrequency, rechargeInfo);
-  }
 };

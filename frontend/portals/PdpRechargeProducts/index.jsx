@@ -28,7 +28,6 @@ const PdpRechargeProducts = ({
     cutoff_day_of_month,
     cutoff_day_of_week,
     expire_after_spefific_number_of_charges,
-    number_charges_until_expiration,
     order_day_of_month,
     order_day_of_week,
     order_interval_frequency,
@@ -53,11 +52,6 @@ const PdpRechargeProducts = ({
         expireAfterSpecificNumberOfCharges={expire_after_spefific_number_of_charges}
         frequencyValues={order_interval_frequency_options}
         intervalUnit={order_interval_unit}
-        /**
-         * numberChargesUntilExpiration currently not used
-         * We can maybe use as additional label like stock of subscription
-         */
-        numberChargesUntilExpiration={number_charges_until_expiration}
         orderDayOfMonth={order_day_of_month}
         orderDayOfWeek={order_day_of_week}
         orderIntervalFrequency={order_interval_frequency}

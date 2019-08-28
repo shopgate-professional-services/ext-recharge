@@ -1,5 +1,5 @@
 import { productWillEnter$, getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
-import { cartReceived$, cartUpdateFailed$, fetchCart } from '@shopgate/engage/cart';
+import { cartReceived$ } from '@shopgate/engage/cart';
 import { hex2bin, PipelineRequest, logger } from '@shopgate/engage/core';
 import { navigate$ } from '@shopgate/pwa-common/streams/router';
 import getCart from '@shopgate/pwa-tracking/selectors/cart';
@@ -12,7 +12,6 @@ import {
   fetchRechargeCart,
   addShopifyVariantId,
   fetchRechargeCustomerHash,
-  rechargeErrorAddProductsToCart,
 } from '../actions';
 import { getVariantId } from '../selectors';
 import { removeRechargeCustomerHash } from '../action-creators';
@@ -46,27 +45,26 @@ export default (subscribe) => {
     dispatch(addShopifyVariantId(productId, shopifyVariantId));
   });
 
+  // Check if we can fetch recharge cart with received cart items.
   subscribe(cartReceived$, ({ dispatch }) => {
     dispatch(fetchRechargeCart());
   });
 
+  // If user logged in then we should fetch recharge customer hash
   subscribe(userDataReceived$, ({ dispatch }) => {
     dispatch(fetchRechargeCustomerHash());
   });
 
+  // Remove recharge customer hash
   subscribe(userDidLogout$, ({ dispatch }) => {
     dispatch(removeRechargeCustomerHash());
   });
 
+  // Determine if products added have subscription options
   subscribe(receiveFavorites$, ({ action, dispatch }) => {
     const { products } = action || {};
     const productIds = products.map(product => product.baseProductId || product.id);
     dispatch(fetchSubscriptionProducts(productIds));
-  });
-
-  subscribe(cartUpdateFailed$, ({ action, dispatch }) => {
-    const { products } = action;
-    dispatch(rechargeErrorAddProductsToCart(products));
   });
 
   const checkoutDidEnter$ = navigate$

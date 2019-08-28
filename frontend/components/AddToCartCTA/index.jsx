@@ -43,6 +43,11 @@ const AddToCartCTA = ({
     if (clicked) {
       return colors.light;
     }
+
+    if (disabled || loading) {
+      return colors.shade5;
+    }
+
     if (subscriptionItemsFetching) {
       return colors.shade5;
     }
@@ -126,7 +131,7 @@ AddToCartCTA.propTypes = {
   productId: PropTypes.string.isRequired,
   quantity: PropTypes.number.isRequired,
   chooseSubscriptionAlert: PropTypes.func,
-  rechargeInfo: PropTypes.arrayOf(PropTypes.shape()),
+  rechargeInfo: PropTypes.shape(),
   subscriptionItemsFetching: PropTypes.bool,
 };
 

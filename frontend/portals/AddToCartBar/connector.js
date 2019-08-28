@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getIsRechargeOptional, isRechargeSubscriptionItemsFetching } from '../../selectors';
+import { getIsRechargeSubscriptionOnly, isRechargeSubscriptionItemsFetching } from '../../selectors';
 
 /**
  * @param {Object} state state
@@ -7,7 +7,7 @@ import { getIsRechargeOptional, isRechargeSubscriptionItemsFetching } from '../.
  * @returns {Object}
  */
 const mapStateToProps = (state, props) => ({
-  isRechargeOptional: getIsRechargeOptional(state, props),
+  isSubscriptionOnly: getIsRechargeSubscriptionOnly(state, props),
   subscriptionItemsFetching: isRechargeSubscriptionItemsFetching(state, props),
 });
 

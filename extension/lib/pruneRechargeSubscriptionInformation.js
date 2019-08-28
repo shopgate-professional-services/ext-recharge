@@ -8,8 +8,10 @@ module.exports = async (context, { cartItems }) => {
       await context.storage.device.del(RECHARGE_MIRROR_KEY)
       return { cartItems }
     }
+
     // save line item id to product id for update enforcement
     await saveLineIdToProductIdMap(context, cartItems)
+
     const rechargeSubscriptionInfo = await context.storage.device.get(RECHARGE_MIRROR_KEY)
     if (!rechargeSubscriptionInfo || isObjectEmpty(rechargeSubscriptionInfo)) {
       return { cartItems }

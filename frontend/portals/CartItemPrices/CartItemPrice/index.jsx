@@ -29,10 +29,14 @@ const CartItemPrice = ({
   if (!subscriptions.length || arePricesEqual(subscriptionPrice, originalPrice)) {
     return children;
   }
-  const { special: specialPrice, default: defaultPrice } = subscriptionPrice
+  const { special: specialPrice, default: defaultPrice } = subscriptionPrice;
   const unitPrice = specialPrice || defaultPrice;
-  const discounted = !!specialPrice
-  return cloneElement(children, { unitPrice, discounted });
+  const discounted = !!specialPrice;
+
+  return cloneElement(children, {
+    unitPrice,
+    discounted,
+  });
 };
 
 CartItemPrice.propTypes = {

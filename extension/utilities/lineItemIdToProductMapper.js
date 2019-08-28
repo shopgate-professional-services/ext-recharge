@@ -9,7 +9,7 @@ const saveLineIdToProductIdMap = async (context, cartLineItems) => {
 }
 
 const getLineIdToProductIdMap = async (context) => {
-  return context.storage.device.get(RECHARGE_LINE_ITEM_ID_TO_PRODUCT_MAP);
+  return context.storage.device.get(RECHARGE_LINE_ITEM_ID_TO_PRODUCT_MAP)
 }
 
 module.exports = { saveLineIdToProductIdMap, getLineIdToProductIdMap }

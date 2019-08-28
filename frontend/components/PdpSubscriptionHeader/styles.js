@@ -6,7 +6,7 @@ const wrapper = css({
 
 const bold = css({
   fontWeight: 600,
-})
+}).toString();
 
 export default {
   wrapper,

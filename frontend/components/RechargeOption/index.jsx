@@ -35,18 +35,25 @@ const RechargeOption = ({
   const [selected, setSelected] = useState(null);
   const [highlight, setHighlight] = useState(false);
   const isSubscriptionOptional = purchaseOption !== REQUIRED_SUBSCRIPTION_TEXT;
+
   // ComponentWillUnmount - reset selected to null
   useEffect(() => {
     setSelected(isSubscriptionOptional ? NO_SUBSCRIPTION_FREQUENCY_VALUE : null);
     setSelected(null);
+
     const subscriptionInfo = null;
+
     updateRechargeInfo(subscriptionInfo);
   }, []);
 
+  // ComponentDidUpdate - If shopifyVariantId changed then we reset selected state
   useEffect(() => {
     setSelected(isSubscriptionOptional ? NO_SUBSCRIPTION_FREQUENCY_VALUE : null);
     setSelected(null);
+
     const subscriptionInfo = null;
+
+    // Ensure meta data value is null
     updateRechargeInfo(subscriptionInfo);
   }, [shopifyVariantId]);
 
@@ -57,11 +64,13 @@ const RechargeOption = ({
     setHighlight(false);
   };
 
+  // Opens sheet
   const handleOpen = useCallback((event) => {
     event.preventDefault();
     setShowSheet(true);
   }, []);
 
+  // Closes sheet
   const handleClose = useCallback(() => {
     setShowSheet(false);
   }, []);
@@ -72,7 +81,9 @@ const RechargeOption = ({
   const handleSelection = (frequencyValue) => {
     setSelected(frequencyValue);
 
-    if (frequencyValue === 'No Subscription') {
+    // Value attached to pass no selecetd subscription value should
+    // not update metaData with null subscriptionInfo
+    if (frequencyValue === NO_SUBSCRIPTION_FREQUENCY_VALUE) {
       setSelected(null);
       const subscriptionInfo = null;
       updateRechargeInfo(subscriptionInfo);
@@ -80,6 +91,7 @@ const RechargeOption = ({
       return;
     }
 
+    // Frequency value is the selected value from sheet
     const subscriptionInfo = {
       frequencyValue,
       subscriptionInfo: {
@@ -96,6 +108,8 @@ const RechargeOption = ({
         shopifyVariantId,
       },
     };
+
+    // Update metadata needed when adding product to cart
     updateRechargeInfo(subscriptionInfo);
 
     handleClose();
@@ -143,6 +157,7 @@ const RechargeOption = ({
     );
   };
 
+  // Adds additional SheetItem for optional subscription products
   return (
     <Fragment>
       <Transition in={highlight} timeout={500} onEntered={removeHighlight}>

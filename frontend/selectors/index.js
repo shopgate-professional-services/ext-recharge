@@ -27,9 +27,7 @@ export const getRechargeSubscriptionItemsState = state =>
 
 /**
  * Get Full ReCharge Subscription item
- * @param {Object} state Redux state,
- * @param {Object} props Component props
- * @return {Object|null}
+ * @returns {Object|null}
  */
 export const getReChargeFullSubscriptionItem = createSelector(
   getRechargeSubscriptionItemsState,
@@ -39,9 +37,7 @@ export const getReChargeFullSubscriptionItem = createSelector(
 
 /**
  * Get ReCharge Subscription item
- * @param {Object} state Redux state,
- * @param {Object} props Component props
- * @return {Object|null}
+ * @returns {Object|null}
  */
 export const getRechargeSubscriptionItems = createSelector(
   getReChargeFullSubscriptionItem,
@@ -52,39 +48,27 @@ export const getRechargeSubscriptionItems = createSelector(
   }
 );
 
+/**
+ * Get is fetching status for recharge subscription information
+ * @returns {bool}
+ */
 export const isRechargeSubscriptionItemsFetching = createSelector(
   getRechargeSubscriptionItemsState,
   subscriptionItemsState => subscriptionItemsState.isFetching
 );
 
-export const getIsRechargeOptional = createSelector(
-  getRechargeSubscriptionItems,
-  (subscriptionInfo) => {
-    if (!subscriptionInfo) {
-      const isRechargeOptional = null;
-
-      return isRechargeOptional;
-    }
-
-    const isRechargeOptional =
-      subscriptionInfo.subscription_defaults.storefront_purchase_options || null;
-
-    if (!isRechargeOptional) {
-      return null;
-    }
-
-    return isRechargeOptional;
-  }
-);
-
 /**
- *
+ * Get recharge info state to get discount information for pdp price
  * @param {Object} state state
  * @returns {Object}
  */
 export const getRechargeInfoState = state =>
   state.extensions[REDUX_NAMESPACE_RECHARGE_INFO];
 
+/**
+ * Get subscription info for give productId
+ * @returns {Object|| null}
+ */
 export const getSelectedSubscriptionsInfo = createSelector(
   getRechargeInfoState,
   getBaseProductId,
@@ -95,23 +79,11 @@ export const getSelectedSubscriptionsInfo = createSelector(
   }
 );
 
-export const getCurrentlySelectedFrequency = createSelector(
-  getRechargeInfoState,
-  getBaseProductId,
-  (recharge, baseProductId) => {
-    const { currentlySelectedFrequency } = recharge[baseProductId] || {};
-
-    return currentlySelectedFrequency || null;
-  }
-);
-
 /**
- * Determine if product is subscription only
- * @param {Object} state Redux state,
- * @param {Object} props Component props
+ * Determine if product on favorites page is subscription only
  * @return {boolean}
  */
-export const getIsReChargeSubscriptionOnly = createSelector(
+export const getIsRechargeSubscriptionOnly = createSelector(
   getRechargeSubscriptionItems,
   (subscriptionInfo) => {
     if (!subscriptionInfo) {
@@ -134,11 +106,19 @@ export const getIsReChargeSubscriptionOnly = createSelector(
 export const getRechargeCartState = state =>
   state.extensions[REDUX_NAMESPACE_RECHARGE_CART];
 
+/**
+ * Gets recharge token from recharge cart reducer
+ * @returns {string||null}
+ */
 export const getRechargeCartToken = createSelector(
   getRechargeCartState,
   ({ token }) => token || null
 );
 
+/**
+ * Gets subtotal price from recharge cart reducer
+ * @returns {number||null}
+ */
 export const getRechargeSubtotalPrice = createSelector(
   getRechargeCartState,
   ({ subtotal_price }) => {
@@ -149,6 +129,10 @@ export const getRechargeSubtotalPrice = createSelector(
   }
 );
 
+/**
+ * Gets total price from recharge cart reducer
+ * @returns {number||null}
+ */
 export const getRechargeTotalPrice = createSelector(
   getRechargeCartState,
   ({ total_price }) => {
@@ -164,6 +148,10 @@ const isTokenFetching = createSelector(
   cartState => cartState.isFetching
 );
 
+/**
+ * Determine if carte is busty
+ * @returns {bool}
+ */
 export const getIsCartBusy = createSelector(
   getIsFetching,
   isTokenFetching,
@@ -172,8 +160,6 @@ export const getIsCartBusy = createSelector(
 
 /**
  * Get shopify variant id from custom data
- * @param {Object} state Redux state,
- * @param {Object} props Component props
  * @return {string}
  */
 export const getShopifyVariant = createSelector(
@@ -190,8 +176,6 @@ export const getShopifyVariant = createSelector(
 
 /**
  * Get Variant Id
- * @param {Object} state Redux state,
- * @param {Object} props Component props
  * @return {string}
  */
 export const getVariantId = createSelector(
@@ -217,7 +201,6 @@ export const getRechargeCustomerHashState = state =>
 
 /**
  * Get recharge customer hash
- * @param {Object} state Redux state,
  * @return {string}
  */
 export const getRechargeCustomerHash = createSelector(
@@ -227,8 +210,6 @@ export const getRechargeCustomerHash = createSelector(
 
 /**
  * Get cart item quantity
- * @param {Object} state Redux state
- * @param {Object} props Component props
  * @return {Object|null}
  */
 export const getCartItemQuantity = createSelector(
@@ -242,8 +223,6 @@ export const getCartItemQuantity = createSelector(
 
 /**
  * Get cart item product
- * @param {Object} state Redux state
- * @param {Object} props Component props
  * @return {Object|null}
  */
 export const getCartItemProduct = createSelector(
@@ -257,8 +236,6 @@ export const getCartItemProduct = createSelector(
 
 /**
  * Get cart item product's additional information
- * @param {Object} state Redux state
- * @param {Object} props Component props
  * @return {Object[]|null}
  */
 export const getCartItemProductAdditionalInformation = createSelector(
@@ -272,8 +249,6 @@ export const getCartItemProductAdditionalInformation = createSelector(
 
 /**
  * Get cart item product's price
- * @param {Object} state Redux state
- * @param {Object} props Component props
  * @return {Object|null}
  */
 export const getCartItemProductPrice = createSelector(
@@ -287,8 +262,6 @@ export const getCartItemProductPrice = createSelector(
 
 /**
  * Get cart item product's price
- * @param {Object} state Redux state
- * @param {Object} props Component props
  * @return {Object|null}
  */
 export const getCartItemProductUnitPrice = createSelector(
@@ -302,8 +275,6 @@ export const getCartItemProductUnitPrice = createSelector(
 
 /**
  * Get cart item product's recharge subscriptions
- * @param {Object} state Redux state
- * @param {Object} props Component props
  * @return {Object[]}
  */
 export const getCartItemRechargeInfo = createSelector(
@@ -322,8 +293,6 @@ export const getCartItemRechargeInfo = createSelector(
 
 /**
  * Get cart item product's price discounted recharge subscriptions
- * @param {Object} state Redux state
- * @param {Object} props Component props
  * @return {Object}
  */
 export const getCartLineItemPriceDiscountedBySubscriptions = createSelector(
@@ -348,12 +317,14 @@ export const getCartLineItemPriceDiscountedBySubscriptions = createSelector(
         getDiscountToPrice(unitPrice, discountType, discountAmount) * quantity
       ))
       .reduce((total, subscriptionDiscount) => total + subscriptionDiscount, 0);
+
     const { default: originalDefaultPrice, special: originalSpecialPrice } = price;
     const priceToBeCharged = originalSpecialPrice || originalDefaultPrice;
 
     if (!(totalSubscriptionDiscount && totalSubscriptionDiscount < priceToBeCharged)) {
       return price;
     }
+
     const subscriptionDiscountedPrice = priceToBeCharged - totalSubscriptionDiscount;
 
     return {

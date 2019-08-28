@@ -29,35 +29,11 @@
         "output": [
           {
             "id": "1010",
-            "key": "isOrderable"
-          },
-          {
-            "id": "1020",
-            "key": "isTaxIncluded"
-          },
-          {
-            "id": "1030",
-            "key": "currency"
-          },
-          {
-            "id": "1040",
-            "key": "messages"
-          },
-          {
-            "id": "1050",
-            "key": "text"
-          },
-          {
-            "id": "1060",
             "key": "cartItems"
           },
           {
-            "id": "1070",
+            "id": "1020",
             "key": "totals"
-          },
-          {
-            "id": "1080",
-            "key": "flags"
           }
         ]
       },
@@ -68,35 +44,11 @@
         "input": [
           {
             "id": "1010",
-            "key": "isOrderable"
-          },
-          {
-            "id": "1020",
-            "key": "isTaxIncluded"
-          },
-          {
-            "id": "1030",
-            "key": "currency"
-          },
-          {
-            "id": "1040",
-            "key": "messages"
-          },
-          {
-            "id": "1050",
-            "key": "text"
-          },
-          {
-            "id": "1060",
             "key": "cartItems"
           },
           {
-            "id": "1070",
+            "id": "1020",
             "key": "totals"
-          },
-          {
-            "id": "1080",
-            "key": "flags"
           }
         ],
         "output": [

@@ -56,7 +56,7 @@ FavoritesAddToCart.prototypes = {
 };
 
 FavoritesAddToCart.defaultProps = {
-  goToProductPage: () => {},
+  goToProductPage: () => { },
   isSubscriptionOnly: false,
   showAlert: Promise.resolve(false),
 };

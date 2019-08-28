@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { showModal, historyPush, bin2hex } from '@shopgate/engage/core';
 import { ITEM_PATH } from '@shopgate/engage/product';
-import { getIsReChargeSubscriptionOnly } from '../../selectors';
+import { getIsRechargeSubscriptionOnly } from '../../selectors';
 
 /**
  * @param {Object} state state
@@ -9,7 +9,7 @@ import { getIsReChargeSubscriptionOnly } from '../../selectors';
  * @returns {Object}
  */
 const mapStateToProps = (state, props) => ({
-  isSubscriptionOnly: getIsReChargeSubscriptionOnly(state, props),
+  isSubscriptionOnly: getIsRechargeSubscriptionOnly(state, props),
 });
 
 /**

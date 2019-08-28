@@ -24,7 +24,7 @@ const SheetItem = ({
   };
 
   /**
-   *
+   * Passes value to be used to parent component
    * @param {Object} event The event object
    */
   const handleItemClick = (event) => {
