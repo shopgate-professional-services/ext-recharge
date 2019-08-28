@@ -23,7 +23,6 @@ apiToken
   "apiToken": "123456abcdef"
 }
 ```
-```
 
 Recharge details configurations.
 ```json
