@@ -1,5 +1,5 @@
 import { productWillEnter$, getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
-import { cartReceived$ } from '@shopgate/engage/cart';
+import { cartReceived$, fetchCart } from '@shopgate/engage/cart';
 import { hex2bin, PipelineRequest, logger } from '@shopgate/engage/core';
 import { navigate$ } from '@shopgate/pwa-common/streams/router';
 import getCart from '@shopgate/pwa-tracking/selectors/cart';
@@ -77,19 +77,36 @@ export default (subscribe) => {
     track('initiatedCheckout', { cart: getCart(state) }, state);
   });
 
-  subscribe(checkoutSucceeded$, ({ dispatch }) => {
-    // Create a new cart
-    new PipelineRequest('shopgate.cart.fetchShopifyCheckout')
-      .setInput({ createNew: true })
-      .dispatch()
-      .then(() => {
-        // tODO: ticket request handling
-        // tODO: ticket fetchCart return request
+  let cartNeedsSync = false;
 
-        dispatch(fetchRechargeCart());
-      })
-      .catch((error) => {
-        logger.error(error);
-      });
+  subscribe(checkoutSucceeded$, () => {
+    cartNeedsSync = true;
+  });
+
+  subscribe(cartReceived$, ({ action, dispatch }) => {
+    const { cartItems = {} } = action.cart || {};
+
+    if (!cartItems.length) {
+      // We don't have to sync an empty cart
+      cartNeedsSync = false;
+      return;
+    }
+
+    if (cartNeedsSync) {
+      cartNeedsSync = false;
+
+      new PipelineRequest('shopgate.cart.fetchShopifyCheckout')
+        .setInput({ createNew: true })
+        .dispatch()
+        .then(() => {
+          // tODO: ticket request handling
+          // tODO: ticket fetchCart return request
+          dispatch(fetchRechargeCart());
+          dispatch(fetchCart());
+        })
+        .catch((error) => {
+          logger.error(error);
+        });
+    }
   });
 };
