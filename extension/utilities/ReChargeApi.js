@@ -8,6 +8,9 @@ class ReChargeApi {
     this.request = context.tracedRequest('ShopgateProjectReChargeAPI')
     this.logger = context.log
     this.token = context.config.apiToken
+    this.storage = context.storage
+    this.userCacheKey = 'recharge_api_user_cache'
+    this.userCacheTTL = 3600000
   }
 
   /**
@@ -128,14 +131,32 @@ class ReChargeApi {
     })
   }
 
+  /**
+   * Get ReCharge user information
+   * @param {string} id Shopify/Shopgate user id
+   * @return {Promise<any>}
+   */
   async getCustomerByShopifyUserId (id) {
-    return this.call({
+    const userCache = await this.storage.user.get(this.userCacheKey)
+    const { userData, timestamp = 0 } = userCache || {}
+    if (userData && timestamp + this.userCacheTTL > Date.now()) {
+      return userData
+    }
+    const newUserData = await this.call({
       path: 'customers',
       method: 'GET',
       qs: {
         shopify_customer_id: id
       }
     })
+    await this.storage.user.set(
+      this.userCacheKey,
+      {
+        userData: newUserData,
+        timestamp: Date.now()
+      }
+    )
+    return newUserData
   }
 }
 
