@@ -39,6 +39,18 @@
       },
       {
         "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/getRechargeCustomer.js",
+        "type": "extension",
+        "input": [],
+        "output": [
+          {
+            "id": "1030",
+            "key": "customer"
+          }
+        ]
+      },
+      {
+        "id": "@shopgate-project/recharge",
         "path": "@shopgate-project/recharge/lib/buildRechargeCart.js",
         "type": "extension",
         "input": [
@@ -63,6 +75,11 @@
         "path": "@shopgate-project/recharge/lib/createRechargeCart.js",
         "type": "extension",
         "input": [
+          {
+            "id": "1030",
+            "key": "customer",
+            "optional": true
+          },
           {
             "id": "2000",
             "key": "cart"
