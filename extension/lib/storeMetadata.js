@@ -22,6 +22,7 @@ module.exports = async (context, input) => {
         }
       }
       mirrorProduct.selections = [selection]
+
       return mirrorProduct
     })
   // if there is no stored mirror cart there is no reason to merge
@@ -68,16 +69,16 @@ const setMirrorCart = async (context, rechargeMirrorCart) => {
  * Merge overlapping products
  * @param {Object[]} newOverlappingProducts Overlapping products from new lines
  * @param {Object[]} storedMirrorCart products from storage
- * @return {{Object[]}}
+ * @return {Object[]}
  */
 const mergeMirrorProducts = (newOverlappingProducts, storedMirrorCart) => (
   newOverlappingProducts
     .map(({
       productId: newProductId,
       baseProductId,
-      selections: newSelections
+      selections: newSelections = []
     }) => {
-      const { selections: storedSelections } = storedMirrorCart.find(({ productId }) => (
+      const { selections: storedSelections = [] } = storedMirrorCart.find(({ productId }) => (
         productId === newProductId
       ))
       const overlappingSelection = newSelections
