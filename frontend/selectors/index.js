@@ -15,7 +15,6 @@ import {
   REDUX_NAMESPACE_RECHARGE_CUSTOMER_HASH,
   REQUIRED_SUBSCRIPTION_TEXT,
   REDUX_NAMESPACE_RECHARGE_INFO,
-  NO_SUBSCRIPTION_FREQUENCY_VALUE,
 } from '../constants';
 
 /**
@@ -274,7 +273,7 @@ export const getCartItemProductUnitPrice = createSelector(
 );
 
 /**
- * Get cart item product's recharge subscriptions
+ * Get cart item product's recharge information
  * @return {Object[]}
  */
 export const getCartItemRechargeInfo = createSelector(
@@ -292,11 +291,27 @@ export const getCartItemRechargeInfo = createSelector(
 );
 
 /**
+ * Get cart item product's recharge information with subscription information
+ * @return {Object[]}
+ */
+export const getCartItemRechargeInfoWithSubscription = createSelector(
+  getCartItemRechargeInfo,
+  rechargeInfo => rechargeInfo.filter(subscription => (
+    typeof subscription === 'object'
+    && subscription.frequencyValue
+    && typeof subscription.subscriptionInfo === 'object'
+    && subscription.subscriptionInfo.discountAmount
+    && subscription.subscriptionInfo.discountType
+    && subscription.subscriptionInfo.quantity
+  ))
+);
+
+/**
  * Get cart item product's price discounted recharge subscriptions
  * @return {Object}
  */
 export const getCartLineItemPriceDiscountedBySubscriptions = createSelector(
-  getCartItemRechargeInfo,
+  getCartItemRechargeInfoWithSubscription,
   getCartItemProductPrice,
   getCartItemProductUnitPrice,
   (subscriptions, price, unitPrice) => {
@@ -305,19 +320,10 @@ export const getCartLineItemPriceDiscountedBySubscriptions = createSelector(
     }
 
     const totalSubscriptionDiscount = subscriptions
-      .filter(subscription => (
-        typeof subscription === 'object'
-        && subscription.frequencyValue !== NO_SUBSCRIPTION_FREQUENCY_VALUE
-        && typeof subscription.subscriptionInfo === 'object'
-        && subscription.subscriptionInfo.discountAmount
-        && subscription.subscriptionInfo.discountType
-        && subscription.subscriptionInfo.quantity
-      ))
       .map(({ subscriptionInfo: { discountAmount, discountType, quantity } }) => (
         getDiscountToPrice(unitPrice, discountType, discountAmount) * quantity
       ))
       .reduce((total, subscriptionDiscount) => total + subscriptionDiscount, 0);
-
     const { default: originalDefaultPrice, special: originalSpecialPrice } = price;
     const priceToBeCharged = originalSpecialPrice || originalDefaultPrice;
 
