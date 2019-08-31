@@ -30,19 +30,15 @@ export default (subscribe) => {
     dispatch(fetchSubscriptionProducts([baseProductId]));
   });
 
-  // Adds Shopify variant_id on product entry
-  subscribe(receivedVisibleProduct$, ({ action, dispatch, getState }) => {
-    const productId = action.productData.id;
-    const customData = JSON.parse(action.productData.customData);
-
-    if (customData.variantId) {
-      const shopifyVariantId = customData.variant_id;
-      dispatch(addShopifyVariantId(productId, shopifyVariantId));
-      return;
-    }
-
-    const shopifyVariantId = getVariantId(getState(), { productId });
-    dispatch(addShopifyVariantId(productId, shopifyVariantId));
+  // Adds Shopify variant_id and baseProductId to product meta data on product entry so it is
+  // available to build the recharge mirror cart on add to cart
+  subscribe(receivedVisibleProduct$, ({ action, dispatch }) => {
+    const { productData } = action;
+    const { customData: customDataJson, id: productId, baseProductId } = productData || {}
+    const customData = JSON.parse(customDataJson);
+    const shopifyVariantId = customData.variant_id ? `${customData.variant_id}` : productId;
+    const resolvedBaseProductId = baseProductId || productId;
+    dispatch(addShopifyVariantId(productId, shopifyVariantId, resolvedBaseProductId));
   });
 
   // Check if we can fetch recharge cart with received cart items.

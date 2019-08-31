@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { getBaseProductId } from '@shopgate/engage/product';
 import { updateRechargeInfoReducer } from '../../actions';
 import { getRechargeSubscriptionItems, getVariantId } from '../../selectors';
 
@@ -10,7 +11,7 @@ import { getRechargeSubscriptionItems, getVariantId } from '../../selectors';
 const mapStateToProps = (state, props) => ({
   shopifyVariantId: getVariantId(state, props),
   subscriptionInfo: getRechargeSubscriptionItems(state, props),
-
+  baseProductId: getBaseProductId(state, props),
 });
 
 /**

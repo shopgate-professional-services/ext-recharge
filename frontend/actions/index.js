@@ -2,9 +2,11 @@ import { PipelineRequest, LoadingProvider, logger } from '@shopgate/engage/core'
 import updateMetaData from '@shopgate/pwa-common-commerce/product/actions/updateMetadata';
 import { CART_PATH } from '@shopgate/engage/cart';
 import { ERROR_HANDLE_SUPPRESS } from '@shopgate/pwa-core/constants/ErrorHandleTypes';
+import { getBaseProductId } from '@shopgate/engage/product';
 import {
   getReChargeFullSubscriptionItem,
   getRechargeCartState,
+  getShopifyVariant,
 } from '../selectors';
 import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
 import {
@@ -99,11 +101,13 @@ export const fetchRechargeCart = () => (dispatch, getState) => {
 /**
  * @param {string} productId productId
  * @param {string} shopifyVariantId variantId
+ * @param {string} baseProductId Base product id
  * @returns {Function}
  */
-export const addShopifyVariantId = (productId, shopifyVariantId) => (dispatch) => {
+export const addShopifyVariantId = (productId, shopifyVariantId, baseProductId) => (dispatch) => {
   const metaData = {
     shopifyVariantId,
+    baseProductId,
   };
 
   dispatch(updateMetaData(productId, metaData));
