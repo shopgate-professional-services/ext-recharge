@@ -31,6 +31,7 @@ const RechargeOption = ({
   if (!shopifyVariantId) {
     return null;
   }
+
   const [showSheet, setShowSheet] = useState(false);
   const [selected, setSelected] = useState(null);
   const [highlight, setHighlight] = useState(false);
@@ -79,17 +80,17 @@ const RechargeOption = ({
    * @param {string} frequencyValue selected frequencyValue
    */
   const handleSelection = (frequencyValue) => {
-    setSelected(frequencyValue);
 
     // Value attached to pass no selecetd subscription value should
     // not update metaData with null subscriptionInfo
     if (frequencyValue === NO_SUBSCRIPTION_FREQUENCY_VALUE) {
       setSelected(null);
-      const subscriptionInfo = null;
-      updateRechargeInfo(subscriptionInfo);
+      updateRechargeInfo(null);
       handleClose();
       return;
     }
+
+    setSelected(frequencyValue);
 
     // Frequency value is the selected value from sheet
     const subscriptionInfo = {

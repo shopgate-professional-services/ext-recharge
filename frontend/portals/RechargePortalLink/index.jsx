@@ -14,6 +14,7 @@ const RechargePortalLink = ({ customerHash, Item, openPortal }) => {
   if (!customerHash) {
     return null;
   }
+
   return (
     <Item
       label="recharge.customer_portal.manage_subscriptions"

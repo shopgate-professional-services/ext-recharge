@@ -23,6 +23,7 @@ const PdpRechargeProducts = ({
   const {
     id, discount_amount, discount_type, subscription_defaults,
   } = subscriptionInfo;
+
   const {
     charge_interval_frequency,
     cutoff_day_of_month,
@@ -35,6 +36,7 @@ const PdpRechargeProducts = ({
     order_interval_unit,
     storefront_purchase_options,
   } = subscription_defaults;
+
   return (
     <Fragment>
       <PdpSubscriptionHeader

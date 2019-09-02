@@ -58,6 +58,7 @@ const CartItemSubscriptionInfo = ({
   if (!Array.isArray(subscriptions)) {
     return null;
   }
+  
   const subscriptionDistillates = distillSubscriptions(subscriptions, itemUnitPrice);
 
   if (!subscriptionDistillates.length) {
@@ -110,6 +111,6 @@ CartItemSubscriptionInfo.defaultProps = {
   itemUnitPrice: 0,
   subscriptions: [],
   totalQuantity: 0,
-}
+};
 
 export default connect(CartItemSubscriptionInfo);

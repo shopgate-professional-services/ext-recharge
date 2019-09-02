@@ -1,13 +1,9 @@
 <script>
   var isShopgateApp = navigator.userAgent.indexOf('libshopgate') !== -1;
 
-  console.warn(isShopgateApp);
-
   if (isShopgateApp) {
     var ready = function(){
-      console.warn('ready');
       document.querySelector('#checkout .btn').addEventListener('click', function(e) {
-        console.warn('click');
         e.preventDefault();
 
         window.SGAppConnector.sendAppCommand(

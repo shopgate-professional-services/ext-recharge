@@ -49,12 +49,12 @@ export const getRechargeSubscriptionItems = createSelector(
 );
 
 /**
- * Get is fetching status for recharge subscription information
+ * Get is fetching status of a product for recharge subscription information
  * @returns {bool}
  */
 export const isRechargeSubscriptionItemsFetching = createSelector(
-  getRechargeSubscriptionItemsState,
-  subscriptionItemsState => subscriptionItemsState.isFetching
+  getReChargeFullSubscriptionItem,
+  fullSubscriptionItem => fullSubscriptionItem && fullSubscriptionItem.isFetching
 );
 
 /**
@@ -125,6 +125,7 @@ export const getRechargeSubtotalPrice = createSelector(
     if (!subtotal_price) {
       return null;
     }
+
     return parseFloat(subtotal_price);
   }
 );
@@ -139,6 +140,7 @@ export const getRechargeTotalPrice = createSelector(
     if (!total_price) {
       return null;
     }
+
     return parseFloat(total_price);
   }
 );
@@ -286,6 +288,7 @@ export const getCartItemRechargeInfo = createSelector(
     if (!rechargeInfoContainer) {
       return [];
     }
+
     const { recharge } = rechargeInfoContainer;
     return Array.isArray(recharge) ? recharge : [];
   }

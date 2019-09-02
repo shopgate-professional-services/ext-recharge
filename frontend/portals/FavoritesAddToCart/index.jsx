@@ -45,6 +45,7 @@ const FavoritesAddToCart = ({
         className={styles.addToCartButton}
       />);
   }
+
   return children;
 };
 

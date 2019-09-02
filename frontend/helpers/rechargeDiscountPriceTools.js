@@ -35,6 +35,7 @@ export const getDiscountedPrice = (price, discountType, discountAmount) => {
   if (!discountAmount || !price || price < 0) {
     return price || 0;
   }
+
   const discountToPrice = getDiscountToPrice(price, discountType, discountAmount);
 
   return price - discountToPrice;

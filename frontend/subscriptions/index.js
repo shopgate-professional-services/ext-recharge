@@ -1,6 +1,6 @@
-import { productWillEnter$, getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
+import { getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
 import { cartReceived$, fetchCart } from '@shopgate/engage/cart';
-import { hex2bin, PipelineRequest, logger } from '@shopgate/engage/core';
+import { PipelineRequest, logger } from '@shopgate/engage/core';
 import { navigate$ } from '@shopgate/pwa-common/streams/router';
 import getCart from '@shopgate/pwa-tracking/selectors/cart';
 import { checkoutSucceeded$ } from '@shopgate/pwa-common-commerce/checkout';
@@ -18,30 +18,28 @@ import { removeRechargeCustomerHash } from '../action-creators';
 import { RECHARGE_CHECKOUT_PATH } from '../constants';
 
 export default (subscribe) => {
-  // Fetch recharge subscription options when product info is ready
-  subscribe(productWillEnter$, ({ action, dispatch, getState }) => {
-    const { productId } = action.route.params;
-    const { productId: variantId } = action.route.state;
+  subscribe(receivedVisibleProduct$, ({ action, dispatch, getState }) => {
+    const state = getState();
 
-    const baseProductId = getBaseProductId(getState(), {
-      variantId, productId: hex2bin(productId),
+    const baseProductId = getBaseProductId(state, {
+      variantId: action.productData.id,
+      productId: action.productData.id,
     });
 
+    // Fetch recharge subscription options
     dispatch(fetchSubscriptionProducts([baseProductId]));
-  });
 
-  // Adds Shopify variant_id on product entry
-  subscribe(receivedVisibleProduct$, ({ action, dispatch, getState }) => {
     const productId = action.productData.id;
-    const customData = JSON.parse(action.productData.customData);
+    const customData = JSON.parse(action.productData.customData); // this should happen already in the backend
 
+    // Adds Shopify variant_id on product entry
     if (customData.variantId) {
       const shopifyVariantId = customData.variant_id;
       dispatch(addShopifyVariantId(productId, shopifyVariantId));
       return;
     }
 
-    const shopifyVariantId = getVariantId(getState(), { productId });
+    const shopifyVariantId = getVariantId(state, { productId });
     dispatch(addShopifyVariantId(productId, shopifyVariantId));
   });
 
@@ -64,6 +62,7 @@ export default (subscribe) => {
   subscribe(receiveFavorites$, ({ action, dispatch }) => {
     const { products } = action || {};
     const productIds = products.map(product => product.baseProductId || product.id);
+
     dispatch(fetchSubscriptionProducts(productIds));
   });
 
@@ -99,8 +98,6 @@ export default (subscribe) => {
         .setInput({ createNew: true })
         .dispatch()
         .then(() => {
-          // tODO: ticket request handling
-          // tODO: ticket fetchCart return request
           dispatch(fetchRechargeCart());
           dispatch(fetchCart());
         })

@@ -7,9 +7,7 @@ import { UPDATE_RECHARGE_INFO } from '../constants';
  * @returns {Object}
  */
 const rechargeInfoReducer = (
-  state = {
-    isFetching: false,
-  },
+  state = {},
   action
 ) => {
   switch (action.type) {

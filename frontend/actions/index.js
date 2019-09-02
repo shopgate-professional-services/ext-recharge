@@ -30,6 +30,7 @@ export const updateRechargeInfoReducer = (productId, rechargeInfo) =>
     const metaData = {
       rechargeInfo,
     };
+
     dispatch(updateMetaData(productId, metaData));
     dispatch(updateRechargeInfo(productId, rechargeInfo));
   };
@@ -48,8 +49,10 @@ export const fetchSubscriptionProducts = (productIds = []) => (dispatch, getStat
     if (!storedSubscriptionProduct) {
       return true;
     }
+
     return !storedSubscriptionProduct.isFetching && storedSubscriptionProduct.expires <= Date.now();
   });
+
   // return if there are no products to fetch from ReCharge API
   if (!productIdsToFetch.length) {
     return;
@@ -58,14 +61,14 @@ export const fetchSubscriptionProducts = (productIds = []) => (dispatch, getStat
   dispatch(requestRechargeSubscriptionItems(productIdsToFetch));
 
   new PipelineRequest(GET_SUBSCRIPTION_PRODUCTS)
-    .setInput({ productIds })
+    .setInput({ productIdsToFetch })
     .dispatch()
     .then(({ products }) => {
       dispatch(receiveRechargeSubscriptionItems(productIdsToFetch, products));
     })
     .catch((error) => {
       logger.error(error);
-      dispatch(errorRechargeSubscriptionItems);
+      dispatch(errorRechargeSubscriptionItems(productIdsToFetch));
     });
 };
 

@@ -4,7 +4,7 @@ import { getRechargeSubscriptionItems, getVariantId } from '../../selectors';
 
 /**
  * @param {Object} state state
- * @param {Objec} props props
+ * @param {Object} props props
  * @returns {Object}
  */
 const mapStateToProps = (state, props) => ({

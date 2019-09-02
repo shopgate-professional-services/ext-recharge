@@ -15,6 +15,7 @@ export default (requestedProductIds, receivedProducts) => {
       expires: Date.now() + PRODUCT_LIFETIME,
     },
   }), {});
+
   const noSubscriptionProducts = requestedProductIds
     .filter(productId => !returnedProductsObj.hasOwnProperty(productId))
     .reduce((collectedProducts, productId) => ({

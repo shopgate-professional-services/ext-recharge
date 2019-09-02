@@ -36,10 +36,12 @@ export const receiveRechargeSubscriptionItems = (productIds, products) => ({
 
 /**
  * Error recharge subscription items
+ * @param {string[]} productIds product ids used for fetching
  * @returns {Object}
  */
-export const errorRechargeSubscriptionItems = () => ({
+export const errorRechargeSubscriptionItems = productIds => ({
   type: ERROR_RECHARGE_SUBSCRIPTION_ITEMS,
+  productIds,
 });
 
 /**
