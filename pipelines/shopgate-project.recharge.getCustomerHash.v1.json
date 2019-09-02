@@ -14,8 +14,25 @@
       {
         "type": "extension",
         "id": "@shopgate-project/recharge",
-        "path": "@shopgate-project/recharge/lib/getCustomerHash.js",
+        "path": "@shopgate-project/recharge/lib/getRechargeCustomer.js",
         "input": [],
+        "output": [
+          {
+            "key": "customer",
+            "id": "100"
+          }
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/getCustomerHash.js",
+        "input": [
+          {
+            "key": "customer",
+            "id": "100"
+          }
+        ],
         "output": [
           {
             "key": "customerHash",

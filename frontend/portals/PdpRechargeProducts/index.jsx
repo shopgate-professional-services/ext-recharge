@@ -14,6 +14,7 @@ const PdpRechargeProducts = ({
   shopifyVariantId,
   subscriptionInfo,
   updateRechargeInfo,
+  baseProductId,
 }) => {
   // if subscriptionInfo is not an array with at least one element return null
   if (!subscriptionInfo) {
@@ -60,6 +61,7 @@ const PdpRechargeProducts = ({
         purchaseOption={storefront_purchase_options}
         updateRechargeInfo={updateRechargeInfo}
         shopifyVariantId={shopifyVariantId}
+        baseProductId={baseProductId}
       />
       <SubscriptionDetailsBadge />
     </Fragment>
@@ -67,12 +69,14 @@ const PdpRechargeProducts = ({
 };
 
 PdpRechargeProducts.propTypes = {
+  baseProductId: PropTypes.string,
   shopifyVariantId: PropTypes.string,
   subscriptionInfo: PropTypes.shape(),
   updateRechargeInfo: PropTypes.func,
 };
 
 PdpRechargeProducts.defaultProps = {
+  baseProductId: null,
   shopifyVariantId: null,
   subscriptionInfo: null,
   updateRechargeInfo: () => { },

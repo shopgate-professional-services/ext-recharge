@@ -1,12 +1,14 @@
 const RechargeApi = require('../utilities/ReChargeApi')
+const isEmptyObject = require('../helpers/isObjectEmpty')
 
-module.exports = async (context, { cart }) => {
+module.exports = async (context, { cart, customer }) => {
   if (!cart) {
     return { rechargeCart: null }
   }
 
   const checkoutParams = {
-    lineItems: createLineItems(cart.items)
+    lineItems: createLineItems(cart.items),
+    ...refineCustomerData(customer)
   }
   const api = new RechargeApi(context)
   const response = await api.createOrderToken(checkoutParams)
@@ -15,38 +17,24 @@ module.exports = async (context, { cart }) => {
 }
 
 const createLineItems = (items) => {
-  let orderIntervalUnit = null
+  const orderIntervalTranslation = {
+    Days: 'day',
+    Weeks: 'week',
+    Months: 'month'
+  }
+
   return items.map((item) => {
-    const { subscriptionInfo } = item || null
-    const { shopifyVariantId } = item || null
-    if (subscriptionInfo) {
-      switch (subscriptionInfo.intervalUnit) {
-        case 'Days':
-          orderIntervalUnit = 'day'
-          break
-        case 'Weeks':
-          orderIntervalUnit = 'week'
-          break
-        case 'Months':
-          orderIntervalUnit = 'month'
-          break
-        default:
-          orderIntervalUnit = null
-      }
-      if (subscriptionInfo.orderDayOfMonth === 0) {
-        subscriptionInfo.orderDayOfMonth = null
-      }
-    }
+    const { subscriptionInfo, shopifyVariantId } = item || {}
     if (subscriptionInfo) {
       return ({
         charge_interval_frequency: subscriptionInfo.chargeIntervalFrequency,
         cutoff_day_month: subscriptionInfo.cutoffDayOfMonth,
         cutoff_day_week: subscriptionInfo.cutoffDayOfWeek,
         expire_after_specific_number_of_charges: subscriptionInfo.expireAfterSpecificNumberOfCharges,
-        order_day_of_month: subscriptionInfo.orderDayOfMonth,
+        order_day_of_month: subscriptionInfo.orderDayOfMonth === 0 ? null : subscriptionInfo.orderDayOfMonth,
         order_day_of_week: subscriptionInfo.orderDayOfWeek,
         order_interval_frequency: subscriptionInfo.orderIntervalFrequency,
-        order_interval_unit: orderIntervalUnit,
+        order_interval_unit: orderIntervalTranslation[subscriptionInfo.intervalUnit] || null,
         price: item.unit_price,
         quantity: item.quantity,
         variant_id: subscriptionInfo.shopifyVariantId
@@ -58,4 +46,41 @@ const createLineItems = (items) => {
       variant_id: shopifyVariantId
     })
   })
+}
+/**
+ * Refine recharge customer into checkout customer data
+ * @param {Object} customer
+ * @return {Object}
+ */
+const refineCustomerData = (customer) => {
+  const customerData = {}
+
+  if (!(customer && typeof customer === 'object')) {
+    return customerData
+  }
+
+  if (customer.email) {
+    customerData.email = customer.email
+  }
+  const billingAddressToShippingTranslation = {
+    first_name: 'first_name',
+    last_name: 'last_name',
+    billing_address1: 'address1',
+    billing_address2: 'address2',
+    billing_zip: 'zip',
+    billing_city: 'city',
+    billing_company: 'company',
+    billing_province: 'province',
+    billing_country: 'country',
+    billing_phone: 'phone'
+  }
+  const shippingAddress = {}
+  Object.keys(billingAddressToShippingTranslation).forEach((key) => {
+    shippingAddress[billingAddressToShippingTranslation[key]] = customer[key] || null
+  })
+  if (!isEmptyObject(shippingAddress)) {
+    customerData.shipping_address = shippingAddress
+  }
+
+  return customerData
 }

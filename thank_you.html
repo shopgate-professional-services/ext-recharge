@@ -1,21 +1,24 @@
 <script>
   var isShopgateApp = navigator.userAgent.indexOf('libshopgate') !== -1;
+  var shopgateOverrideEvent = function (e) {
+      e.preventDefault();
+      window.SGAppConnector.sendAppCommand(
+          {
+              c: 'broadcastEvent',
+              p: {
+                  event: 'closeInAppBrowser'
+              }
+          }
+      );
+  };
 
   if (isShopgateApp) {
     var ready = function(){
-      document.querySelector('#checkout .btn').addEventListener('click', function(e) {
-        e.preventDefault();
-
-        window.SGAppConnector.sendAppCommand(
-          {
-            c: 'broadcastEvent',
-            p: {
-              event: 'closeInAppBrowser'
-            }
-          }
-        );
-
-      }, false);
+      var targetElements = document.querySelectorAll('#checkout .btn');
+      targetElements.forEach(function(element){
+          element.addEventListener('click', shopgateOverrideEvent, false);
+          element.addEventListener('touchstart', shopgateOverrideEvent, false);
+      });
     };
 
     if (

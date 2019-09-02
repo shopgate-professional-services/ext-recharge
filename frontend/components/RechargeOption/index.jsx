@@ -26,6 +26,7 @@ const RechargeOption = ({
   orderDayOfWeek,
   purchaseOption,
   shopifyVariantId,
+  baseProductId,
   updateRechargeInfo,
 }) => {
   if (!shopifyVariantId) {
@@ -95,6 +96,7 @@ const RechargeOption = ({
     // Frequency value is the selected value from sheet
     const subscriptionInfo = {
       frequencyValue,
+      baseProductId,
       subscriptionInfo: {
         chargeIntervalFrequency: frequencyValue,
         cutoffDayOfMonth,
@@ -197,6 +199,7 @@ const RechargeOption = ({
 };
 
 RechargeOption.propTypes = {
+  baseProductId: PropTypes.string.isRequired,
   discountAmount: PropTypes.number.isRequired,
   discountType: PropTypes.string.isRequired,
   frequencyValues: PropTypes.arrayOf(PropTypes.string).isRequired,

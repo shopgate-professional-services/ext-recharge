@@ -20,27 +20,24 @@ import { RECHARGE_CHECKOUT_PATH } from '../constants';
 export default (subscribe) => {
   subscribe(receivedVisibleProduct$, ({ action, dispatch, getState }) => {
     const state = getState();
+    const { productData } = action;
 
     const baseProductId = getBaseProductId(state, {
-      variantId: action.productData.id,
-      productId: action.productData.id,
+      variantId: productData.id,
+      productId: productData.id,
     });
 
     // Fetch recharge subscription options
     dispatch(fetchSubscriptionProducts([baseProductId]));
 
-    const productId = action.productData.id;
-    const customData = JSON.parse(action.productData.customData); // this should happen already in the backend
+    // Adds Shopify variant_id and baseProductId to product meta data on product entry so it is
+    // available to build the recharge mirror cart on add to cart
+    const productId = productData.id;
+    const customData = JSON.parse(productData.customData); // this should happen already in the backend
+    const shopifyVariantId = customData.variant_id ? `${customData.variant_id}` : productId;
+    const resolvedBaseProductId = baseProductId || productId;
 
-    // Adds Shopify variant_id on product entry
-    if (customData.variantId) {
-      const shopifyVariantId = customData.variant_id;
-      dispatch(addShopifyVariantId(productId, shopifyVariantId));
-      return;
-    }
-
-    const shopifyVariantId = getVariantId(state, { productId });
-    dispatch(addShopifyVariantId(productId, shopifyVariantId));
+    dispatch(addShopifyVariantId(productId, shopifyVariantId, resolvedBaseProductId));
   });
 
   // Check if we can fetch recharge cart with received cart items.
