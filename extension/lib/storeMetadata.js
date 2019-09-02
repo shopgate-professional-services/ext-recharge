@@ -14,6 +14,7 @@ module.exports = async (context, input) => {
       const { shopifyVariantId, baseProductId, rechargeInfo } = metadata
       const mirrorProduct = { productId, baseProductId }
       const selection = { shopifyVariantId, quantity }
+
       if (rechargeInfo) {
         selection.frequencyValue = rechargeInfo.frequencyValue
         selection.subscriptionInfo = {
@@ -21,10 +22,12 @@ module.exports = async (context, input) => {
           quantity
         }
       }
+
       mirrorProduct.selections = [selection]
 
       return mirrorProduct
     })
+
   // if there is no stored mirror cart there is no reason to merge
   if (!storedMirrorCart.length) {
     await setMirrorCart(context, newRechargeCart)
@@ -35,6 +38,7 @@ module.exports = async (context, input) => {
     .filter(({ productId: newProductId }) => (
       storedMirrorCart.some(({ productId }) => newProductId === productId)
     ))
+
   const overlappingMirrorProductIds = overlappingMirrorProducts.map(({ productId }) => productId)
   const mergedMirrorCart = [
     ...storedMirrorCart.filter(({ productId }) => !overlappingMirrorProductIds.includes(productId)),
@@ -81,16 +85,20 @@ const mergeMirrorProducts = (newOverlappingProducts, storedMirrorCart) => (
       const { selections: storedSelections = [] } = storedMirrorCart.find(({ productId }) => (
         productId === newProductId
       ))
+
       const overlappingSelection = newSelections
         .filter(({ frequencyValue: newFrequencyValue = EMPTY_VAVLUE }) => (
           storedSelections.some(({ frequencyValue = EMPTY_VAVLUE }) => newFrequencyValue === frequencyValue))
         )
+
       const overlappingFrequencies = overlappingSelection
         .map(({ frequencyValue = EMPTY_VAVLUE }) => frequencyValue)
+
       const mergedSelections = [
         ...newSelections.filter(({ frequencyValue = EMPTY_VAVLUE }) => !overlappingFrequencies.includes(frequencyValue)),
         ...storedSelections.filter(({ frequencyValue = EMPTY_VAVLUE }) => !overlappingFrequencies.includes(frequencyValue))
       ]
+
       const mergedOverlappingSelections = overlappingSelection
         .map((selection) => {
           const {
@@ -113,6 +121,7 @@ const mergeMirrorProducts = (newOverlappingProducts, storedMirrorCart) => (
           return mergedSelection
         })
       mergedSelections.push(...mergedOverlappingSelections)
+
       return {
         productId: newProductId,
         baseProductId,

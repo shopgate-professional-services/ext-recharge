@@ -22,9 +22,11 @@ module.exports = async (context, { cartItems }) => {
         if (!(product && typeof product === 'object' && product.id)) {
           return
         }
+
         const { selections } = rechargeSubscriptionInfo.find(({ productId, baseProductId }) => (
           product.id === productId || product.id === baseProductId
         )) || {}
+
         if (selections) {
           product.additionalInfo.push({recharge: selections})
         }
@@ -48,6 +50,7 @@ const editOutOldSubscriptionInfo = async (rechargeSubscriptionInfo, cartItems, c
   const cartItemProductIds = cartItems
     .filter(({ product }) => !!product && typeof product === 'object')
     .map(({ product }) => product.id)
+
   const newData = rechargeSubscriptionInfo.filter(({ productId, baseProductId }) => (
     cartItemProductIds.includes(productId) || cartItemProductIds.includes(baseProductId)
   ))
