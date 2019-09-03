@@ -25,7 +25,7 @@ const createLineItems = (items) => {
 
   return items.map((item) => {
     const { subscriptionInfo, shopifyVariantId } = item || {}
-    
+
     if (subscriptionInfo) {
       return ({
         charge_interval_frequency: subscriptionInfo.chargeIntervalFrequency,
@@ -41,7 +41,7 @@ const createLineItems = (items) => {
         variant_id: subscriptionInfo.shopifyVariantId
       })
     }
-    
+
     return ({
       quantity: item.quantity,
       price: item.unit_price,
@@ -64,7 +64,7 @@ const refineCustomerData = (customer) => {
   if (customer.email) {
     customerData.email = customer.email
   }
-  
+
   const billingAddressToShippingTranslation = {
     first_name: 'first_name',
     last_name: 'last_name',
@@ -78,11 +78,11 @@ const refineCustomerData = (customer) => {
     billing_phone: 'phone'
   }
   const shippingAddress = {}
-  
+
   Object.keys(billingAddressToShippingTranslation).forEach((key) => {
     shippingAddress[billingAddressToShippingTranslation[key]] = customer[key] || null
   })
-  
+
   if (!isEmptyObject(shippingAddress)) {
     customerData.shipping_address = shippingAddress
   }

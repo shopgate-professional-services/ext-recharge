@@ -24,7 +24,7 @@ module.exports = async function buildRechargeCart (context, input) {
   const tax = input.totals.find(({ type }) => type === 'tax')
   const discounts = input.totals.filter(({ type }) => type === 'discount')
   const items = []
-  
+
   cartItems.forEach((cartItem) => {
     const product = cartItem.product
     const { recharge: rechargeInfo } = product.additionalInfo
@@ -51,7 +51,7 @@ module.exports = async function buildRechargeCart (context, input) {
       if (!subscriptionInfo) {
         return mappedSubscription
       }
-      
+
       // when there is subscriptionInfo the shopifyVariantId and quantity is stored only within it
       mappedSubscription.shopifyVariantId = subscriptionInfo.shopifyVariantId
       mappedSubscription.quantity = subscriptionInfo.quantity
@@ -66,7 +66,7 @@ module.exports = async function buildRechargeCart (context, input) {
 
       return mappedSubscription
     })
-    
+
     items.push(...mappedSubscriptions)
   })
 

@@ -109,7 +109,7 @@
     "apiToken": {
       "type": "admin",
       "destination": "backend",
-      "default": "66bf89e72b05c085f289fe43542659e6fd0e56888ef52fc0ff825a03",
+      "default": "",
       "params": {
         "label": "ReCharge API token",
         "type": "text",

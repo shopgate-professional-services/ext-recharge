@@ -1,12 +1,13 @@
 const { RECHARGE_MIRROR_KEY } = require('../constants')
-const EMPTY_VAVLUE = 'empty_value'
+const mergeMirrorCarts = require('../helpers/mergeMirrorCarts')
+const isLoggedIn = require('../helpers/isLoggedIn')
 
 module.exports = async (context, input) => {
   if (!input.products) {
     return {}
   }
-
-  const storedMirrorCart = await getMirrorCart(context)
+  const storage = isLoggedIn(context) ? context.storage.user : context.storage.device
+  const storedMirrorCart = await getMirrorCart(storage, context.log)
 
   const newRechargeCart = input.products
     .filter(({metadata, productId}) => metadata && productId)
@@ -30,102 +31,41 @@ module.exports = async (context, input) => {
 
   // if there is no stored mirror cart there is no reason to merge
   if (!storedMirrorCart.length) {
-    await setMirrorCart(context, newRechargeCart)
+    await setMirrorCart(storage, context.log, newRechargeCart)
     return {}
   }
+  const mergedMirrorCart = mergeMirrorCarts(newRechargeCart, storedMirrorCart)
 
-  const overlappingMirrorProducts = newRechargeCart
-    .filter(({ productId: newProductId }) => (
-      storedMirrorCart.some(({ productId }) => newProductId === productId)
-    ))
-
-  const overlappingMirrorProductIds = overlappingMirrorProducts.map(({ productId }) => productId)
-  const mergedMirrorCart = [
-    ...storedMirrorCart.filter(({ productId }) => !overlappingMirrorProductIds.includes(productId)),
-    ...newRechargeCart.filter(({ productId }) => !overlappingMirrorProductIds.includes(productId))
-  ]
-  const mergedOverlappingMirrorProducts = mergeMirrorProducts(overlappingMirrorProducts, storedMirrorCart)
-  mergedMirrorCart.push(...mergedOverlappingMirrorProducts)
-
-  await setMirrorCart(context, mergedMirrorCart)
+  await setMirrorCart(storage, context.log, mergedMirrorCart)
   return {}
 }
 
-const getMirrorCart = async (context) => {
+/**
+ * Get the mirror cart from storage
+ * @param {Object} storage Context device or user storage
+ * @param {Object} log Context log
+ * @return {Promise<Array>}
+ */
+const getMirrorCart = async (storage, log) => {
   try {
-    const rechargeMirrorCart = await context.storage.device.get(RECHARGE_MIRROR_KEY) || []
+    const rechargeMirrorCart = await storage.get(RECHARGE_MIRROR_KEY) || []
     return rechargeMirrorCart
   } catch (error) {
-    context.log({ errorMessage: error.message }, 'could not get recharge mirrored cart data from device storage')
+    log.error({ errorMessage: error.message }, 'could not get recharge mirrored cart data from device storage')
     return []
   }
 }
 
-const setMirrorCart = async (context, rechargeMirrorCart) => {
+/**
+ * Get the mirror cart from storage
+ * @param {Object} storage Context device or user storage
+ * @param {Object} log Context log
+ * @param {Object[]} rechargeMirrorCart Mirror cart to be saved into storage
+ */
+const setMirrorCart = async (storage, log, rechargeMirrorCart) => {
   try {
-    await context.storage.device.set(RECHARGE_MIRROR_KEY, rechargeMirrorCart)
+    await storage.set(RECHARGE_MIRROR_KEY, rechargeMirrorCart)
   } catch (error) {
-    context.log.error({ errorMessage: error.message }, 'could not set recharge subscription data from device storage')
+    log.error({ errorMessage: error.message }, 'could not set recharge subscription data from device storage')
   }
 }
-
-/**
- * Merge overlapping products
- * @param {Object[]} newOverlappingProducts Overlapping products from new lines
- * @param {Object[]} storedMirrorCart products from storage
- * @return {Object[]}
- */
-const mergeMirrorProducts = (newOverlappingProducts, storedMirrorCart) => (
-  newOverlappingProducts
-    .map(({
-      productId: newProductId,
-      baseProductId,
-      selections: newSelections = []
-    }) => {
-      const { selections: storedSelections = [] } = storedMirrorCart.find(({ productId }) => (
-        productId === newProductId
-      ))
-
-      const overlappingSelection = newSelections
-        .filter(({ frequencyValue: newFrequencyValue = EMPTY_VAVLUE }) => (
-          storedSelections.some(({ frequencyValue = EMPTY_VAVLUE }) => newFrequencyValue === frequencyValue))
-        )
-
-      const overlappingFrequencies = overlappingSelection
-        .map(({ frequencyValue = EMPTY_VAVLUE }) => frequencyValue)
-
-      const mergedSelections = [
-        ...newSelections.filter(({ frequencyValue = EMPTY_VAVLUE }) => !overlappingFrequencies.includes(frequencyValue)),
-        ...storedSelections.filter(({ frequencyValue = EMPTY_VAVLUE }) => !overlappingFrequencies.includes(frequencyValue))
-      ]
-
-      const mergedOverlappingSelections = overlappingSelection
-        .map((selection) => {
-          const {
-            frequencyValue: newFrequencyValue = EMPTY_VAVLUE,
-            quantity: newQuantity,
-            subscriptionInfo: newSubscriptionInfo
-          } = selection
-          const { quantity: storedQuantity } = storedSelections
-            .find(({ frequencyValue = EMPTY_VAVLUE }) => frequencyValue === newFrequencyValue)
-          const mergedSelection = {
-            ...selection,
-            quantity: newQuantity + storedQuantity
-          }
-          if (newSubscriptionInfo) {
-            mergedSelection.subscriptionInfo = {
-              ...newSubscriptionInfo,
-              quantity: newQuantity + storedQuantity
-            }
-          }
-          return mergedSelection
-        })
-      mergedSelections.push(...mergedOverlappingSelections)
-
-      return {
-        productId: newProductId,
-        baseProductId,
-        selections: mergedSelections
-      }
-    })
-)
