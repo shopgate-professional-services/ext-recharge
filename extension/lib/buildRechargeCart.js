@@ -4,7 +4,6 @@ module.exports = async function buildRechargeCart (context, input) {
   }
 
   const cartItems = input.cartItems.filter(({ type }) => type === 'product')
-
   // Check if we need to generate a recharge cart
   const isRecharge = cartItems.some(
     ({ product }) =>
@@ -24,7 +23,7 @@ module.exports = async function buildRechargeCart (context, input) {
   const tax = input.totals.find(({ type }) => type === 'tax')
   const discounts = input.totals.filter(({ type }) => type === 'discount')
   const items = []
-  
+
   cartItems.forEach((cartItem) => {
     const product = cartItem.product
     const { recharge: rechargeInfo } = product.additionalInfo
@@ -44,14 +43,14 @@ module.exports = async function buildRechargeCart (context, input) {
         unit_price: product.price.unit,
         quantity: quantity,
         image_url: product.featuredImageUrl ? product.featuredImageUrl : undefined,
-        properties: product.properties.map(({label: key, value}) => ({key, value})),
+        properties: product.properties.map(({ label: key, value }) => ({ key, value })),
         shopifyVariantId
       }
 
       if (!subscriptionInfo) {
         return mappedSubscription
       }
-      
+
       // when there is subscriptionInfo the shopifyVariantId and quantity is stored only within it
       mappedSubscription.shopifyVariantId = subscriptionInfo.shopifyVariantId
       mappedSubscription.quantity = subscriptionInfo.quantity
@@ -66,7 +65,7 @@ module.exports = async function buildRechargeCart (context, input) {
 
       return mappedSubscription
     })
-    
+
     items.push(...mappedSubscriptions)
   })
 

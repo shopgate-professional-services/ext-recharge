@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch, props) => ({
   updateRechargeInfo: recharge =>
     dispatch(updateRechargeInfo(
       // TODO: use always the baseProdcutId here?
-      props.variantId || props.productId,
+      props.productId,
       recharge
     )),
 });

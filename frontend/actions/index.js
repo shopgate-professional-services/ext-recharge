@@ -117,12 +117,16 @@ export const addProductToCart = data => (dispatch, getState) => {
   const options = getAddToCartOptions(state, data);
   const { productId, quantity } = data;
 
-  const rechargeInfo = getSelectedSubscriptionsInfo(state, { productId, variantId: productId });
-  const shopifyVariantId = getVariantId(state, { productId });
   const baseProductId = getBaseProductId(state, {
     variantId: productId,
     productId,
   });
+
+  const rechargeInfo = getSelectedSubscriptionsInfo(state, {
+    baseProductId,
+    variantId: productId,
+  });
+  const shopifyVariantId = getVariantId(state, { productId });
 
   dispatch(addProductsToCart([{
     productId,
