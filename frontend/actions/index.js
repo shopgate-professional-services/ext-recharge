@@ -1,19 +1,18 @@
 import { PipelineRequest, LoadingProvider, logger } from '@shopgate/engage/core';
-import updateMetaData from '@shopgate/pwa-common-commerce/product/actions/updateMetadata';
+import { getAddToCartOptions } from '@shopgate/pwa-common-commerce/cart/selectors';
+import addProductsToCart from '@shopgate/pwa-common-commerce/cart/actions/addProductsToCart';
 import { CART_PATH } from '@shopgate/engage/cart';
-import { ERROR_HANDLE_SUPPRESS } from '@shopgate/pwa-core/constants/ErrorHandleTypes';
 import { getBaseProductId } from '@shopgate/engage/product';
+import { ERROR_HANDLE_SUPPRESS } from '@shopgate/pwa-core/constants/ErrorHandleTypes';
 import {
   getReChargeFullSubscriptionItem,
-  getRechargeCartState,
-  getShopifyVariant,
+  getRechargeCartState, getSelectedSubscriptionsInfo, getVariantId,
 } from '../selectors';
 import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
 import {
   requestRechargeSubscriptionItems,
   receiveRechargeSubscriptionItems,
   errorRechargeSubscriptionItems,
-  updateRechargeInfo,
   requestRechargeCart,
   receiveRechargeCart,
   errorRechargetCart,
@@ -21,21 +20,6 @@ import {
   receiveRechargeCustomerHash,
   errorRechargeCustomerHash,
 } from '../action-creators';
-
-/**
- * @param {string} productId productId
- * @param {Object} rechargeInfo recharge info
- * @returns {Function}
- */
-export const updateRechargeInfoReducer = (productId, rechargeInfo) =>
-  (dispatch) => {
-    const metaData = {
-      rechargeInfo,
-    };
-
-    dispatch(updateMetaData(productId, metaData));
-    dispatch(updateRechargeInfo(productId, rechargeInfo));
-  };
 
 /**
  * Fetches subscription product information
@@ -102,20 +86,6 @@ export const fetchRechargeCart = () => (dispatch, getState) => {
 };
 
 /**
- * @param {string} productId productId
- * @param {string} shopifyVariantId variantId
- * @param {string} baseProductId Base product id
- * @returns {Function}
- */
-export const addShopifyVariantId = (productId, shopifyVariantId, baseProductId) => (dispatch) => {
-  const metaData = {
-    shopifyVariantId,
-    baseProductId,
-  };
-
-  dispatch(updateMetaData(productId, metaData));
-};
-/**
  * Fetch recharge customer hash
  * @return {Function}
  */
@@ -133,4 +103,35 @@ export const fetchRechargeCustomerHash = () => (dispatch) => {
       logger.error(err);
       dispatch(errorRechargeCustomerHash());
     });
+};
+
+/**
+ * Adds a product to the cart.
+ * @param {Object} data The pieces for the product to be added.
+ * @return {Function} A redux thunk.
+ */
+export const addProductToCart = data => (dispatch, getState) => {
+  const state = getState();
+
+  // Transform the options to the required format for the pipeline request.
+  const options = getAddToCartOptions(state, data);
+  const { productId, quantity } = data;
+
+  const rechargeInfo = getSelectedSubscriptionsInfo(state, { productId, variantId: productId });
+  const shopifyVariantId = getVariantId(state, { productId });
+  const baseProductId = getBaseProductId(state, {
+    variantId: productId,
+    productId,
+  });
+
+  dispatch(addProductsToCart([{
+    productId,
+    quantity,
+    ...(options) && { options },
+    metadata: {
+      rechargeInfo,
+      shopifyVariantId,
+      baseProductId,
+    },
+  }]));
 };

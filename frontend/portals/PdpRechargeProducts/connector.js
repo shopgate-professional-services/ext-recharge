@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { getBaseProductId } from '@shopgate/engage/product';
-import { updateRechargeInfoReducer } from '../../actions';
 import { getRechargeSubscriptionItems, getVariantId } from '../../selectors';
+import { updateRechargeInfo } from '../../action-creators';
 
 /**
  * @param {Object} state state
@@ -21,7 +21,8 @@ const mapStateToProps = (state, props) => ({
  */
 const mapDispatchToProps = (dispatch, props) => ({
   updateRechargeInfo: recharge =>
-    dispatch(updateRechargeInfoReducer(
+    dispatch(updateRechargeInfo(
+      // TODO: use always the baseProdcutId here?
       props.variantId || props.productId,
       recharge
     )),

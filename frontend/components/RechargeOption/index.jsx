@@ -81,7 +81,6 @@ const RechargeOption = ({
    * @param {string} frequencyValue selected frequencyValue
    */
   const handleSelection = (frequencyValue) => {
-
     // Value attached to pass no selecetd subscription value should
     // not update metaData with null subscriptionInfo
     if (frequencyValue === NO_SUBSCRIPTION_FREQUENCY_VALUE) {

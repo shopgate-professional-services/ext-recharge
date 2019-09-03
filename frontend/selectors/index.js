@@ -8,7 +8,6 @@ import {
 } from '@shopgate/engage/product';
 import { getIsFetching, getCartItemById } from '@shopgate/engage/cart';
 import { getDiscountToPrice } from '../helpers/rechargeDiscountPriceTools';
-import parseJson from '../helpers/parseJson';
 import {
   REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS,
   REDUX_NAMESPACE_RECHARGE_CART,
@@ -167,9 +166,8 @@ export const getShopifyVariant = createSelector(
   getProductById,
   (product) => {
     const { productData } = product || {};
-    const { customData } = productData || {};
-    const customDataObject = parseJson(customData);
-    const { variant_id: shopifyVariantId } = customDataObject || {};
+    const { customData = null } = productData || {};
+    const { variant_id: shopifyVariantId } = JSON.parse(customData) || {};
 
     return shopifyVariantId ? `${shopifyVariantId}` : null;
   }

@@ -10,10 +10,8 @@ import { receiveFavorites$ } from '@shopgate/engage/favorites';
 import {
   fetchSubscriptionProducts,
   fetchRechargeCart,
-  addShopifyVariantId,
   fetchRechargeCustomerHash,
 } from '../actions';
-import { getVariantId } from '../selectors';
 import { removeRechargeCustomerHash } from '../action-creators';
 import { RECHARGE_CHECKOUT_PATH } from '../constants';
 
@@ -29,15 +27,6 @@ export default (subscribe) => {
 
     // Fetch recharge subscription options
     dispatch(fetchSubscriptionProducts([baseProductId]));
-
-    // Adds Shopify variant_id and baseProductId to product meta data on product entry so it is
-    // available to build the recharge mirror cart on add to cart
-    const productId = productData.id;
-    const customData = JSON.parse(productData.customData); // this should happen already in the backend
-    const shopifyVariantId = customData.variant_id ? `${customData.variant_id}` : productId;
-    const resolvedBaseProductId = baseProductId || productId;
-
-    dispatch(addShopifyVariantId(productId, shopifyVariantId, resolvedBaseProductId));
   });
 
   // Check if we can fetch recharge cart with received cart items.

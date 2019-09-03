@@ -6,7 +6,7 @@ import {
 import { isProductPageLoading } from '@shopgate/pwa-common-commerce/product/selectors/page';
 import { showModal } from '@shopgate/engage/core';
 import { getSelectedSubscriptionsInfo } from '../../selectors';
-import { addProductToCart } from './actions';
+import { addProductToCart } from '../../actions';
 
 /**
  * @param {Object} state The current application state.
