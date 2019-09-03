@@ -29,7 +29,8 @@ const CtaAddToCart = ({
   }
 
   if (!isSubscriptionOnly) {
-    return (children);
+    // TODO:
+    //return (children);
   }
 
   return (<AddToCartCTA

@@ -78,7 +78,7 @@ export const getSelectedSubscriptionsInfo = createSelector(
 );
 
 /**
- * Determine if product on favorites page is subscription only
+ * Determine if product is subscription only
  * @return {boolean}
  */
 export const getIsRechargeSubscriptionOnly = createSelector(
