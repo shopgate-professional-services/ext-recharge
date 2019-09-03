@@ -2,7 +2,7 @@ const ReChargeApi = require('../utilities/ReChargeApi')
 
 module.exports = async (context) => {
   const { userId } = context.meta || {}
-  
+
   if (!userId) {
     return { customer: null }
   }
