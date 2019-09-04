@@ -10,6 +10,7 @@ import {
   ERROR_RECHARGE_CUSTOMER_HASH,
   REMOVE_RECHARGE_CUSTOMER_HASH,
   UPDATE_RECHARGE_INFO,
+  UPDATE_SHOPIFY_VARIANT_ID,
 } from '../constants';
 
 /**
@@ -46,14 +47,26 @@ export const errorRechargeSubscriptionProducts = productIds => ({
 
 /**
  * Update Recharge Info
- * @param {string} productId productId
+ * @param {string} baseProductId baseProductId
  * @param {Object} rechargeInfo recharge subcriptionInfo
  * @returns { Object }
  */
-export const updateRechargeInfo = (productId, rechargeInfo) => ({
+export const updateRechargeInfo = (baseProductId, rechargeInfo) => ({
   type: UPDATE_RECHARGE_INFO,
-  productId,
+  baseProductId,
   rechargeInfo,
+});
+
+/**
+ * Update Recharge Info
+ * @param {string} baseProductId baseProductId
+ * @param {string} shopifyVariantId shopify variant id to update
+ * @returns { Object }
+ */
+export const updateShopifyVariantId = (baseProductId, shopifyVariantId) => ({
+  type: UPDATE_SHOPIFY_VARIANT_ID,
+  baseProductId,
+  shopifyVariantId,
 });
 
 /**

@@ -28,6 +28,7 @@ const RechargeOption = ({
   shopifyVariantId,
   baseProductId,
   updateRechargeInfo,
+  updateShopifyVariantId,
 }) => {
   if (!shopifyVariantId) {
     return null;
@@ -50,13 +51,10 @@ const RechargeOption = ({
 
   // ComponentDidUpdate - If shopifyVariantId changed then we reset selected state
   useEffect(() => {
-    setSelected(isSubscriptionOptional ? NO_SUBSCRIPTION_FREQUENCY_VALUE : null);
-    setSelected(null);
-
-    const subscriptionInfo = null;
-
-    // Ensure meta data value is null
-    updateRechargeInfo(subscriptionInfo);
+    if (!selected) {
+      return;
+    }
+    updateShopifyVariantId(shopifyVariantId);
   }, [shopifyVariantId]);
 
   /**
@@ -206,6 +204,7 @@ RechargeOption.propTypes = {
   purchaseOption: PropTypes.string.isRequired,
   shopifyVariantId: PropTypes.string.isRequired,
   updateRechargeInfo: PropTypes.func.isRequired,
+  updateShopifyVariantId: PropTypes.func.isRequired,
   cutoffDayOfMonth: PropTypes.number,
   cutoffDayOfWeek: PropTypes.number,
   expireAfterSpecificNumberOfCharges: PropTypes.number,

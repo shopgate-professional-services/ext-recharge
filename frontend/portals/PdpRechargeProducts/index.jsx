@@ -14,7 +14,8 @@ const PdpRechargeProducts = ({
   shopifyVariantId,
   subscriptionInfo,
   updateRechargeInfo,
-  baseProductId,
+  updateShopifyVariantId,
+  productId,
 }) => {
   // if subscriptionInfo is not an array with at least one element return null
   if (!subscriptionInfo) {
@@ -60,8 +61,9 @@ const PdpRechargeProducts = ({
         orderIntervalFrequency={order_interval_frequency}
         purchaseOption={storefront_purchase_options}
         updateRechargeInfo={updateRechargeInfo}
+        updateShopifyVariantId={updateShopifyVariantId}
         shopifyVariantId={shopifyVariantId}
-        baseProductId={baseProductId}
+        baseProductId={productId}
       />
       <SubscriptionDetailsBadge />
     </Fragment>
@@ -69,17 +71,19 @@ const PdpRechargeProducts = ({
 };
 
 PdpRechargeProducts.propTypes = {
-  baseProductId: PropTypes.string,
+  productId: PropTypes.string,
   shopifyVariantId: PropTypes.string,
   subscriptionInfo: PropTypes.shape(),
   updateRechargeInfo: PropTypes.func,
+  updateShopifyVariantId: PropTypes.func,
 };
 
 PdpRechargeProducts.defaultProps = {
-  baseProductId: null,
+  productId: null,
   shopifyVariantId: null,
   subscriptionInfo: null,
   updateRechargeInfo: () => { },
+  updateShopifyVariantId: () => { },
 };
 
 export default withCurrentProduct(connect(memo(PdpRechargeProducts)));
