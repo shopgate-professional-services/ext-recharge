@@ -189,16 +189,6 @@
         "type": "text"
       }
     },
-    "rechargeCurrency": {
-      "type": "admin",
-      "destination": "frontend",
-      "default": "USD",
-      "params": {
-        "label": "The currency recharge discounts are in",
-        "type": "text",
-        "required": true
-      }
-    },
     "shopifyAlias": {
       "type": "bigApi",
       "destination": "both",

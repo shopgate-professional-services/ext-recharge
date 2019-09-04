@@ -9,9 +9,9 @@ module.exports = async function buildRechargeCart (context, input) {
     ({ product }) =>
       product.additionalInfo.some(
         (val) => {
-          const { recharge } = val || null
+          const { recharge } = val || {}
           if (recharge) {
-            return recharge.some(({ frequencyValue }) => frequencyValue)
+            return recharge.some(({ subscriptionInfo }) => subscriptionInfo)
           }
         }
       ))
