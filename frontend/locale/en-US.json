@@ -6,7 +6,8 @@
       "optional": "optional",
       "no_subscription": "No Subscription",
       "subscribe_and_save": "Subscribe & save",
-      "subscribe": "Subscribe"
+      "subscribe": "Subscribe",
+      "one_time": "One Time"
     },
     "customer_portal": {
       "manage_subscriptions": "Manage Subscriptions"

@@ -1,7 +1,7 @@
 import {
-  REQUEST_RECHARGE_SUBSCRIPTION_ITEMS,
-  RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS,
-  ERROR_RECHARGE_SUBSCRIPTION_ITEMS,
+  REQUEST_RECHARGE_SUBSCRIPTION_PRODUCTS,
+  RECEIVE_RECHARGE_SUBSCRIPTION_PRODUCTS,
+  ERROR_RECHARGE_SUBSCRIPTION_PRODUCTS,
   REQUEST_RECHARGE_CART,
   RECEIVE_RECHARGE_CART,
   ERROR_RECHARGE_CART,
@@ -13,34 +13,34 @@ import {
 } from '../constants';
 
 /**
- * Request Recharge Subscription Items
+ * Request Recharge Subscription products
  * @param {string[]} productIds product ids used for fetching
  * @returns {Object}
  */
-export const requestRechargeSubscriptionItems = productIds => ({
-  type: REQUEST_RECHARGE_SUBSCRIPTION_ITEMS,
+export const requestRechargeSubscriptionProducts = productIds => ({
+  type: REQUEST_RECHARGE_SUBSCRIPTION_PRODUCTS,
   productIds,
 });
 
 /**
- * Receive Recharge Subscription Items
+ * Receive Recharge Subscription products
  * @param {string[]} productIds product ids used for fetching
  * @param {Object[]} products subscription products
  * @returns {Object}
  */
-export const receiveRechargeSubscriptionItems = (productIds, products) => ({
-  type: RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS,
+export const receiveRechargeSubscriptionProducts = (productIds, products) => ({
+  type: RECEIVE_RECHARGE_SUBSCRIPTION_PRODUCTS,
   products,
   productIds,
 });
 
 /**
- * Error recharge subscription items
+ * Error recharge subscription products
  * @param {string[]} productIds product ids used for fetching
  * @returns {Object}
  */
-export const errorRechargeSubscriptionItems = productIds => ({
-  type: ERROR_RECHARGE_SUBSCRIPTION_ITEMS,
+export const errorRechargeSubscriptionProducts = productIds => ({
+  type: ERROR_RECHARGE_SUBSCRIPTION_PRODUCTS,
   productIds,
 });
 
@@ -78,7 +78,7 @@ export const receiveRechargeCart = rechargeCart => ({
  * Error recharge Token action.
  * @returns {Object}
  */
-export const errorRechargetCart = () => ({
+export const errorRechargeCart = () => ({
   type: ERROR_RECHARGE_CART,
 });
 

@@ -90,7 +90,7 @@ const CartItemSubscriptionInfo = ({
           currency={currency}
           price={itemUnitPrice}
           totalPrice={(totalQuantity - totalQuantityOfSubscriptions) * itemUnitPrice}
-          title="One Time"
+          title="recharge.subscription_option.one_time"
           quantity={totalQuantity - totalQuantityOfSubscriptions}
           key={`non-subscription-${cartItemId}`}
         />

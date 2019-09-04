@@ -21,7 +21,7 @@ const Label = ({
 }) => (
   <Grid className={styles.label}>
     <Grid.Item>
-      {title}
+      <I18n.Text string={title} />
     </Grid.Item>
     <Grid.Item>
       <I18n.Price

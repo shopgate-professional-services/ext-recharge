@@ -8,14 +8,14 @@ import {
   getReChargeFullSubscriptionItem,
   getRechargeCartState, getSelectedSubscriptionsInfo, getVariantId,
 } from '../selectors';
-import { GET_SUBSCRIPTION_PRODUCTS, CREATE_CHECKOUT, GET_CUSTOMER_HASH } from '../constants';
+import { GET_SUBSCRIPTION_PRODUCTS, GET_CART, GET_CUSTOMER_HASH } from '../constants';
 import {
-  requestRechargeSubscriptionItems,
-  receiveRechargeSubscriptionItems,
-  errorRechargeSubscriptionItems,
+  requestRechargeSubscriptionProducts,
+  receiveRechargeSubscriptionProducts,
+  errorRechargeSubscriptionProducts,
   requestRechargeCart,
   receiveRechargeCart,
-  errorRechargetCart,
+  errorRechargeCart,
   requestRechargeCustomerHash,
   receiveRechargeCustomerHash,
   errorRechargeCustomerHash,
@@ -44,17 +44,17 @@ export const fetchSubscriptionProducts = (productIds = []) => (dispatch, getStat
     return;
   }
 
-  dispatch(requestRechargeSubscriptionItems(productIdsToFetch));
+  dispatch(requestRechargeSubscriptionProducts(productIdsToFetch));
 
   new PipelineRequest(GET_SUBSCRIPTION_PRODUCTS)
     .setInput({ productIds: productIdsToFetch })
     .dispatch()
     .then(({ products }) => {
-      dispatch(receiveRechargeSubscriptionItems(productIdsToFetch, products));
+      dispatch(receiveRechargeSubscriptionProducts(productIdsToFetch, products));
     })
     .catch((error) => {
       logger.error(error);
-      dispatch(errorRechargeSubscriptionItems(productIdsToFetch));
+      dispatch(errorRechargeSubscriptionProducts(productIdsToFetch));
     });
 };
 
@@ -72,7 +72,7 @@ export const fetchRechargeCart = () => (dispatch, getState) => {
   LoadingProvider.setLoading(CART_PATH);
 
   dispatch(requestRechargeCart());
-  new PipelineRequest(CREATE_CHECKOUT)
+  new PipelineRequest(GET_CART)
     .dispatch()
     .then((response) => {
       dispatch(receiveRechargeCart(response.rechargeCart));
@@ -80,7 +80,7 @@ export const fetchRechargeCart = () => (dispatch, getState) => {
     })
     .catch((err) => {
       logger.error(err);
-      dispatch(errorRechargetCart());
+      dispatch(errorRechargeCart());
       LoadingProvider.unsetLoading(CART_PATH);
     });
 };

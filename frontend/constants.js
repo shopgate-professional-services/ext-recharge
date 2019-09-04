@@ -2,9 +2,9 @@ import getConfig from './helpers/getConfig';
 
 const { shopifyAlias } = getConfig();
 // Actions
-export const RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS = 'RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS';
-export const REQUEST_RECHARGE_SUBSCRIPTION_ITEMS = 'REQUEST_RECHARGE_SUBSCRIPTION_ITEMS';
-export const ERROR_RECHARGE_SUBSCRIPTION_ITEMS = 'ERROR_RECHARGE_SUBSCRIPTION_ITEMS';
+export const RECEIVE_RECHARGE_SUBSCRIPTION_PRODUCTS = 'RECEIVE_RECHARGE_SUBSCRIPTION_PRODUCTS';
+export const REQUEST_RECHARGE_SUBSCRIPTION_PRODUCTS = 'REQUEST_RECHARGE_SUBSCRIPTION_PRODUCTS';
+export const ERROR_RECHARGE_SUBSCRIPTION_PRODUCTS = 'ERROR_RECHARGE_SUBSCRIPTION_PRODUCTS';
 
 export const RECEIVE_RECHARGE_CART_TOKEN = 'RECEIVE_RECHARGE_CART_TOKEN';
 export const REQUEST_RECHARGE_CART_TOKEN = 'REQUEST_RECHARGE_CART_TOKEN';
@@ -34,7 +34,7 @@ export const NO_SUBSCRIPTION_FREQUENCY_VALUE = 'No Subscription';
 
 // Pipelines
 export const GET_SUBSCRIPTION_PRODUCTS = 'shopgate-project.recharge.getSubscriptionProducts';
-export const CREATE_CHECKOUT = 'shopgate-project.recharge.createCheckout';
+export const GET_CART = 'shopgate-project.recharge.getCart';
 export const GET_CUSTOMER_HASH = 'shopgate-project.recharge.getCustomerHash';
 
 export const RECHARGE_CHECKOUT_PATH = 'https://checkout.rechargeapps.com/r/checkout/';

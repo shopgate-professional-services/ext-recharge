@@ -1,7 +1,7 @@
 import {
-  RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS,
-  REQUEST_RECHARGE_SUBSCRIPTION_ITEMS,
-  ERROR_RECHARGE_SUBSCRIPTION_ITEMS,
+  RECEIVE_RECHARGE_SUBSCRIPTION_PRODUCTS,
+  REQUEST_RECHARGE_SUBSCRIPTION_PRODUCTS,
+  ERROR_RECHARGE_SUBSCRIPTION_PRODUCTS,
 } from '../constants';
 import handleReChargeProducts from './helpers/handleReChargeProducts';
 
@@ -16,7 +16,7 @@ const rechargeSubscriptionItemsReducer = (
   action
 ) => {
   switch (action.type) {
-    case REQUEST_RECHARGE_SUBSCRIPTION_ITEMS:
+    case REQUEST_RECHARGE_SUBSCRIPTION_PRODUCTS:
       return {
         ...state,
         ...action.productIds.reduce((collectedProducts, productId) => ({
@@ -26,12 +26,12 @@ const rechargeSubscriptionItemsReducer = (
           },
         }), {}),
       };
-    case RECEIVE_RECHARGE_SUBSCRIPTION_ITEMS:
+    case RECEIVE_RECHARGE_SUBSCRIPTION_PRODUCTS:
       return {
         ...state,
         ...handleReChargeProducts(action.productIds, action.products),
       };
-    case ERROR_RECHARGE_SUBSCRIPTION_ITEMS:
+    case ERROR_RECHARGE_SUBSCRIPTION_PRODUCTS:
       return {
         ...state,
         ...action.productIds.reduce((collectedProducts, productId) => ({

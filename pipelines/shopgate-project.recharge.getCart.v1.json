@@ -1,7 +1,7 @@
 {
   "version": "1",
   "pipeline": {
-    "id": "shopgate-project.recharge.createCheckout.v1",
+    "id": "shopgate-project.recharge.getCart.v1",
     "public": true,
     "input": [
       {
