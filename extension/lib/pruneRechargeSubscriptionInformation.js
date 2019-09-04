@@ -6,6 +6,7 @@ const mergeMirrorCarts = require('../helpers/mergeMirrorCarts')
 module.exports = async (context, { cartItems }) => {
   try {
     const storage = isLoggedIn(context) ? context.storage.user : context.storage.device
+
     if (!cartItems || cartItems.length < 1) {
       await storage.del(RECHARGE_MIRROR_KEY)
       return { cartItems }
@@ -13,7 +14,6 @@ module.exports = async (context, { cartItems }) => {
 
     // save line item id to product id for update enforcement
     await saveLineIdToProductIdMap(context, cartItems)
-
     const rechargeSubscriptionInfo = await getMirrorCart(context)
 
     if (!(Array.isArray(rechargeSubscriptionInfo) && rechargeSubscriptionInfo.length > 0)) {
@@ -35,7 +35,6 @@ module.exports = async (context, { cartItems }) => {
           product.additionalInfo.push({recharge: selections})
         }
       })
-
     await editOutOldSubscriptionInfo(rechargeSubscriptionInfo, cartItems, storage)
   } catch (error) {
     context.log.error({ errorMessage: error.message }, 'trouble adding recharge subscription data from device storage')
@@ -52,10 +51,12 @@ module.exports = async (context, { cartItems }) => {
  */
 const getMirrorCart = async (context) => {
   const deviceMirrorCart = await context.storage.device.get(RECHARGE_MIRROR_KEY)
+
   if (!isLoggedIn(context)) {
     return deviceMirrorCart
   }
   const userMirrorCart = await context.storage.user.get(RECHARGE_MIRROR_KEY)
+
   // if user is logged in the mirror cart in device storage should be purged
   if (Array.isArray(deviceMirrorCart) && deviceMirrorCart.length) {
     await context.storage.device.del(RECHARGE_MIRROR_KEY)
@@ -65,7 +66,10 @@ const getMirrorCart = async (context) => {
     deviceMirrorCart.length &&
     Array.isArray(userMirrorCart) &&
     userMirrorCart.length) {
-    return mergeMirrorCarts(userMirrorCart, deviceMirrorCart)
+    const mergedCarts = mergeMirrorCarts(userMirrorCart, deviceMirrorCart)
+    await context.storage.user.set(RECHARGE_MIRROR_KEY, mergedCarts)
+
+    return mergedCarts
   }
 
   return userMirrorCart || deviceMirrorCart
