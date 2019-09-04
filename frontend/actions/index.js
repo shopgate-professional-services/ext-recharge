@@ -2,7 +2,8 @@ import { PipelineRequest, LoadingProvider, logger } from '@shopgate/engage/core'
 import { getAddToCartOptions } from '@shopgate/pwa-common-commerce/cart/selectors';
 import addProductsToCart from '@shopgate/pwa-common-commerce/cart/actions/addProductsToCart';
 import { CART_PATH } from '@shopgate/engage/cart';
-import { getBaseProductId } from '@shopgate/engage/product';
+import { ITEM_PATH, getBaseProductId } from '@shopgate/engage/product';
+import { bin2hex } from '@shopgate/pwa-common/helpers/data';
 import { ERROR_HANDLE_SUPPRESS } from '@shopgate/pwa-core/constants/ErrorHandleTypes';
 import {
   getReChargeFullSubscriptionItem,
@@ -44,6 +45,10 @@ export const fetchSubscriptionProducts = (productIds = []) => (dispatch, getStat
     return;
   }
 
+  if (productIds.length === 1) {
+    LoadingProvider.setLoading(`${ITEM_PATH}/${bin2hex(productIds[0])}`);
+  }
+
   dispatch(requestRechargeSubscriptionProducts(productIdsToFetch));
 
   new PipelineRequest(GET_SUBSCRIPTION_PRODUCTS)
@@ -51,10 +56,12 @@ export const fetchSubscriptionProducts = (productIds = []) => (dispatch, getStat
     .dispatch()
     .then(({ products }) => {
       dispatch(receiveRechargeSubscriptionProducts(productIdsToFetch, products));
+      LoadingProvider.unsetLoading(`${ITEM_PATH}/${bin2hex(productIds[0])}`);
     })
     .catch((error) => {
       logger.error(error);
       dispatch(errorRechargeSubscriptionProducts(productIdsToFetch));
+      LoadingProvider.unsetLoading(`${ITEM_PATH}/${bin2hex(productIds[0])}`);
     });
 };
 
