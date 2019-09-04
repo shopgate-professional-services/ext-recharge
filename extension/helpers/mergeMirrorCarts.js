@@ -1,4 +1,4 @@
-const EMPTY_VAVLUE = 'empty_value'
+const EMPTY_VALUE = 'empty_value'
 
 module.exports = (cartOne, cartTwo) => {
   const overlappingMirrorProducts = cartOne
@@ -35,27 +35,27 @@ const mergeMirrorProducts = (newOverlappingProducts, cartTwo) => (
       ))
 
       const overlappingSelection = newSelections
-        .filter(({ frequencyValue: newFrequencyValue = EMPTY_VAVLUE }) => (
-          storedSelections.some(({ frequencyValue = EMPTY_VAVLUE }) => newFrequencyValue === frequencyValue))
+        .filter(({ frequencyValue: newFrequencyValue = EMPTY_VALUE }) => (
+          storedSelections.some(({ frequencyValue = EMPTY_VALUE }) => newFrequencyValue === frequencyValue))
         )
 
       const overlappingFrequencies = overlappingSelection
-        .map(({ frequencyValue = EMPTY_VAVLUE }) => frequencyValue)
+        .map(({ frequencyValue = EMPTY_VALUE }) => frequencyValue)
 
       const mergedSelections = [
-        ...newSelections.filter(({ frequencyValue = EMPTY_VAVLUE }) => !overlappingFrequencies.includes(frequencyValue)),
-        ...storedSelections.filter(({ frequencyValue = EMPTY_VAVLUE }) => !overlappingFrequencies.includes(frequencyValue))
+        ...newSelections.filter(({ frequencyValue = EMPTY_VALUE }) => !overlappingFrequencies.includes(frequencyValue)),
+        ...storedSelections.filter(({ frequencyValue = EMPTY_VALUE }) => !overlappingFrequencies.includes(frequencyValue))
       ]
 
       const mergedOverlappingSelections = overlappingSelection
         .map((selection) => {
           const {
-            frequencyValue: newFrequencyValue = EMPTY_VAVLUE,
+            frequencyValue: newFrequencyValue = EMPTY_VALUE,
             quantity: newQuantity,
             subscriptionInfo: newSubscriptionInfo
           } = selection
           const { quantity: storedQuantity } = storedSelections
-            .find(({ frequencyValue = EMPTY_VAVLUE }) => frequencyValue === newFrequencyValue)
+            .find(({ frequencyValue = EMPTY_VALUE }) => frequencyValue === newFrequencyValue)
           const mergedSelection = {
             ...selection,
             quantity: newQuantity + storedQuantity

@@ -35,9 +35,7 @@ Recharge details configurations.
    "rechargeDetailsPopUpLearnMoreLinkText": "Learn more...",
    "rechargeDetailsPopUpLearnMoreLinkHref": "http://rechargepayments.com/subscribe-with-recharge",
    "rechargeDetailsPopUpFooterImageSrc": "https://rechargestatic-bootstrapheroes.netdna-ssl.com/static/images/widget/rc_widget__banner@2x.png",
-   "rechargeCurrency": "USD"
-
- }
+}
 ```
 
 ## About Shopgate

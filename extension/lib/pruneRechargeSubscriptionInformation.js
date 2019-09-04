@@ -26,9 +26,10 @@ module.exports = async (context, { cartItems }) => {
           return
         }
 
-        const { selections } = rechargeSubscriptionInfo.find(({ productId, baseProductId }) => (
-          product.id === productId || product.id === baseProductId
-        )) || {}
+        const { selections } = rechargeSubscriptionInfo
+          .find(({ productId, baseProductId }) => (
+            product.id === productId || product.id === baseProductId
+          )) || {}
 
         if (selections) {
           product.additionalInfo.push({recharge: selections})
