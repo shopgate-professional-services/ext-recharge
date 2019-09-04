@@ -1,5 +1,5 @@
 import { getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
-import { cartReceived$, fetchCart } from '@shopgate/engage/cart';
+import { cartReceived$, fetchCart, cartWillEnter$, cartUpdatedWhileVisible$ } from '@shopgate/engage/cart';
 import { PipelineRequest, logger } from '@shopgate/engage/core';
 import { navigate$ } from '@shopgate/pwa-common/streams/router';
 import getCart from '@shopgate/pwa-tracking/selectors/cart';
@@ -29,8 +29,9 @@ export default (subscribe) => {
     dispatch(fetchSubscriptionProducts([baseProductId]));
   });
 
-  // Check if we can fetch recharge cart with received cart items.
-  subscribe(cartReceived$, ({ dispatch }) => {
+  const rechargeCartNeedsSync$ = cartWillEnter$.merge(cartUpdatedWhileVisible$);
+
+  subscribe(rechargeCartNeedsSync$, ({ dispatch }) => {
     dispatch(fetchRechargeCart());
   });
 
