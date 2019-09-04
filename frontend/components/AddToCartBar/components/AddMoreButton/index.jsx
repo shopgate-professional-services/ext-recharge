@@ -12,6 +12,7 @@ import styles from './style';
  * @param {boolean} loading Should the button shown as loading.
  * @param {boolean} visible Should the button be visible.
  * @param {Function} onReset The reset handler.
+ * @param {Object} forwardedRef forwardedRef.
  * @return {JSX}
  */
 const AddMoreButton = ({
