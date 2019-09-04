@@ -33,7 +33,11 @@ const mapDispatchToProps = dispatch => ({
     dispatch(addProductToCart(product));
   },
   chooseSubscriptionAlert: () =>
-    dispatch(showModal({ message: 'recharge.add_to_cart.modal.choose_subscription' })),
+    dispatch(showModal({
+      message: 'recharge.add_to_cart.modal.choose_subscription',
+      dismiss: null,
+      confirm: 'modal.ok',
+    })),
 });
 
 /**
