@@ -2,7 +2,7 @@
   "name": "@shopgate-project/recharge",
   "version": "1.0.0-rc.4",
   "description": "ReCharge integration",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "scripts": {
     "lint": "eslint --parser babel-eslint --ignore-path ../.gitignore --ignore-path .eslintignore --ext .js --ext .jsx .",
     "test": "jest",
