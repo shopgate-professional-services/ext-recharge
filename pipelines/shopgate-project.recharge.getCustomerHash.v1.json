@@ -3,7 +3,13 @@
   "pipeline": {
     "id": "shopgate-project.recharge.getCustomerHash.v1",
     "public": true,
-    "input": [],
+    "input": [
+      {
+        "key": "useCache",
+        "id": "50",
+        "optional": true
+      }
+    ],
     "output": [
       {
         "key": "customerHash",
@@ -15,7 +21,13 @@
         "type": "extension",
         "id": "@shopgate-project/recharge",
         "path": "@shopgate-project/recharge/lib/getRechargeCustomer.js",
-        "input": [],
+        "input": [
+          {
+            "key": "useCache",
+            "id": "50",
+            "optional": true
+           }
+        ],
         "output": [
           {
             "key": "customer",

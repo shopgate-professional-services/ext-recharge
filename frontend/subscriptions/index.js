@@ -87,6 +87,7 @@ export default (subscribe) => {
         .then(() => {
           dispatch(fetchRechargeCart());
           dispatch(fetchCart());
+          dispatch(fetchRechargeCustomerHash());
         })
         .catch((error) => {
           logger.error(error);
