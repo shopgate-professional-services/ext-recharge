@@ -8,5 +8,5 @@ const { shopifyAlias } = getConfig();
  * @return {string}
  */
 export default customerHash => (
-  `https://${shopifyAlias}.myshopify.com/tools/recurring/portal/${customerHash}/subscriptions`
+  `https://${shopifyAlias}.myshopify.com/tools/recurring/customers/${customerHash}/subscriptions`
 );

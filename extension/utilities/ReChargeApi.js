@@ -134,14 +134,18 @@ class ReChargeApi {
   /**
    * Get ReCharge user information
    * @param {string} id Shopify/Shopgate user id
+   * @param {boolean} useCache When true do use cached user data
    * @return {Promise<any>}
    */
-  async getCustomerByShopifyUserId (id) {
-    const userCache = await this.storage.user.get(this.userCacheKey)
-    const { userData, timestamp = 0 } = userCache || {}
-    if (userData && timestamp + this.userCacheTTL > Date.now()) {
-      return userData
+  async getCustomerByShopifyUserId (id, useCache) {
+    if (useCache) {
+      const userCache = await this.storage.user.get(this.userCacheKey)
+      const { userData, timestamp = 0 } = userCache || {}
+      if (userData && timestamp + this.userCacheTTL > Date.now()) {
+        return userData
+      }
     }
+
     const newUserData = await this.call({
       path: 'customers',
       method: 'GET',
@@ -156,6 +160,7 @@ class ReChargeApi {
         timestamp: Date.now()
       }
     )
+
     return newUserData
   }
 }
