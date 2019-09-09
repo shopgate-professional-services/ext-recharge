@@ -8,6 +8,8 @@ This extension integrates a Shopgate app with the [Recharge](https://apps.shopif
 - Login to your shopify backend and navigate to admin/apps/shopify-recurring-payments/settings/checkout 
 - Copy the code from styles.css and add it to "CSS editor"
 - Copy the code from thank_you.html and add it to "Additional & scripts and trackers"
+- navigate to admin/apps/shopify-recurring-payments/settings/customer portal
+- copy the code from customer_portal.html into Customize styles > Storefront header HTML/CSS/JS
 
 ## Configuration
 It is necessary to configure the Recarge api base URL and configure your shop's recharge app token

@@ -1,0 +1,17 @@
+<script>
+    var isShopgateApp = navigator.userAgent.indexOf('libshopgate') !== -1;
+    if (isShopgateApp) {
+        console.log('adding shopgate style');
+        var cssText ='#shopify-section-header,.site-footer{display:none}';
+        var head = document.head || document.getElementsByTagName('head')[0];
+        var shopgateStyleCSS = document.createElement('style');
+        shopgateStyleCSS.type = 'text/css';
+        if (shopgateStyleCSS.styleSheet){
+            shopgateStyleCSS.styleSheet.cssText = cssText;
+        }
+        else {
+            shopgateStyleCSS.appendChild(document.createTextNode(cssText));
+        }
+        head.appendChild(shopgateStyleCSS);
+    }
+</script>
