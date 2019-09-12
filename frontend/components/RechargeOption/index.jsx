@@ -41,7 +41,6 @@ const RechargeOption = ({
 
   // ComponentWillUnmount - reset selected to null
   useEffect(() => {
-    setSelected(isSubscriptionOptional ? NO_SUBSCRIPTION_FREQUENCY_VALUE : null);
     setSelected(null);
 
     const subscriptionInfo = null;
