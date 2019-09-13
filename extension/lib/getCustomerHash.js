@@ -3,7 +3,7 @@ module.exports = async (context, { customer }) => {
     return { customerHash: null }
   }
 
-  const { hash = '' } = customer
+  const { hash = null } = customer
 
   return { customerHash: hash }
 }
