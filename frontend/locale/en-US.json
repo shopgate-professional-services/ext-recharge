@@ -1,0 +1,28 @@
+{
+  "recharge": {
+    "subscription_option": {
+      "and_save": "and save",
+      "subscription": "Select subscription",
+      "optional": "optional",
+      "no_subscription": "No Subscription",
+      "subscribe_and_save": "Subscribe & save",
+      "subscribe": "Subscribe",
+      "one_time": "One Time"
+    },
+    "customer_portal": {
+      "manage_subscriptions": "Manage Subscriptions"
+    },
+    "favorite_list": {
+      "modal": {
+        "message": "To add this product to your cart please select a subscription option",
+        "confirm": "SELECT SUBSCRIPTION",
+        "dismiss": "CANCEL"
+      }
+    },
+    "add_to_cart": {
+      "modal": {
+        "choose_subscription": "Please choose a subscription option before adding this product to the cart"
+      }
+    }
+  }
+}

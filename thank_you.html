@@ -1,0 +1,57 @@
+<script>
+  var isShopgateApp = navigator.userAgent.indexOf('libshopgate') !== -1;
+  var shopgateOverrideEvent = function (e) {
+      e.preventDefault();
+      window.SGAppConnector.sendAppCommand(
+          {
+              c: 'broadcastEvent',
+              p: {
+                  event: 'closeInAppBrowser'
+              }
+          }
+      );
+  };
+
+  if (isShopgateApp) {
+    var ready = function(){
+      var targetElements = document.querySelectorAll('#checkout .btn');
+      targetElements.forEach(function(element){
+          element.addEventListener('click', shopgateOverrideEvent, false);
+          element.addEventListener('touchstart', shopgateOverrideEvent, false);
+      });
+    };
+
+    if (
+      document.readyState === "complete" ||
+      (document.readyState !== "loading" && !document.documentElement.doScroll)
+    ) {
+      ready();
+    } else {
+      document.addEventListener("DOMContentLoaded", ready);
+    }
+
+    window.sgOrder = {
+      orderNumber: "{{order_number}}",
+      currency: document.querySelector('.payment-due__currency').innerText,
+      totals: {
+        shippingPrice: {{ total_shipping }} * 100,
+        taxPrice: {{ total_tax }}  * 100 ,
+        totalPrice: {{total_price}}  * 100
+      },
+      lineItems: []
+    }
+
+    {% for item in line_items %}
+      window.sgOrder.lineItems.push({
+        "product": {id: {{ item.product_id }} },
+        "id": "{{ item.product_id }}",
+        "variant_id": "{{ item.variant_id }}",
+        "title": "{{ item.name }}",
+        "quantity": {{ item.quantity }},
+        "price": {{ item.price }},
+      })
+    {% endfor %}
+
+  }
+</script>
+<script type='text/javascript' src='https://s3-eu-west-1.amazonaws.com/shopgate-public/webcheckout/shopify/checkout-script_v2.js'></script>

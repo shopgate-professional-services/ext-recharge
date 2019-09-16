@@ -1,0 +1,57 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate-project.recharge.getCustomerHash.v1",
+    "public": true,
+    "input": [
+      {
+        "key": "useCache",
+        "id": "50",
+        "optional": true
+      }
+    ],
+    "output": [
+      {
+        "key": "customerHash",
+        "id": "200"
+      }
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/getRechargeCustomer.js",
+        "input": [
+          {
+            "key": "useCache",
+            "id": "50",
+            "optional": true
+           }
+        ],
+        "output": [
+          {
+            "key": "customer",
+            "id": "100"
+          }
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/getCustomerHash.js",
+        "input": [
+          {
+            "key": "customer",
+            "id": "100"
+          }
+        ],
+        "output": [
+          {
+            "key": "customerHash",
+            "id": "200"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate-project.recharge.getCart.v1",
+    "public": true,
+    "input": [
+      {
+        "id": "1000",
+        "key": "sgxsMeta"
+      }
+    ],
+    "output": [
+      {
+        "id": "2010",
+        "key": "rechargeCart"
+      }
+    ],
+    "steps": [
+      {
+        "id": "shopgate.cart.getCart.v1",
+        "type": "pipeline",
+        "input": [
+          {
+            "id": "1000",
+            "key": "sgxsMeta",
+            "optional": true
+          }
+        ],
+        "output": [
+          {
+            "id": "1010",
+            "key": "cartItems"
+          },
+          {
+            "id": "1020",
+            "key": "totals"
+          }
+        ]
+      },
+      {
+        "type": "staticValue",
+        "input": [],
+        "values": [
+          {
+            "key": "useCache",
+            "value": true
+          }
+        ],
+        "output": [
+          {
+            "key": "useCache",
+            "id": "1040"
+          }
+        ]
+      },
+      {
+        "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/getRechargeCustomer.js",
+        "type": "extension",
+        "input": [
+          {
+            "key": "useCache",
+            "id": "1040"
+          }
+        ],
+        "output": [
+          {
+            "id": "1030",
+            "key": "customer"
+          }
+        ]
+      },
+      {
+        "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/buildRechargeCart.js",
+        "type": "extension",
+        "input": [
+          {
+            "id": "1010",
+            "key": "cartItems"
+          },
+          {
+            "id": "1020",
+            "key": "totals"
+          }
+        ],
+        "output": [
+          {
+            "id": "2000",
+            "key": "cart"
+          }
+        ]
+      },
+      {
+        "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/createRechargeCart.js",
+        "type": "extension",
+        "input": [
+          {
+            "id": "1030",
+            "key": "customer",
+            "optional": true
+          },
+          {
+            "id": "2000",
+            "key": "cart"
+          }
+        ],
+        "output": [
+          {
+            "id": "2010",
+            "key": "rechargeCart"
+          }
+        ]
+      }
+    ]
+  }
+}

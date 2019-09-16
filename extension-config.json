@@ -1,10 +1,266 @@
 {
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-rc.5",
   "id": "@shopgate-project/recharge",
   "components": [
+    {
+      "id": "ProductPrice",
+      "path": "frontend/portals/ProductPrice/index.jsx",
+      "target": "product.price",
+      "type": "portals"
+    },
+    {
+      "id": "PdpRechargeProducts",
+      "path": "frontend/portals/PdpRechargeProducts/index.jsx",
+      "target": "product.description.before",
+      "type": "portals"
+    },
+    {
+      "id": "RechargeCheckoutButton",
+      "path": "frontend/portals/CartCheckoutButton/index.jsx",
+      "target": "cart.checkout-button",
+      "type": "portals"
+    },
+    {
+      "id": "RechargeCheckoutSubtotal",
+      "path": "frontend/portals/CartPaymentBarSubtotal",
+      "target": "cart.payment-bar.totals.sub-total",
+      "type": "portals"
+    },
+    {
+      "id": "RechargeCheckoutTotal",
+      "path": "frontend/portals/CartPaymentBarTotal",
+      "target": "cart.payment-bar.totals.grand-total",
+      "type": "portals"
+    },
+    {
+      "id": "RechargePortalLink",
+      "path": "frontend/portals/RechargePortalLink/index.jsx",
+      "target": "nav-menu.imprint.after",
+      "type": "portals"
+    },
+    {
+      "id": "FavoritesAddToCart",
+      "path": "frontend/portals/FavoritesAddToCart/index.jsx",
+      "target": "favorites.add-to-cart",
+      "type": "portals"
+    },
+    {
+      "id": "AddToCartButtonCta",
+      "path": "frontend/portals/CtaAddToCart",
+      "target": "product.ctas.add-to-cart",
+      "type": "portals"
+    },
+    {
+      "id": "AddToCartBar",
+      "path": "frontend/portals/AddToCartBar",
+      "target": "product.add-to-cart-bar",
+      "type": "portals"
+    },
+    {
+      "id": "CartItemSubscriptionInfo",
+      "path": "frontend/portals/CartItemSubscriptionInfo",
+      "target": "cart.item.name.after",
+      "type": "portals"
+    },
+    {
+      "id": "CartItemPrice",
+      "path": "frontend/portals/CartItemPrices/CartItemPrice",
+      "target": "cart.item.price",
+      "type": "portals"
+    },
+    {
+      "id": "CartItemStrikePrice",
+      "path": "frontend/portals/CartItemPrices/CartItemStrikePrice",
+      "target": "cart.item.price-striked",
+      "type": "portals"
+    },
+    {
+      "id": "subscriptions",
+      "path": "frontend/subscriptions/index.js",
+      "type": "subscribers"
+    },
+    {
+      "id": "rechargeSubscriptionItems",
+      "path": "frontend/reducers/rechargeSubscriptionItems.js",
+      "type": "reducers"
+    },
+    {
+      "id": "rechargeCart",
+      "path": "frontend/reducers/rechargeCart.js",
+      "type": "reducers"
+    },
+    {
+      "id": "rechargeCustomerHash",
+      "path": "frontend/reducers/rechargeCustomerHash.js",
+      "type": "reducers"
+    },
+    {
+      "id": "rechargeInfo",
+      "path": "frontend/reducers/rechargeInfo.js",
+      "type": "reducers"
+    },
+    {
+      "type": "translations",
+      "path": "frontend/locale/en-US.json",
+      "id": "locale/en-US"
+    }
   ],
   "configuration": {
+    "apiToken": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "label": "ReCharge API token",
+        "type": "text",
+        "required": true
+      }
+    },
+    "baseUrl": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "https://api.rechargeapps.com",
+      "params": {
+        "label": "ReCharge API base URL",
+        "type": "text",
+        "required": true
+      }
+    },
+    "rechargeDetailsButtonText": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "Subscription details",
+      "params": {
+        "label": "Subscription Details Button Text",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsButtonIconSrc": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "https://rechargestatic-bootstrapheroes.netdna-ssl.com/static/images/widget/rc_widget__icon__black@2x.png",
+      "params": {
+        "label": "Url to recharge icon image src",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsPopUpTitle": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "How subscriptions work",
+      "params": {
+        "label": "Subscription Details PopUp Title",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsPopUpText": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "Products are automatically delivered on your schedule. No obligation, modify or cancel your subscription anytime.",
+      "params": {
+        "label": "Subscription Details PopUp text",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsPopUpLearnMoreLinkText": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "Learn more...",
+      "params": {
+        "label": "Subscription Details PopUp Learn More Link Text",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsPopUpLearnMoreLinkHref": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "http://rechargepayments.com/subscribe-with-recharge",
+      "params": {
+        "label": "Subscription Details PopUp Learn More Link Href",
+        "type": "text"
+      }
+    },
+    "rechargeDetailsPopUpFooterImageSrc": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "https://rechargestatic-bootstrapheroes.netdna-ssl.com/static/images/widget/rc_widget__banner@2x.png",
+      "params": {
+        "label": "Subscription Details PopUp Footer Image Src",
+        "type": "text"
+      }
+    },
+    "shopifyAlias": {
+      "type": "bigApi",
+      "destination": "both",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
+        "key": "value.frontend.alias"
+      }
+    }
   },
   "steps": [
+    {
+      "path": "extension/lib/storeMetadata.js",
+      "input": [
+        {
+          "key": "products"
+        }
+      ],
+      "output": [],
+      "hooks": [
+        "shopgate.cart.addProducts.v1:after"
+      ]
+    },
+    {
+      "path": "extension/lib/pruneRechargeSubscriptionInformation.js",
+      "input": [
+        {
+          "key": "cartItems"
+        }
+      ],
+      "output": [
+        {
+          "key": "cartItems"
+        }
+      ],
+      "hooks": [
+        "shopgate.cart.getCart.v1:after"
+      ]
+    },
+    {
+      "path": "extension/steps/exposeCustomDataToGetProduct.js",
+      "hooks": [
+        "shopgate.catalog.getProduct.v1:afterFetchProducts"
+      ],
+      "input": [
+        {
+          "key": "products"
+        }
+      ],
+      "output": [
+        {
+          "key": "customData",
+          "addPipelineOutput": true
+        }
+      ]
+    },
+    {
+      "path": "extension/steps/enforceNoUpdateOnSubscriptionProducts.js",
+      "hooks": [
+        "shopgate.cart.updateProducts.v1:before"
+      ],
+      "input": [
+        {
+          "key": "CartItem"
+        },
+        {
+          "key": "cartItems"
+        }
+      ],
+      "output": []
+    }
   ]
 }
