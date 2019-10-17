@@ -11,15 +11,15 @@
     "coverage:watch": "npm run coverage -- --watch"
   },
   "devDependencies": {
-    "@shopgate/engage": "^6.6.0",
-    "@shopgate/eslint-config": "^6.6.0",
-    "@shopgate/pwa-common": "^6.6.0",
-    "@shopgate/pwa-common-commerce": "^6.6.0",
-    "@shopgate/pwa-core": "^6.6.0",
+    "@shopgate/engage": "^6.7.2",
+    "@shopgate/eslint-config": "^6.7.2",
+    "@shopgate/pwa-common": "^6.7.2",
+    "@shopgate/pwa-common-commerce": "^6.7.2",
+    "@shopgate/pwa-core": "^6.7.2",
     "jest": "^22.4.2",
-    "@shopgate/pwa-unit-test": "^6.6.0",
-    "@shopgate/pwa-ui-ios": "^6.6.0",
-    "@shopgate/pwa-ui-shared": "^6.6.0",
+    "@shopgate/pwa-unit-test": "^6.7.2",
+    "@shopgate/pwa-ui-ios": "^6.7.2",
+    "@shopgate/pwa-ui-shared": "^6.7.2",
     "babel-core": "^6.26.0",
     "babel-plugin-react-transform": "^3.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -40,6 +40,6 @@
     "react-transform-catch-errors": "^1.0.2"
   },
   "peerDependencies": {
-    "@shopgate/engage": "^6.6.0"
+    "@shopgate/engage": "^6.7.2"
   }
 }
