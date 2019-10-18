@@ -170,7 +170,7 @@ export const getShopifyVariant = createSelector(
     * CustomData contains shopifyVariantId with getProducts pipeline
     * rechargeCustomData exposes customData after getProduct pipeline call.
     * rechargeCustomData needs a different name then customData
-    * incase of additional need for customData exposure in separate extensions.
+    * in case of additional need for customData exposure in separate extensions.
     */
     const customData = productData.customData || productData.rechargeCustomData;
 
