@@ -167,6 +167,11 @@ export const getShopifyVariant = createSelector(
   (product) => {
     const { productData } = product || {};
     const customData = productData.customData || productData.rechargeCustomData;
+
+    if (!customData) {
+      return null;
+    }
+
     const { variant_id: shopifyVariantId } = JSON.parse(customData) || {};
 
     return shopifyVariantId ? `${shopifyVariantId}` : null;
