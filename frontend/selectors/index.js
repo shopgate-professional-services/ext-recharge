@@ -165,8 +165,19 @@ export const getIsCartBusy = createSelector(
 export const getShopifyVariant = createSelector(
   getProductById,
   (product) => {
-    const { productData } = product || {};
-    const { customData = null } = productData || {};
+    const { productData = {} } = product || {};
+    /**
+    * CustomData contains shopifyVariantId with getProducts pipeline
+    * rechargeCustomData exposes customData after getProduct pipeline call.
+    * rechargeCustomData needs a different name then customData
+    * in case of additional need for customData exposure in separate extensions.
+    */
+    const customData = productData.customData || productData.rechargeCustomData;
+
+    if (!customData) {
+      return null;
+    }
+
     const { variant_id: shopifyVariantId } = JSON.parse(customData) || {};
 
     return shopifyVariantId ? `${shopifyVariantId}` : null;
