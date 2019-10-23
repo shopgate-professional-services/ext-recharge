@@ -38,30 +38,10 @@
         ]
       },
       {
-        "type": "staticValue",
-        "input": [],
-        "values": [
-          {
-            "key": "useCache",
-            "value": true
-          }
-        ],
-        "output": [
-          {
-            "key": "useCache",
-            "id": "1040"
-          }
-        ]
-      },
-      {
         "id": "@shopgate-project/recharge",
         "path": "@shopgate-project/recharge/lib/getRechargeCustomer.js",
         "type": "extension",
         "input": [
-          {
-            "key": "useCache",
-            "id": "1040"
-          }
         ],
         "output": [
           {

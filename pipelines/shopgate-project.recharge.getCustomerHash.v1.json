@@ -4,11 +4,6 @@
     "id": "shopgate-project.recharge.getCustomerHash.v1",
     "public": true,
     "input": [
-      {
-        "key": "useCache",
-        "id": "50",
-        "optional": true
-      }
     ],
     "output": [
       {
@@ -22,11 +17,6 @@
         "id": "@shopgate-project/recharge",
         "path": "@shopgate-project/recharge/lib/getRechargeCustomer.js",
         "input": [
-          {
-            "key": "useCache",
-            "id": "50",
-            "optional": true
-           }
         ],
         "output": [
           {

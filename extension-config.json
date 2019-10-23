@@ -126,6 +126,16 @@
         "required": true
       }
     },
+    "cacheTimeCustomer": {
+      "type": "admin",
+      "destination": "backend",
+      "default": 1800000,
+      "params": {
+        "label": "Cache time (ms) for ReCharge customer data",
+        "type": "number",
+        "required": true
+      }
+    },
     "rechargeDetailsButtonText": {
       "type": "admin",
       "destination": "frontend",
