@@ -26,11 +26,18 @@ apiToken
 }
 ```
 
+cacheTimeCustomer
+```json
+{
+  "cacheTimeCustomer": 1800000
+}
+ ```
+Cache time (ms) for ReCharge customer data. Default  30m
+
 Recharge details configurations.
 ```json
  {
    "rechargeDetailsButtonText": "Subscription details",
-   "rechargeDetailsPopUpTitle": "How subscriptions work",
    "rechargeDetailsButtonIconSrc": "https://rechargestatic-bootstrapheroes.netdna-ssl.com/static/images/widget/rc_widget__icon__black@2x.png",
    "rechargeDetailsPopUpText": "Products are automatically delivered on your schedule. No obligation, modify or cancel your subscription anytime.",
    "rechargeDetailsPopUpTitle": "How subscriptions work",

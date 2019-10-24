@@ -9,8 +9,6 @@ class ReChargeApi {
     this.logger = context.log
     this.token = context.config.apiToken
     this.storage = context.storage
-    this.userCacheKey = 'recharge_api_user_cache'
-    this.userCacheTTL = 3600000
   }
 
   /**
@@ -78,7 +76,7 @@ class ReChargeApi {
         params.qs = qs
       }
       this.logger.debug(this.sanitizeForLogging(params), 'Calling RechargeAPI')
-      this.request(params, (err, res, body) => {
+      this.request(params, (err, res = {}, body) => {
         if (err) {
           this.logger.error({
             body,
@@ -134,34 +132,16 @@ class ReChargeApi {
   /**
    * Get ReCharge user information
    * @param {string} id Shopify/Shopgate user id
-   * @param {boolean} useCache When true do use cached user data
    * @return {Promise<any>}
    */
-  async getCustomerByShopifyUserId (id, useCache) {
-    if (useCache) {
-      const userCache = await this.storage.user.get(this.userCacheKey)
-      const { userData, timestamp = 0 } = userCache || {}
-      if (userData && timestamp + this.userCacheTTL > Date.now()) {
-        return userData
-      }
-    }
-
-    const newUserData = await this.call({
+  async getCustomerByShopifyUserId (id) {
+    return this.call({
       path: 'customers',
       method: 'GET',
       qs: {
         shopify_customer_id: id
       }
     })
-    await this.storage.user.set(
-      this.userCacheKey,
-      {
-        userData: newUserData,
-        timestamp: Date.now()
-      }
-    )
-
-    return newUserData
   }
 }
 
