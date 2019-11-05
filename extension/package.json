@@ -31,5 +31,9 @@
     "nyc": "^14.1.1",
     "sinon": "^4.1.2",
     "standard": "^10.0.3"
+  },
+  "dependencies": {
+    "bluebird": "^3.7.1",
+    "redis": "^2.8.0"
   }
 }

@@ -41,8 +41,7 @@
         "id": "@shopgate-project/recharge",
         "path": "@shopgate-project/recharge/lib/getRechargeCustomer.js",
         "type": "extension",
-        "input": [
-        ],
+        "input": [],
         "output": [
           {
             "id": "1030",
@@ -51,9 +50,8 @@
         ]
       },
       {
-        "id": "@shopgate-project/recharge",
-        "path": "@shopgate-project/recharge/lib/buildRechargeCart.js",
-        "type": "extension",
+        "id": "shopgate-project.recharge.buildRechargeCart.v1",
+        "type": "pipeline",
         "input": [
           {
             "id": "1010",

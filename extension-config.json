@@ -209,6 +209,33 @@
         "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
         "key": "value.frontend.alias"
       }
+    },
+    "redisClientShopNumber": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "label": "Shop number for Redis client configuration",
+        "type": "text"
+      }
+    },
+    "redisClientSecret": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "label": "Secret key for Redis client configuration",
+        "type": "text"
+      }
+    },
+    "rechargeSubscriptionTTLBackend": {
+      "type": "admin",
+      "destination": "backend",
+      "default": 1200000,
+      "params": {
+        "label": "Value (ms) for caching recharche subscription products in backend.",
+        "type": "number"
+      }
     }
   },
   "steps": [
