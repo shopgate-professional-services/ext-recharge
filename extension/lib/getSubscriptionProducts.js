@@ -1,5 +1,6 @@
 const ReChargeApi = require('../utilities/ReChargeApi')
 const ConnectRedisClient = require('@shopgate/connect-redis-client')
+const _ = require('underscore')
 
 let redisClient
 /*
@@ -8,7 +9,7 @@ let redisClient
 * @param {Object} context
 * @return {Promise<any>}
 */
-function getCacheEntry(cacheKey, context) {
+function getCacheEntry (cacheKey, context) {
   return new Promise((resolve) => {
     let ignoreTimeout = false
 
@@ -46,7 +47,7 @@ module.exports = async (context, input) => {
   const { productIds = [] } = input || {}
 
   if (!productIds.length) {
-    return { product: [] }
+    return { products: [] }
   }
 
   const { redisClientShopNumber, redisClientSecret } = context.config || {}
@@ -55,6 +56,7 @@ module.exports = async (context, input) => {
     redisClient = new ConnectRedisClient('@shopgate-project/recharge', redisClientShopNumber, redisClientSecret)
   }
 
+  // Create cache key with product_id used to fetch from Recharge API
   const buildCacheKey = id => `recharge.subscriptionProducts.${id}`
 
   const cachedOutput = []
@@ -63,12 +65,16 @@ module.exports = async (context, input) => {
   const uncachedIds = await Promise.all(productIds.map(async (id) => {
     const cachedData = JSON.parse(await getCacheEntry(buildCacheKey(id), context))
 
-    if (cachedData) {
-      cachedOutput.push({ id, product: cachedData.product })
+    if (!cachedData) {
+      return id
+    }
+
+    if (_.isEmpty(cachedData)) {
       return null
     }
 
-    return id
+    cachedOutput.push(cachedData)
+    return null
   }))
 
   const productIdsToFetch = uncachedIds.filter(id => id !== null)
@@ -83,17 +89,32 @@ module.exports = async (context, input) => {
   // Fetch products from API
   const api = new ReChargeApi(context)
   const { products = [] } = await api.getProducts(productIdsToFetch)
-  console.warn(products)
 
   // TTL in seconds
   const TTL = context.config.rechargeSubscriptionTTLBackend / 1000
 
-  // put response and missing product from response into cache
-  products.forEach(async ({ id, product }) => {
-    const cacheKey = buildCacheKey(id)
+  // If no subscription info then save empty object for id
+  if (!products.length) {
+    productIdsToFetch.forEach(async (id) => {
+      const cacheKey = buildCacheKey(id)
+      try {
+        // shopify_product_id is used to keep an id for subscription product in redux
+        await redisClient.set(cacheKey, JSON.stringify({}), TTL)
+      } catch (e) {
+        context.log.error({
+          redisError: e,
+          cacheKey
+        }, 'recharge redis cache set error')
+      }
+    })
+  }
 
+  // put response and missing product from response into cache
+  products.forEach(async (product) => {
+    const { product_id: id } = product || {}
+    const cacheKey = buildCacheKey(id)
     try {
-      await redisClient.set(cacheKey, JSON.stringify({ product }), TTL)
+      await redisClient.set(cacheKey, JSON.stringify(product), TTL)
     } catch (e) {
       context.log.error({
         redisError: e,
