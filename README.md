@@ -47,6 +47,27 @@ Recharge details configurations.
 }
 ```
 
+redisClientShopNumber
+```json
+{
+  "redisClientShopNumber": "shop_123"
+}
+ ```
+
+ redisClientSecret
+```json
+{
+  "redisClientSecret": "abc123"
+}
+ ```
+
+ rechargeSubscriptionTTLBackend
+```json
+{
+  "rechargeSubscriptionTTLBackend": 1200000
+}
+ ```
+
 ## About Shopgate
 
 Shopgate is the leading mobile commerce platform.
