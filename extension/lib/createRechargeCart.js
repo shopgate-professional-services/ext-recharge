@@ -14,6 +14,7 @@ module.exports = async (context, { cart, customer }) => {
   const api = new RechargeApi(context)
   const response = await api.createOrderToken(checkoutParams)
   const { checkout } = response || {}
+
   return { rechargeCart: checkout }
 }
 
