@@ -58,7 +58,7 @@ Recharge details configurations.
 In guru you must add the redis secret token to the config `Shopgate Connect Extension Settings.` The token must be entered in JSON format as follows:
 ```json
 {
-  "@shopgate/recharge": {
+  "@shopgate-project/recharge": {
     "redisSecret": ""
   }
 }
