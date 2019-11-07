@@ -47,26 +47,22 @@ Recharge details configurations.
 }
 ```
 
-redisClientShopNumber
-```json
-{
-  "redisClientShopNumber": "shop_123"
-}
- ```
-
- redisClientSecret
-```json
-{
-  "redisClientSecret": "abc123"
-}
- ```
-
  rechargeSubscriptionTTLBackend
 ```json
 {
   "rechargeSubscriptionTTLBackend": 1200000
 }
  ```
+
+### Additional Guru configuration
+In guru you must add the redis secret token to the config `Shopgate Connect Extension Settings.` The token must be entered in JSON format as follows:
+```json
+{
+  "@shopgate/recharge": {
+    "redisSecret": ""
+  }
+}
+```
 
 ## About Shopgate
 

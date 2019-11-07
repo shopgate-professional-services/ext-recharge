@@ -210,22 +210,15 @@
         "key": "value.frontend.alias"
       }
     },
-    "redisClientShopNumber": {
-      "type": "admin",
-      "destination": "backend",
-      "default": "",
-      "params": {
-        "label": "Shop number for Redis client configuration",
-        "type": "text"
-      }
-    },
     "redisClientSecret": {
-      "type": "admin",
+      "type": "bigApi",
       "destination": "backend",
       "default": "",
       "params": {
-        "label": "Secret key for Redis client configuration",
-        "type": "text"
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project/recharge.redisSecret"
       }
     },
     "rechargeSubscriptionTTLBackend": {

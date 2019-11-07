@@ -50,10 +50,14 @@ module.exports = async (context, input) => {
     return { products: [] }
   }
 
-  const { redisClientShopNumber, redisClientSecret } = context.config || {}
+  const { redisClientSecret } = context.config || {}
+
+  if (!redisClientSecret) {
+    throw new Error('No redis client secret found')
+  }
 
   if (!redisClient) {
-    redisClient = new ConnectRedisClient('@shopgate-project/recharge', redisClientShopNumber, redisClientSecret)
+    redisClient = new ConnectRedisClient('@shopgate-project/recharge', context.meta.appId, redisClientSecret)
   }
 
   // Create cache key with product_id used to fetch from Recharge API
