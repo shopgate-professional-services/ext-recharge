@@ -9,7 +9,12 @@ import {
   getReChargeFullSubscriptionItem,
   getRechargeCartState, getSelectedSubscriptionsInfo, getVariantId,
 } from '../selectors';
-import { GET_SUBSCRIPTION_PRODUCTS, GET_CART, GET_CUSTOMER_HASH } from '../constants';
+import {
+  GET_SUBSCRIPTION_PRODUCTS,
+  GET_CART,
+  GET_CUSTOMER_HASH,
+  SET_PAUSE_RECHARGE_CART,
+} from '../constants';
 import {
   requestRechargeSubscriptionProducts,
   receiveRechargeSubscriptionProducts,
@@ -72,7 +77,7 @@ export const fetchRechargeCart = () => (dispatch, getState) => {
   const state = getState();
   const rechargeCartState = getRechargeCartState(state);
 
-  if (rechargeCartState.isFetching) {
+  if (rechargeCartState.isFetching || rechargeCartState.isPaused) {
     return;
   }
 
@@ -145,4 +150,16 @@ export const addProductToCart = data => (dispatch, getState) => {
       baseProductId,
     },
   }]));
+};
+
+/**
+ * Sets a flag on recharge cart to determine if pipeline should fetch
+ * @param {bool} flag Flag for pausing
+ * @returns {Function}
+ */
+export const setPauseRechargeCart = flag => (dispatch) => {
+  dispatch({
+    type: SET_PAUSE_RECHARGE_CART,
+    flag,
+  });
 };

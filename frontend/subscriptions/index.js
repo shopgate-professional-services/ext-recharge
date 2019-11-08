@@ -1,5 +1,12 @@
 import { getBaseProductId, receivedVisibleProduct$ } from '@shopgate/engage/product';
-import { cartReceived$, fetchCart, cartWillEnter$, cartUpdatedWhileVisible$ } from '@shopgate/engage/cart';
+import {
+  cartReceived$,
+  fetchCart,
+  cartWillEnter$,
+  cartUpdatedWhileVisible$,
+  productsAdded$,
+  productsUpdated$,
+} from '@shopgate/engage/cart';
 import { PipelineRequest, logger } from '@shopgate/engage/core';
 import { navigate$ } from '@shopgate/pwa-common/streams/router';
 import getCart from '@shopgate/pwa-tracking/selectors/cart';
@@ -11,6 +18,7 @@ import {
   fetchSubscriptionProducts,
   fetchRechargeCart,
   fetchRechargeCustomerHash,
+  setPauseRechargeCart,
 } from '../actions';
 import { removeRechargeCustomerHash } from '../action-creators';
 import { RECHARGE_CHECKOUT_PATH } from '../constants';
@@ -93,5 +101,13 @@ export default (subscribe) => {
           logger.error(error);
         });
     }
+  });
+
+  subscribe(productsAdded$, ({ dispatch }) => {
+    dispatch(setPauseRechargeCart(true));
+  });
+
+  subscribe(productsUpdated$, ({ dispatch }) => {
+    dispatch(setPauseRechargeCart(false));
   });
 };

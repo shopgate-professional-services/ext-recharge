@@ -6,7 +6,6 @@ const mergeMirrorCarts = require('../helpers/mergeMirrorCarts')
 module.exports = async (context, { cartItems }) => {
   try {
     const storage = isLoggedIn(context) ? context.storage.user : context.storage.device
-
     if (!cartItems || cartItems.length < 1) {
       await storage.del(RECHARGE_MIRROR_KEY)
       return { cartItems }
@@ -32,7 +31,7 @@ module.exports = async (context, { cartItems }) => {
           )) || {}
 
         if (selections) {
-          product.additionalInfo.push({recharge: selections})
+          product.additionalInfo.push({ recharge: selections })
         }
       })
     await editOutOldSubscriptionInfo(rechargeSubscriptionInfo, cartItems, storage)
