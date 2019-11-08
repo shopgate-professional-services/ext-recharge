@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [1.0.3] - 2018-11-07
 ### Added
 - Support for increasing quantity on non subscription products on the cart page
+- Cache for subscription products
 
 ## [1.0.2] - 2018-10-24
 ### Added

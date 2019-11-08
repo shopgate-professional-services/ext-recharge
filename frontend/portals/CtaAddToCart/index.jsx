@@ -9,7 +9,6 @@ import connect from './connector';
  */
 const CtaAddToCart = ({
   isSubscriptionOnly,
-  children,
   conditioner,
   productId,
   options,
@@ -28,11 +27,6 @@ const CtaAddToCart = ({
     />);
   }
 
-  if (!isSubscriptionOnly) {
-    // TODO:
-    //return (children);
-  }
-
   return (<AddToCartCTA
     conditioner={conditioner}
     isRechargeOptional={!isSubscriptionOnly}
@@ -44,7 +38,6 @@ const CtaAddToCart = ({
 };
 
 CtaAddToCart.propTypes = {
-  children: PropTypes.node.isRequired,
   conditioner: PropTypes.shape().isRequired,
   options: PropTypes.shape().isRequired,
   productId: PropTypes.string.isRequired,

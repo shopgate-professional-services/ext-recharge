@@ -47,6 +47,23 @@ Recharge details configurations.
 }
 ```
 
+ rechargeSubscriptionTTLBackend
+```json
+{
+  "rechargeSubscriptionTTLBackend": 1200000
+}
+ ```
+
+### Additional Guru configuration
+In guru you must add the redis secret token to the config `Shopgate Connect Extension Settings.` The token must be entered in JSON format as follows:
+```json
+{
+  "@shopgate-project/recharge": {
+    "redisSecret": ""
+  }
+}
+```
+
 ## About Shopgate
 
 Shopgate is the leading mobile commerce platform.
