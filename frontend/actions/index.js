@@ -13,7 +13,7 @@ import {
   GET_SUBSCRIPTION_PRODUCTS,
   GET_CART,
   GET_CUSTOMER_HASH,
-  SET_PAUSE_RECHARGE_CART,
+  SET_BLOCK_RECHARGE_CART,
 } from '../constants';
 import {
   requestRechargeSubscriptionProducts,
@@ -77,7 +77,7 @@ export const fetchRechargeCart = () => (dispatch, getState) => {
   const state = getState();
   const rechargeCartState = getRechargeCartState(state);
 
-  if (rechargeCartState.isFetching || rechargeCartState.isPaused) {
+  if (rechargeCartState.isFetching || rechargeCartState.isBlocked) {
     return;
   }
 
@@ -157,9 +157,9 @@ export const addProductToCart = data => (dispatch, getState) => {
  * @param {bool} flag Flag for pausing
  * @returns {Function}
  */
-export const setPauseRechargeCart = flag => (dispatch) => {
+export const setBlockRechargeCart = flag => (dispatch) => {
   dispatch({
-    type: SET_PAUSE_RECHARGE_CART,
+    type: SET_BLOCK_RECHARGE_CART,
     flag,
   });
 };

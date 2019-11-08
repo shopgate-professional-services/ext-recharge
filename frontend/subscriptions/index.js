@@ -18,7 +18,7 @@ import {
   fetchSubscriptionProducts,
   fetchRechargeCart,
   fetchRechargeCustomerHash,
-  setPauseRechargeCart,
+  setBlockRechargeCart,
 } from '../actions';
 import { removeRechargeCustomerHash } from '../action-creators';
 import { RECHARGE_CHECKOUT_PATH } from '../constants';
@@ -104,10 +104,10 @@ export default (subscribe) => {
   });
 
   subscribe(productsAdded$, ({ dispatch }) => {
-    dispatch(setPauseRechargeCart(true));
+    dispatch(setBlockRechargeCart(true));
   });
 
   subscribe(productsUpdated$, ({ dispatch }) => {
-    dispatch(setPauseRechargeCart(false));
+    dispatch(setBlockRechargeCart(false));
   });
 };

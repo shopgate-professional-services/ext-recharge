@@ -2,7 +2,7 @@ import {
   RECEIVE_RECHARGE_CART,
   REQUEST_RECHARGE_CART,
   ERROR_RECHARGE_CART,
-  SET_PAUSE_RECHARGE_CART,
+  SET_BLOCK_RECHARGE_CART,
 } from '../constants';
 
 /**
@@ -15,7 +15,7 @@ const rechargeCartReducer = (
   state = {
     rechargeCart: null,
     isFetching: false,
-    isPaused: false,
+    isBlocked: false,
   },
   action
 ) => {
@@ -24,25 +24,25 @@ const rechargeCartReducer = (
       return {
         ...state,
         isFetching: true,
-        isPaused: false,
+        isBlocked: false,
       };
     case RECEIVE_RECHARGE_CART:
       return {
         ...action.rechargeCart,
         isFetching: false,
-        isPaused: false,
+        isBlocked: false,
       };
     case ERROR_RECHARGE_CART:
       return {
         ...state,
         isFetching: false,
-        isPaused: false,
+        isBlocked: false,
       };
-    case SET_PAUSE_RECHARGE_CART:
+    case SET_BLOCK_RECHARGE_CART:
       return {
         ...state,
         isFetching: false,
-        isPaused: action.flag,
+        isBlocked: action.flag,
       };
     default:
       return state;
