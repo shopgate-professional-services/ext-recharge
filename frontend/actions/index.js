@@ -154,7 +154,7 @@ export const addProductToCart = data => (dispatch, getState) => {
 
 /**
  * Sets a flag on recharge cart to determine if pipeline should fetch
- * @param {bool} flag Flag for pausing
+ * @param {boolean} flag Flag for pausing
  * @returns {Function}
  */
 export const setBlockRechargeCart = flag => (dispatch) => {
