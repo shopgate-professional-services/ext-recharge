@@ -10,8 +10,8 @@ module.exports = async (context, input) => {
   const storedMirrorCart = await getMirrorCart(storage, context.log)
 
   const newRechargeCart = input.products
-    .filter(({metadata, productId}) => metadata && productId)
-    .map(({productId, quantity, metadata}) => {
+    .filter(({ metadata, productId }) => metadata && productId)
+    .map(({ productId, quantity, metadata }) => {
       const { shopifyVariantId, baseProductId, rechargeInfo } = metadata
       const mirrorProduct = { productId, baseProductId }
       const selection = { shopifyVariantId, quantity }

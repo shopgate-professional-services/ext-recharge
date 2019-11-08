@@ -18,6 +18,8 @@ export const ERROR_RECHARGE_CART = 'ERROR_RECHARGE_CART';
 export const UPDATE_RECHARGE_INFO = 'UPDATE_RECHARGE_INFO';
 export const UPDATE_SHOPIFY_VARIANT_ID = 'UPDATE_SHOPIFY_VARIANT_ID';
 
+export const SET_BLOCK_RECHARGE_CART = 'SET_BLOCK_RECHARGE_CART';
+
 // Redux namespace
 const EXTENSION_NAME = '@shopgate-project/recharge';
 export const REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS = `${EXTENSION_NAME}/rechargeSubscriptionItems`;
