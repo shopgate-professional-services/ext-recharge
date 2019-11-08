@@ -1,6 +1,6 @@
 {
   "name": "@shopgate-project/recharge",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ReCharge integration",
   "license": "UNLICENSED",
   "scripts": {
@@ -31,5 +31,9 @@
     "nyc": "^14.1.1",
     "sinon": "^4.1.2",
     "standard": "^10.0.3"
+  },
+  "dependencies": {
+    "@shopgate/connect-redis-client": "^1.0.0",
+    "underscore": "^1.9.1"
   }
 }

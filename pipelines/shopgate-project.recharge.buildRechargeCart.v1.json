@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate-project.recharge.buildRechargeCart.v1",
+    "public": true,
+    "input": [
+      {
+        "id": "1010",
+        "key": "cartItems"
+      },
+      {
+        "id": "1020",
+        "key": "totals"
+      }
+    ],
+    "output": [
+      {
+        "id": "2000",
+        "key": "cart"
+      }
+    ],
+    "steps": [
+      {
+        "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/buildRechargeCart.js",
+        "type": "extension",
+        "input": [
+          {
+            "id": "1010",
+            "key": "cartItems"
+          },
+          {
+            "id": "1020",
+            "key": "totals"
+          }
+        ],
+        "output": [
+          {
+            "id": "2000",
+            "key": "cart"
+          }
+        ]
+      }
+    ]
+  }
+}

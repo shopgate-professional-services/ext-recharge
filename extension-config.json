@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "id": "@shopgate-project/recharge",
   "components": [
     {
@@ -208,6 +208,26 @@
         "service": "config",
         "path": "/v1/shop/%(shopId)s/checkout_web_checkout_shopify?parsed=true",
         "key": "value.frontend.alias"
+      }
+    },
+    "redisClientSecret": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project/recharge.redisSecret"
+      }
+    },
+    "rechargeSubscriptionTTLBackend": {
+      "type": "admin",
+      "destination": "backend",
+      "default": 1200000,
+      "params": {
+        "label": "Value (ms) for caching recharche subscription products in backend.",
+        "type": "number"
       }
     }
   },
