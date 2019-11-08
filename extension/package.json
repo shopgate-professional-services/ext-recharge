@@ -1,6 +1,6 @@
 {
   "name": "@shopgate-project/recharge",
-  "version": "1.0.3",
+  "version": "1.1.1",
   "description": "ReCharge integration",
   "license": "UNLICENSED",
   "scripts": {
