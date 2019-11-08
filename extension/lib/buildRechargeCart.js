@@ -25,6 +25,7 @@ module.exports = async function buildRechargeCart (context, input) {
   const items = []
 
   cartItems.forEach((cartItem) => {
+    const quantity = cartItem.quantity
     const product = cartItem.product
     const { recharge: rechargeInfo } = product.additionalInfo
       .find(({ recharge }) => !!recharge) || {}
@@ -34,7 +35,7 @@ module.exports = async function buildRechargeCart (context, input) {
     }
 
     const mappedSubscriptions = rechargeInfo.map(subOption => {
-      const { subscriptionInfo, quantity, shopifyVariantId } = subOption
+      const { subscriptionInfo, shopifyVariantId } = subOption
       const mappedSubscription = {
         order_reference: cartItem.id,
         name: product.name,
@@ -59,7 +60,7 @@ module.exports = async function buildRechargeCart (context, input) {
 
       if (discountPercentage > 0) {
         const deductedPrice = product.price.unit - (product.price.unit * (discountPercentage / 100))
-        mappedSubscription.total_amount = deductedPrice * quantity
+        mappedSubscription.total_amount = deductedPrice * subscriptionInfo.quantity
         mappedSubscription.unit_price = deductedPrice
       }
 
