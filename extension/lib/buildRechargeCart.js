@@ -4,6 +4,7 @@ module.exports = async function buildRechargeCart (context, input) {
   }
 
   const cartItems = input.cartItems.filter(({ type }) => type === 'product')
+
   // Check if we need to generate a recharge cart
   const isRecharge = cartItems.some(
     ({ product }) =>
@@ -34,15 +35,20 @@ module.exports = async function buildRechargeCart (context, input) {
       return
     }
 
+    const useRechargeQuantity = rechargeInfo.some((subOption) => (subOption.subscriptionInfo))
+
     const mappedSubscriptions = rechargeInfo.map(subOption => {
       const { subscriptionInfo, shopifyVariantId } = subOption
+      // If product is a mixed non-subscription and subscription product we should use the quanitity held for each sub option
+      const totalAmount = useRechargeQuantity ? product.price.unit * subOption.quantity : product.price.unit * quantity
+      const subQuantity = useRechargeQuantity ? subOption.quantity : quantity
       const mappedSubscription = {
         order_reference: cartItem.id,
         name: product.name,
         reference: cartItem.id,
-        total_amount: product.price.unit * quantity,
+        total_amount: totalAmount,
         unit_price: product.price.unit,
-        quantity: quantity,
+        quantity: subQuantity,
         image_url: product.featuredImageUrl ? product.featuredImageUrl : undefined,
         properties: product.properties.map(({ label: key, value }) => ({ key, value })),
         shopifyVariantId

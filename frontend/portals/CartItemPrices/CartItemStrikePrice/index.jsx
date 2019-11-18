@@ -15,13 +15,13 @@ import styles from './styles';
  */
 const CartItemStrikePrice = ({
   subscriptionPrice,
-  subscriptions,
+  rechargeInfo,
   originalPrice,
   children,
   currency,
 }) => {
   // if there is no subscriptions or if there was an original special price just return original
-  if (!subscriptions.length || originalPrice.special) {
+  if (!rechargeInfo.length || originalPrice.special) {
     return children;
   }
   const { special: specialPrice, default: defaultPrice } = subscriptionPrice;
@@ -43,14 +43,14 @@ CartItemStrikePrice.propTypes = {
   children: PropTypes.node.isRequired,
   currency: PropTypes.string.isRequired,
   originalPrice: PropTypes.shape(),
+  rechargeInfo: PropTypes.arrayOf(PropTypes.shape()),
   subscriptionPrice: PropTypes.shape(),
-  subscriptions: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 CartItemStrikePrice.defaultProps = {
   originalPrice: {},
   subscriptionPrice: {},
-  subscriptions: [],
+  rechargeInfo: [],
 };
 
 export default connect(CartItemStrikePrice);

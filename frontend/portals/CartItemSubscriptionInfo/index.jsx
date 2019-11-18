@@ -1,9 +1,8 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import connect from './connector';
 import Label from './components/Label';
-import { getDiscountedPrice } from '../../helpers/rechargeDiscountPriceTools';
-import { NO_SUBSCRIPTION_FREQUENCY_VALUE } from '../../constants';
 
 /**
  * Distill subscriptions array to array of simpler objects
@@ -11,30 +10,27 @@ import { NO_SUBSCRIPTION_FREQUENCY_VALUE } from '../../constants';
  * @param {number} itemUnitPrice Item unit price
  * @return {Object[]}
  */
-const distillSubscriptions = (subscriptions, itemUnitPrice) => subscriptions
+const distillSubscriptions = subscriptions => subscriptions
   .filter(subscription => (
     typeof subscription === 'object'
-    && subscription.frequencyValue
-    && subscription.frequencyValue !== NO_SUBSCRIPTION_FREQUENCY_VALUE
-    && subscription.subscriptionInfo
+    && subscription.charge_interval_frequency
+    && subscription.charge_interval_frequency !== null
   ))
   .map((subscription) => {
     const {
-      frequencyValue,
-      subscriptionInfo: {
-        intervalUnit = '',
-        quantity = 0,
-        discountType,
-        discountAmount,
-      },
-    } = subscription;
-    const price = getDiscountedPrice(itemUnitPrice, discountType, discountAmount);
-    const totalPrice = price * quantity;
-
-    return {
-      title: `Every ${frequencyValue} ${intervalUnit}`,
+      charge_interval_frequency,
+      order_interval_unit,
       quantity,
       price,
+    } = subscription;
+    const totalPrice = price * quantity;
+
+    const unitLabel = order_interval_unit === 'day' ? 'days' : order_interval_unit;
+
+    return {
+      title: `Every ${charge_interval_frequency} ${unitLabel}`,
+      quantity,
+      price: parseFloat(price, 2),
       totalPrice,
     };
   });
@@ -49,17 +45,17 @@ const distillSubscriptions = (subscriptions, itemUnitPrice) => subscriptions
  * @return {JSX}
  */
 const CartItemSubscriptionInfo = ({
-  subscriptions,
+  rechargeInfo,
   totalQuantity,
   currency,
   itemUnitPrice,
   cartItemId,
 }) => {
-  if (!Array.isArray(subscriptions)) {
+  if (!Array.isArray(rechargeInfo)) {
     return null;
   }
-  
-  const subscriptionDistillates = distillSubscriptions(subscriptions, itemUnitPrice);
+
+  const subscriptionDistillates = distillSubscriptions(rechargeInfo);
 
   if (!subscriptionDistillates.length) {
     return null;
@@ -75,17 +71,18 @@ const CartItemSubscriptionInfo = ({
         quantity,
         price,
         totalPrice,
-       }) => (
-         <Label
-           currency={currency}
-           price={price}
-           totalPrice={totalPrice}
-           title={title}
-           quantity={quantity}
-           key={`subscription-${cartItemId}-${title}`}
-         />
-      ))}
-      { totalQuantityOfSubscriptions < totalQuantity &&
+      }) =>
+        (
+          <Label
+            currency={currency}
+            price={price}
+            totalPrice={totalPrice}
+            title={title}
+            quantity={quantity}
+            key={`subscription-${cartItemId}-${title}`}
+          />
+        ))}
+      {totalQuantityOfSubscriptions < totalQuantity &&
         <Label
           currency={currency}
           price={itemUnitPrice}
@@ -103,13 +100,13 @@ CartItemSubscriptionInfo.propTypes = {
   cartItemId: PropTypes.string.isRequired,
   currency: PropTypes.string.isRequired,
   itemUnitPrice: PropTypes.number,
-  subscriptions: PropTypes.arrayOf(PropTypes.shape()),
+  rechargeInfo: PropTypes.arrayOf(PropTypes.shape()),
   totalQuantity: PropTypes.number,
 };
 
 CartItemSubscriptionInfo.defaultProps = {
+  rechargeInfo: [],
   itemUnitPrice: 0,
-  subscriptions: [],
   totalQuantity: 0,
 };
 

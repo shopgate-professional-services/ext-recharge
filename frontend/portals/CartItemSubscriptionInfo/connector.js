@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { getCurrency } from '@shopgate/engage/cart';
 import {
-  getCartItemRechargeInfo,
   getCartItemProductUnitPrice,
   getCartItemQuantity,
+  getCartItemLineInfo,
 } from '../../selectors';
 
 /**
@@ -12,7 +12,7 @@ import {
  * @returns {Object}
  */
 const mapStateToProps = (state, props) => ({
-  subscriptions: getCartItemRechargeInfo(state, props),
+  rechargeInfo: getCartItemLineInfo(state, props),
   itemUnitPrice: getCartItemProductUnitPrice(state, props),
   totalQuantity: getCartItemQuantity(state, props),
   currency: getCurrency(state),
