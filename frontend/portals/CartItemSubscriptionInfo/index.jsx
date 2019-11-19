@@ -1,6 +1,6 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
+import pluralizeOrderUnit from '../../helpers/pluralizeOrderUnit';
 import connect from './connector';
 import Label from './components/Label';
 
@@ -18,26 +18,26 @@ const distillSubscriptions = subscriptions => subscriptions
   ))
   .map((subscription) => {
     const {
-      charge_interval_frequency,
-      order_interval_unit,
+      charge_interval_frequency: chargeIntervalFrequency,
+      order_interval_unit: orderIntervalUnit,
       quantity,
       price,
     } = subscription;
     const totalPrice = price * quantity;
 
-    const unitLabel = order_interval_unit === 'day' ? 'days' : order_interval_unit;
+    const unitLabel = pluralizeOrderUnit(chargeIntervalFrequency, orderIntervalUnit);
 
     return {
-      title: `Every ${charge_interval_frequency} ${unitLabel}`,
+      title: `Every ${chargeIntervalFrequency} ${unitLabel}`,
       quantity,
-      price: parseFloat(price, 2),
+      price: parseFloat(price),
       totalPrice,
     };
   });
 
 /**
  * CartItemSubscriptionInfo component
- * @param {Object[]} subscriptions ReCharge Subscriptions
+ * @param {Object[]} rechargeInfo ReCharge Subscriptions
  * @param {number} totalQuantity Total cart item quantity
  * @param {string} currency Currency code like USD or EUR
  * @param {number} itemUnitPrice Unit price

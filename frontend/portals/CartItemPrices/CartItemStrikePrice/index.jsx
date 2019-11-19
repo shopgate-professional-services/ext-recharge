@@ -7,7 +7,7 @@ import styles from './styles';
 /**
  * CartItemStrikePrice portal component
  * @param {Object} subscriptionPrice Cart item price object
- * @param {Object[]} subscriptions ReCharge subscriptions
+ * @param {Object[]} rechargeInfo ReCharge subscriptions
  * @param {Object} originalPrice  Cart item price object
  * @param {Node} children Portals original children
  * @param {string} currency Currency code like USD or EUR

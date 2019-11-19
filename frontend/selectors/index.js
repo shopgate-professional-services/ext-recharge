@@ -185,8 +185,8 @@ export const getRechargeCartLineItems = createSelector(
 
 export const getCartItemLineInfo = createSelector(
   getCartItemProduct,
-  getRechargeCartState,
-  ({ id }, { line_items }) => {
+  getRechargeCartLineItems,
+  ({ id }, line_items) => {
     if (!line_items) {
       return [];
     }
@@ -314,7 +314,7 @@ export const getCartLineItemPriceDiscountedBySubscriptions = createSelector(
     }
 
     const totalRechargeLinePrice = rechargeInfo
-      .map(info => (parseFloat(info.price, 2) * parseInt(info.quantity, 10)))
+      .map(info => (parseFloat(info.price) * parseInt(info.quantity, 10)))
       .reduce((total, rechargePrice) => total + rechargePrice, 0);
 
     const { default: originalDefaultPrice, special: originalSpecialPrice } = price;
