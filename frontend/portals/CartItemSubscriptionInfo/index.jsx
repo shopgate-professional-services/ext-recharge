@@ -7,7 +7,6 @@ import Label from './components/Label';
 /**
  * Distill subscriptions array to array of simpler objects
  * @param {Object[]} subscriptions Subscription objects
- * @param {number} itemUnitPrice Item unit price
  * @return {Object[]}
  */
 const distillSubscriptions = subscriptions => subscriptions
