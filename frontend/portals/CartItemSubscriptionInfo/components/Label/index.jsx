@@ -18,28 +18,29 @@ const Label = ({
   quantity,
   totalPrice,
   currency,
-}) => (
-  <Grid className={styles.label}>
-    <Grid.Item>
-      <I18n.Text string={title} />
-    </Grid.Item>
-    <Grid.Item>
-      <I18n.Price
-        currency={currency}
-        price={price}
-      />
-    </Grid.Item>
-    <Grid.Item>
-      {`x${quantity}`}
-    </Grid.Item>
-    <Grid.Item>
-      <I18n.Price
-        currency={currency}
-        price={totalPrice}
-      />
-    </Grid.Item>
-  </Grid>
-);
+}) =>
+  (
+    <Grid className={styles.label}>
+      <Grid.Item>
+        <I18n.Text string={title} />
+      </Grid.Item>
+      <Grid.Item>
+        <I18n.Price
+          currency={currency}
+          price={price}
+        />
+      </Grid.Item>
+      <Grid.Item>
+        {`x${quantity}`}
+      </Grid.Item>
+      <Grid.Item>
+        <I18n.Price
+          currency={currency}
+          price={totalPrice}
+        />
+      </Grid.Item>
+    </Grid>
+  );
 
 Label.propTypes = {
   currency: PropTypes.string.isRequired,

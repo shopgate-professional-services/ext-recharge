@@ -15,18 +15,18 @@ const arePricesEqual = (priceOne = {}, priceTwo = {}) => (
 /**
  * CartItemPrice portal component
  * @param {Object} subscriptionPrice Cart item price object
- * @param {Object[]} subscriptions ReCharge subscriptions
+ * @param {Object[]} rechargeInfo ReCharge subscriptions
  * @param {Object} originalPrice  Cart item price object
  * @param {Node} children Portals original children
  * @return {Node}
  */
 const CartItemPrice = ({
   subscriptionPrice,
-  subscriptions,
+  rechargeInfo,
   originalPrice,
   children,
 }) => {
-  if (!subscriptions.length || arePricesEqual(subscriptionPrice, originalPrice)) {
+  if (!rechargeInfo.length || arePricesEqual(subscriptionPrice, originalPrice)) {
     return children;
   }
   const { special: specialPrice, default: defaultPrice } = subscriptionPrice;
@@ -42,14 +42,14 @@ const CartItemPrice = ({
 CartItemPrice.propTypes = {
   children: PropTypes.node.isRequired,
   originalPrice: PropTypes.shape(),
+  rechargeInfo: PropTypes.arrayOf(PropTypes.shape()),
   subscriptionPrice: PropTypes.shape(),
-  subscriptions: PropTypes.arrayOf(PropTypes.shape()),
 };
 
 CartItemPrice.defaultProps = {
   originalPrice: {},
   subscriptionPrice: {},
-  subscriptions: [],
+  rechargeInfo: [],
 };
 
 export default connect(CartItemPrice);

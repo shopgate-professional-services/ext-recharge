@@ -7,7 +7,6 @@ import {
   hasProductVariants,
 } from '@shopgate/engage/product';
 import { getIsFetching, getCartItemById } from '@shopgate/engage/cart';
-import { getDiscountToPrice } from '../helpers/rechargeDiscountPriceTools';
 import {
   REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS,
   REDUX_NAMESPACE_RECHARGE_CART,
@@ -98,6 +97,32 @@ export const getIsRechargeSubscriptionOnly = createSelector(
 );
 
 /**
+ * Get cart item quantity
+ * @return {Object|null}
+ */
+export const getCartItemQuantity = createSelector(
+  getCartItemById,
+  (cartItem) => {
+    const { quantity = null } = cartItem || {};
+
+    return quantity;
+  }
+);
+
+/**
+ * Get cart item product
+ * @return {Object|null}
+ */
+export const getCartItemProduct = createSelector(
+  getCartItemById,
+  (cartItem) => {
+    const { product = null } = cartItem || {};
+
+    return product;
+  }
+);
+
+/**
  * @param {Object} state state
  * @return {Object}
  */
@@ -140,6 +165,37 @@ export const getRechargeTotalPrice = createSelector(
     }
 
     return parseFloat(total_price);
+  }
+);
+
+/**
+ * Gets line items from recharge cart reducer
+ * @returns {Array||null}
+ */
+export const getRechargeCartLineItems = createSelector(
+  getRechargeCartState,
+  ({ line_items }) => {
+    if (!line_items) {
+      return null;
+    }
+
+    return line_items;
+  }
+);
+
+export const getCartItemLineInfo = createSelector(
+  getCartItemProduct,
+  getRechargeCartLineItems,
+  ({ id }, line_items) => {
+    if (!line_items) {
+      return [];
+    }
+
+    const rechargeInfo = line_items.filter(
+      item => (item.product_id.toString() === id || item.variant_id.toString() === id)
+    );
+
+    return rechargeInfo;
   }
 );
 
@@ -219,45 +275,6 @@ export const getRechargeCustomerHash = createSelector(
 );
 
 /**
- * Get cart item quantity
- * @return {Object|null}
- */
-export const getCartItemQuantity = createSelector(
-  getCartItemById,
-  (cartItem) => {
-    const { quantity = null } = cartItem || {};
-
-    return quantity;
-  }
-);
-
-/**
- * Get cart item product
- * @return {Object|null}
- */
-export const getCartItemProduct = createSelector(
-  getCartItemById,
-  (cartItem) => {
-    const { product = null } = cartItem || {};
-
-    return product;
-  }
-);
-
-/**
- * Get cart item product's additional information
- * @return {Object[]|null}
- */
-export const getCartItemProductAdditionalInformation = createSelector(
-  getCartItemProduct,
-  (cartItemProduct) => {
-    const { additionalInfo = null } = cartItemProduct || {};
-
-    return additionalInfo;
-  }
-);
-
-/**
  * Get cart item product's price
  * @return {Object|null}
  */
@@ -284,70 +301,32 @@ export const getCartItemProductUnitPrice = createSelector(
 );
 
 /**
- * Get cart item product's recharge information
- * @return {Object[]}
- */
-export const getCartItemRechargeInfo = createSelector(
-  getCartItemProductAdditionalInformation,
-  (additionalInformation = []) => {
-    const rechargeInfoContainer = additionalInformation
-      .find(info => typeof info === 'object' && info.hasOwnProperty('recharge'));
-
-    if (!rechargeInfoContainer) {
-      return [];
-    }
-
-    const { recharge } = rechargeInfoContainer;
-    return Array.isArray(recharge) ? recharge : [];
-  }
-);
-
-/**
- * Get cart item product's recharge information with subscription information
- * @return {Object[]}
- */
-export const getCartItemRechargeInfoWithSubscription = createSelector(
-  getCartItemRechargeInfo,
-  rechargeInfo => rechargeInfo.filter(subscription => (
-    typeof subscription === 'object'
-    && subscription.frequencyValue
-    && typeof subscription.subscriptionInfo === 'object'
-    && subscription.subscriptionInfo.discountAmount
-    && subscription.subscriptionInfo.discountType
-    && subscription.subscriptionInfo.quantity
-  ))
-);
-
-/**
  * Get cart item product's price discounted recharge subscriptions
  * @return {Object}
  */
 export const getCartLineItemPriceDiscountedBySubscriptions = createSelector(
-  getCartItemRechargeInfoWithSubscription,
+  getCartItemLineInfo,
   getCartItemProductPrice,
   getCartItemProductUnitPrice,
-  (subscriptions, price, unitPrice) => {
-    if (!subscriptions.length) {
+  (rechargeInfo, price, unitPrice) => {
+    if (!rechargeInfo.length) {
       return price;
     }
 
-    const totalSubscriptionDiscount = subscriptions
-      .map(({ subscriptionInfo: { discountAmount, discountType, quantity } }) => (
-        getDiscountToPrice(unitPrice, discountType, discountAmount) * quantity
-      ))
-      .reduce((total, subscriptionDiscount) => total + subscriptionDiscount, 0);
+    const totalRechargeLinePrice = rechargeInfo
+      .map(info => (parseFloat(info.price) * parseInt(info.quantity, 10)))
+      .reduce((total, rechargePrice) => total + rechargePrice, 0);
+
     const { default: originalDefaultPrice, special: originalSpecialPrice } = price;
     const priceToBeCharged = originalSpecialPrice || originalDefaultPrice;
 
-    if (!(totalSubscriptionDiscount && totalSubscriptionDiscount < priceToBeCharged)) {
+    if (!(totalRechargeLinePrice < priceToBeCharged)) {
       return price;
     }
 
-    const subscriptionDiscountedPrice = priceToBeCharged - totalSubscriptionDiscount;
-
     return {
       unit: unitPrice,
-      special: subscriptionDiscountedPrice,
+      special: totalRechargeLinePrice,
       default: originalDefaultPrice,
     };
   }
