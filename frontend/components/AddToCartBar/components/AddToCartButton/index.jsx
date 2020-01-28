@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import I18n from '@shopgate/pwa-common/components/I18n';
+import Portal from '@shopgate/pwa-common/components/Portal';
+import { RECHARGE_ADD_TO_CART_TEXT_PORTAL } from '../../../../constants';
 import connect from './connector';
 import styles from './style';
 
@@ -82,8 +84,11 @@ class AddToCartButton extends PureComponent {
         onClick={this.handleClick}
         data-test-id="addToCartBarButton"
         aria-hidden={!!itemCount}
+        type="button"
       >
-        <I18n.Text string={!itemCount ? 'product.add_to_cart' : 'product.go_to_cart'} />
+        <Portal name={RECHARGE_ADD_TO_CART_TEXT_PORTAL} props={{ itemCount }}>
+          <I18n.Text string={!itemCount ? 'product.add_to_cart' : 'product.go_to_cart'} />
+        </Portal>
       </button>
     );
   }
