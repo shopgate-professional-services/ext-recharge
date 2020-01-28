@@ -86,7 +86,7 @@ class AddToCartButton extends PureComponent {
         aria-hidden={!!itemCount}
         type="button"
       >
-        <Portal name={RECHARGE_ADD_TO_CART_TEXT_PORTAL} props={itemCount}>
+        <Portal name={RECHARGE_ADD_TO_CART_TEXT_PORTAL} props={{ itemCount }}>
           <I18n.Text string={!itemCount ? 'product.add_to_cart' : 'product.go_to_cart'} />
         </Portal>
       </button>
