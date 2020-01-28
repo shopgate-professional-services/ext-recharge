@@ -1,6 +1,10 @@
 import getConfig from './helpers/getConfig';
 
 const { shopifyAlias } = getConfig();
+
+// AddToCart Portal
+export const RECHARGE_ADD_TO_CART_TEXT_PORTAL = 'recharge.add-to-cart-text';
+
 // Actions
 export const RECEIVE_RECHARGE_SUBSCRIPTION_PRODUCTS = 'RECEIVE_RECHARGE_SUBSCRIPTION_PRODUCTS';
 export const REQUEST_RECHARGE_SUBSCRIPTION_PRODUCTS = 'REQUEST_RECHARGE_SUBSCRIPTION_PRODUCTS';

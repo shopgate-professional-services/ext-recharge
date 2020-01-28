@@ -172,7 +172,7 @@ class AddToCartBar extends Component {
     return ReactDOM.createPortal(
       (
         <Fragment>
-          <div className={styles.container} >
+          <div className={styles.container}>
             <div className={styles.innerContainer} ref={this.ref}>
               <div className={styles.base}>
                 <div className={styles.statusBar}>
