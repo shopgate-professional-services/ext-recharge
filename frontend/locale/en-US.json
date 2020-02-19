@@ -23,6 +23,7 @@
       "modal": {
         "choose_subscription": "Please choose a subscription option before adding this product to the cart"
       }
-    }
+    },
+    "edit_cart_error": "{name} has a subscription and cannot be edited. It can be removed and re-added on the product detail page"
   }
 }
