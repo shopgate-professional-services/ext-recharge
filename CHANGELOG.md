@@ -4,11 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [Unreleased]
+
+## [1.2.2] - 2020-02-20
 ### Added
 - support for recurring price
 
-## [1.2.1] - 2019-01-28
+## [1.2.1] - 2020-01-28
 ### Added
 - Portal around the text for Recharge AddToCartBar Component
 
@@ -37,6 +39,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Initial release of Recharge Integration
 
+[Unreleased]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.2...HEAD
+[1.2.2]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.0.2...v1.1.0
