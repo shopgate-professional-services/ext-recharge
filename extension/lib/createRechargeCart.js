@@ -28,29 +28,36 @@ const createLineItems = (items) => {
   return items.map((item) => {
     const { subscriptionInfo, shopifyVariantId } = item || {}
 
-    if (subscriptionInfo) {
+    if (!subscriptionInfo) {
       return ({
-        charge_interval_frequency: subscriptionInfo.chargeIntervalFrequency,
-        cutoff_day_month: subscriptionInfo.cutoffDayOfMonth,
-        cutoff_day_week: subscriptionInfo.cutoffDayOfWeek,
-        expire_after_specific_number_of_charges: subscriptionInfo.expireAfterSpecificNumberOfCharges,
-        order_day_of_month: subscriptionInfo.orderDayOfMonth === 0 ? null : subscriptionInfo.orderDayOfMonth,
-        order_day_of_week: subscriptionInfo.orderDayOfWeek,
-        order_interval_frequency: subscriptionInfo.orderIntervalFrequency,
-        order_interval_unit: orderIntervalTranslation[subscriptionInfo.intervalUnit] || null,
-        price: item.unit_price,
         quantity: item.quantity,
-        variant_id: subscriptionInfo.shopifyVariantId
+        price: item.unit_price,
+        variant_id: shopifyVariantId
       })
     }
 
-    return ({
-      quantity: item.quantity,
+    const rechargeItem = {
+      charge_interval_frequency: subscriptionInfo.chargeIntervalFrequency,
+      cutoff_day_month: subscriptionInfo.cutoffDayOfMonth,
+      cutoff_day_week: subscriptionInfo.cutoffDayOfWeek,
+      expire_after_specific_number_of_charges: subscriptionInfo.expireAfterSpecificNumberOfCharges,
+      order_day_of_month: subscriptionInfo.orderDayOfMonth === 0 ? null : subscriptionInfo.orderDayOfMonth,
+      order_day_of_week: subscriptionInfo.orderDayOfWeek,
+      order_interval_frequency: subscriptionInfo.orderIntervalFrequency,
+      order_interval_unit: orderIntervalTranslation[subscriptionInfo.intervalUnit] || null,
       price: item.unit_price,
-      variant_id: shopifyVariantId
-    })
+      quantity: item.quantity,
+      variant_id: subscriptionInfo.shopifyVariantId
+    }
+    // add optional recurring price property if part of Shopgate item
+    if (item.recurring_price) {
+      rechargeItem.recurring_price = item.recurring_price
+    }
+
+    return rechargeItem
   })
 }
+
 /**
  * Refine recharge customer into checkout customer data
  * @param {Object} customer
