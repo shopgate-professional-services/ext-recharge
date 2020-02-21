@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-### [1.2.3] - 2020-02-21
+## [1.2.3] - 2020-02-21
 ### Changed
 - Message passed in update cart product when editing subscription rather than throwing an error
 
