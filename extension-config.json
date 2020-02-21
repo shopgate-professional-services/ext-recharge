@@ -229,6 +229,50 @@
         "label": "Value (ms) for caching recharche subscription products in backend.",
         "type": "number"
       }
+    },
+    "webHookHandlerUrl": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project/recharge.webHookHandlerUrl"
+      }
+    },
+    "webHookHandlerRef": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project/recharge.webHookHandlerRef"
+      }
+    },
+    "webHookHandlerToken": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project/recharge.webHookHandlerToken"
+      }
+    },
+    "webHookHandlerSalt": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project/recharge.webHookHandlerSalt"
+      }
     }
   },
   "steps": [

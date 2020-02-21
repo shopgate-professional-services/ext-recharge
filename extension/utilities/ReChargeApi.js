@@ -143,6 +143,32 @@ class ReChargeApi {
       }
     })
   }
+
+  /**
+   * Create webhook
+   * @param {string} address Address webhook should call when triggered
+   * @param {string} topic Webhook topic
+   * @return {Promise<any>}
+   */
+  async createWebhook (address, topic) {
+    return this.call({
+      path: 'webhooks',
+      method: 'POST',
+      body: { address, topic }
+    })
+  }
+
+  /**
+   * Get webhook by Id
+   * @param {string} webhookId Webhook id
+   * @return {Promise<any>}
+   */
+  async getWebhookById (webhookId) {
+    return this.call({
+      path: `webhooks/${webhookId}`,
+      method: 'GET'
+    })
+  }
 }
 
 module.exports = ReChargeApi
