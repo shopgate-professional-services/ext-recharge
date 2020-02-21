@@ -1,5 +1,5 @@
 {
-  "version": "1.2.2",
+  "version": "1.2.3-rc.1",
   "id": "@shopgate-project/recharge",
   "components": [
     {
@@ -284,13 +284,30 @@
       ],
       "input": [
         {
-          "key": "CartItem"
-        },
-        {
           "key": "cartItems"
         }
       ],
-      "output": []
+      "output": [
+        {
+          "key": "cartItems"
+        }
+      ]
+    },
+    {
+      "path": "extension/steps/addCartMessagesToCartProductUpdate.js",
+      "hooks": [
+        "shopgate.cart.updateProducts.v1:after"
+      ],
+      "input": [
+        {
+          "key": "messages"
+        }
+      ],
+      "output": [
+        {
+          "key": "messages"
+        }
+      ]
     }
   ]
 }
