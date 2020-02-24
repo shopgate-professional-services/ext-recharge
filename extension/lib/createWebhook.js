@@ -70,9 +70,9 @@ const generateWebhookAddress = (appId, context) => {
     webhookNodeEnv = 'production'
   } = context.config
   const variables = [
-    { key: 'SHOP_NUMBER', value: appId },
-    { key: 'AUTH_HASH', value: generateAuthenticationHash(appId, webhookHandlerSalt) },
-    { key: 'NODE_ENV', value: webhookNodeEnv }
+    { key: 'shop-number', value: appId },
+    { key: 'auth-hash', value: generateAuthenticationHash(appId, webhookHandlerSalt) },
+    { key: 'node-env', value: webhookNodeEnv }
   ].map(({ key, value }) => (`&variables[${key}]=${value}`))
 
   return `${webhookHandlerUrl}?ref=${webhookHandlerRef}&token=${webhookHandlerToken}${variables}`
