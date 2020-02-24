@@ -230,7 +230,7 @@
         "type": "number"
       }
     },
-    "webHookHandlerUrl": {
+    "webhookHandlerUrl": {
       "type": "bigApi",
       "destination": "backend",
       "default": "",
@@ -238,10 +238,10 @@
         "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
-        "key": "value.@shopgate-project/recharge.webHookHandlerUrl"
+        "key": "value.@shopgate-project/recharge.webhookHandlerUrl"
       }
     },
-    "webHookHandlerRef": {
+    "webhookHandlerRef": {
       "type": "bigApi",
       "destination": "backend",
       "default": "",
@@ -249,10 +249,10 @@
         "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
-        "key": "value.@shopgate-project/recharge.webHookHandlerRef"
+        "key": "value.@shopgate-project/recharge.webhookHandlerRef"
       }
     },
-    "webHookHandlerToken": {
+    "webhookHandlerToken": {
       "type": "bigApi",
       "destination": "backend",
       "default": "",
@@ -260,10 +260,10 @@
         "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
-        "key": "value.@shopgate-project/recharge.webHookHandlerToken"
+        "key": "value.@shopgate-project/recharge.webhookHandlerToken"
       }
     },
-    "webHookHandlerSalt": {
+    "webhookHandlerSalt": {
       "type": "bigApi",
       "destination": "backend",
       "default": "",
@@ -271,7 +271,7 @@
         "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
-        "key": "value.@shopgate-project/recharge.webHookHandlerSalt"
+        "key": "value.@shopgate-project/recharge.webhookHandlerSalt"
       }
     }
   },

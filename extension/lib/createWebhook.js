@@ -5,6 +5,8 @@ const TTL = 86400000 // 24 hours
 const WEBHOOK_TOPIC = 'charge/paid'
 
 module.exports = async (context) => {
+  // check config to ensure all required data is available throw error if not
+  checkForConfigError(context)
   const { meta: { appId } } = context
   const existingWebhook = await context.storage.extension.map.getItem(RECHARGE_WEBHOOK_MAP, appId)
 
@@ -30,6 +32,19 @@ module.exports = async (context) => {
   }
 
   await createWebhook(appId, context)
+}
+
+const checkForConfigError = (context) => {
+  const {
+    webhookHandlerUrl,
+    webhookHandlerRef,
+    webhookHandlerToken,
+    webhookHandlerSalt,
+  } = context.config
+
+  if (!(webhookHandlerUrl && webhookHandlerRef && webhookHandlerToken && webhookHandlerSalt)) {
+    throw new Error('Misconfiguration for Recharge Webhook creation')
+  }
 }
 
 /**
@@ -85,8 +100,8 @@ const generateWebhookAddress = (appId, context) => {
  * @return {string}
  */
 const generateAuthenticationHash = (shopNumber, salt) => {
-  const hash = crypto.createHash('sha1')
-  hash.update(`${shopNumber}-${salt}`)
+  const hash = crypto.createHmac('sha1', salt)
+  hash.update(shopNumber)
 
   return hash.digest('hex')
 }
