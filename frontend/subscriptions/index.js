@@ -7,7 +7,7 @@ import {
   productsAdded$,
   productsUpdated$,
 } from '@shopgate/engage/cart';
-import { PipelineRequest, logger } from '@shopgate/engage/core';
+import { PipelineRequest, logger, appDidStart$ } from '@shopgate/engage/core';
 import { navigate$ } from '@shopgate/pwa-common/streams/router';
 import getCart from '@shopgate/pwa-tracking/selectors/cart';
 import { checkoutSucceeded$ } from '@shopgate/pwa-common-commerce/checkout';
@@ -19,6 +19,7 @@ import {
   fetchRechargeCart,
   fetchRechargeCustomerHash,
   setBlockRechargeCart,
+  createWebhook,
 } from '../actions';
 import { removeRechargeCustomerHash } from '../action-creators';
 import { RECHARGE_CHECKOUT_PATH } from '../constants';
@@ -109,5 +110,10 @@ export default (subscribe) => {
 
   subscribe(productsUpdated$, ({ dispatch }) => {
     dispatch(setBlockRechargeCart(false));
+  });
+
+  // Create webhook (if does not already exist) for tracking recurring payments
+  subscribe(appDidStart$, ({ dispatch }) => {
+    dispatch(createWebhook());
   });
 };
