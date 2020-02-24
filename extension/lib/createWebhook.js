@@ -1,7 +1,7 @@
 const crypto = require('crypto')
 const RechargeApi = require('../utilities/ReChargeApi')
 const { RECHARGE_WEBHOOK_MAP } = require('../constants')
-const TTL = 86400000
+const TTL = 86400000 // 24 hours
 const WEBHOOK_TOPIC = 'charge/paid'
 
 module.exports = async (context) => {
@@ -18,8 +18,9 @@ module.exports = async (context) => {
     return
   }
 
-  const webhookGood = await webhookExists(existingWebhook, context)
+  const webhookGood = await webhookExists(existingWebhook, appId, context)
 
+  // If webhook is still good update the stored timestamp
   if (webhookGood) {
     await context.storage.extension.map.setItem(
       RECHARGE_WEBHOOK_MAP, appId, { ...existingWebhook, timestamp: Date.now() }
@@ -31,32 +32,56 @@ module.exports = async (context) => {
   await createWebhook(appId, context)
 }
 
+/**
+ * Call Recharge api to create webhook, and store it in extension storage by app id
+ * @param {string} appId App id like shop_31840
+ * @param {Object} context Step context object
+ * @return {Promise<void>}
+ */
 const createWebhook = async (appId, context) => {
   const api = new RechargeApi(context)
-  const {
-    webHookHandlerUrl,
-    webHookHandlerRef,
-    webHookHandlerToken,
-    webHookHandlerSalt
-  } = context.config
-  const addressVariables = [
-    { shop_number: appId },
-    { auth_hash: generateAuthenticationHash(appId, webHookHandlerSalt) }
-  ]
+
   const { webhook } = await api.createWebhook(
-    generateWebookAddress(webHookHandlerUrl, webHookHandlerToken, webHookHandlerRef, addressVariables),
+    generateWebookAddress(appId, context),
     WEBHOOK_TOPIC
   ) || {}
+
+  if (!webhook) {
+    throw new Error(`Recharge webhook was not created`)
+  }
 
   await context.storage.extension.map.setItem(
     RECHARGE_WEBHOOK_MAP, appId, { ...webhook, timestamp: Date.now() }
   )
 }
 
-const generateWebookAddress = (baseUrl, token, ref, variables = []) => (
-  `${baseUrl}?ref=${ref}&token=${token}${variables.map(({ key, value }) => (`&variables[${key}]=${value}`))}`
-)
+/**
+ * Generate address webhook should call when triggered
+ * @param {string} appId App id like shop_31840
+ * @param {Object} context Step context object
+ * @return {string}
+ */
+const generateWebookAddress = (appId, context) => {
+  const {
+    webHookHandlerUrl,
+    webHookHandlerRef,
+    webHookHandlerToken,
+    webHookHandlerSalt
+  } = context.config
+  const variables = [
+    { key: 'shop_number', value: appId },
+    { key: 'auth_hash', value: generateAuthenticationHash(appId, webHookHandlerSalt) }
+  ].map(({ key, value }) => (`&variables[${key}]=${value}`))
 
+  return `${webHookHandlerUrl}?ref=${webHookHandlerRef}&token=${webHookHandlerToken}${variables}`
+}
+
+/**
+ * Generate a authentication hash with salt
+ * @param {string} shopNumber Shop number like shop_31840
+ * @param {string} salt
+ * @return {string}
+ */
 const generateAuthenticationHash = (shopNumber, salt) => {
   const hash = crypto.createHash('sha1')
   hash.update(`${shopNumber}-${salt}`)
@@ -64,21 +89,39 @@ const generateAuthenticationHash = (shopNumber, salt) => {
   return hash.digest('hex')
 }
 
+/**
+ * Check timestamp of stored webhook to determine if it is NOT timed out
+ * @param {Object} storedWebhook Webhook as stored in Extension store
+ * @return {boolean}
+ */
 const shouldCheckWebook = (storedWebhook) => {
   const { timestamp = 0 } = storedWebhook || {}
 
-  return timestamp + TTL > Date.now()
+  return timestamp + TTL < Date.now()
 }
 
-const webhookExists = (existingWebhook, context) => {
+/**
+ * Call Recharge api to ensure webhook is still exists and has the same topic and the correct address
+ * @param {Object} existingWebhook Webhook as stored in Extension store
+ * @param {string} appId App id like shop_31840
+ * @param context
+ * @return {Promise<boolean>}
+ */
+const webhookExists = async (existingWebhook, appId, context) => {
   const { id, topic: existingTopic } = existingWebhook
+  // get webhook address according to current configuration
+  const webhookAddress = generateWebookAddress(appId, context)
   const api = new RechargeApi(context)
-
   try {
-    const { webhook } = api.getWebhookById(id)
+    const { webhook } = await api.getWebhookById(id)
 
-    return webhook && webhook.topic === existingTopic
+    return webhook && webhook.topic === existingTopic && webhook.address === webhookAddress
   } catch (err) {
-    return false
+    // return false if error is 404 not found
+    if (err.message.includes('404')) {
+      return false
+    }
+
+    throw err
   }
 }
