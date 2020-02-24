@@ -42,7 +42,7 @@ const createWebhook = async (appId, context) => {
   const api = new RechargeApi(context)
 
   const { webhook } = await api.createWebhook(
-    generateWebookAddress(appId, context),
+    generateWebhookAddress(appId, context),
     WEBHOOK_TOPIC
   ) || {}
 
@@ -61,19 +61,21 @@ const createWebhook = async (appId, context) => {
  * @param {Object} context Step context object
  * @return {string}
  */
-const generateWebookAddress = (appId, context) => {
+const generateWebhookAddress = (appId, context) => {
   const {
-    webHookHandlerUrl,
-    webHookHandlerRef,
-    webHookHandlerToken,
-    webHookHandlerSalt
+    webhookHandlerUrl,
+    webhookHandlerRef,
+    webhookHandlerToken,
+    webhookHandlerSalt,
+    webhookNodeEnv = 'production'
   } = context.config
   const variables = [
-    { key: 'shop_number', value: appId },
-    { key: 'auth_hash', value: generateAuthenticationHash(appId, webHookHandlerSalt) }
+    { key: 'SHOP_NUMBER', value: appId },
+    { key: 'AUTH_HASH', value: generateAuthenticationHash(appId, webhookHandlerSalt) },
+    { key: 'NODE_ENV', value: webhookNodeEnv }
   ].map(({ key, value }) => (`&variables[${key}]=${value}`))
 
-  return `${webHookHandlerUrl}?ref=${webHookHandlerRef}&token=${webHookHandlerToken}${variables}`
+  return `${webhookHandlerUrl}?ref=${webhookHandlerRef}&token=${webhookHandlerToken}${variables}`
 }
 
 /**
@@ -110,7 +112,7 @@ const shouldCheckWebook = (storedWebhook) => {
 const webhookExists = async (existingWebhook, appId, context) => {
   const { id, topic: existingTopic } = existingWebhook
   // get webhook address according to current configuration
-  const webhookAddress = generateWebookAddress(appId, context)
+  const webhookAddress = generateWebhookAddress(appId, context)
   const api = new RechargeApi(context)
   try {
     const { webhook } = await api.getWebhookById(id)

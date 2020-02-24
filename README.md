@@ -59,7 +59,12 @@ In guru you must add the redis secret token to the config `Shopgate Connect Exte
 ```json
 {
   "@shopgate-project/recharge": {
-    "redisSecret": ""
+    "redisSecret": "",
+    "webhookHandlerUrl": "",
+    "webhookHandlerToken": "",
+    "webhookHandlerSalt": "",
+    "webhookHandlerRef": "",
+    "webhookNodeEnv": ""
   }
 }
 ```
