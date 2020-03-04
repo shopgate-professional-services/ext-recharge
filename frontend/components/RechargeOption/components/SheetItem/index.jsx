@@ -43,10 +43,10 @@ const SheetItem = ({
     onClick: handleItemClick,
   });
 
-  const label = singularizeOrderUnit(item, intervalUnit)
+  const label = singularizeOrderUnit(item, intervalUnit);
 
   return (
-    <button {...buildProps()} aria-selected={selected} role="option">
+    <button type="button" {...buildProps()} aria-selected={selected} role="option">
       {`${item} ${label}`}
     </button>
   );

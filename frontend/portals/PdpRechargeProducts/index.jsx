@@ -2,7 +2,6 @@
 import React, { memo, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withCurrentProduct } from '@shopgate/engage/core';
-import getUseChargeIntervalFrequency from '../../helpers/getUseChargeIntervalFrequency';
 import RechargeOption from '../../components/RechargeOption';
 import SubscriptionDetailsBadge from '../../components/SubscriptionDetailsBadge';
 import PdpSubscriptionHeader from '../../components/PdpSubscriptionHeader';
@@ -31,7 +30,7 @@ const PdpRechargeProducts = ({
     charge_interval_frequency,
     cutoff_day_of_month,
     cutoff_day_of_week,
-    expire_after_spefific_number_of_charges,
+    expire_after_specific_number_of_charges,
     order_day_of_month,
     order_day_of_week,
     order_interval_frequency,
@@ -54,7 +53,7 @@ const PdpRechargeProducts = ({
         cutoffDayOfWeek={cutoff_day_of_week}
         discountAmount={discount_amount}
         discountType={discount_type}
-        expireAfterSpecificNumberOfCharges={expire_after_spefific_number_of_charges}
+        expireAfterSpecificNumberOfCharges={expire_after_specific_number_of_charges}
         frequencyValues={order_interval_frequency_options}
         intervalUnit={order_interval_unit}
         orderDayOfMonth={order_day_of_month}

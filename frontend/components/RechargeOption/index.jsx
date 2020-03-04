@@ -1,4 +1,6 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react';
+import React, {
+  Fragment, useState, useEffect, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/Transition';
 import { i18n } from '@shopgate/engage/core';
@@ -42,14 +44,14 @@ const RechargeOption = ({
   const [highlight, setHighlight] = useState(false);
   const isSubscriptionOptional = purchaseOption !== REQUIRED_SUBSCRIPTION_TEXT;
 
-    /**
+  /**
    * Recharge has a subscription type called `Pre-paid subscription only` that
    * needs to use the charge_interval_frequency value since it is different then the
-   * order_interval_frequency_options values. The charge_interval_frequency for non Pre-paid 
+   * order_interval_frequency_options values. The charge_interval_frequency for non Pre-paid
    * subscription options will always be the same value as the first value of the array.
    * Placed method here since frequencyValues is a required prop.
    */
-  const useChargeIntFreq = getUseChargeIntervalFrequency(frequencyValues)
+  const useChargeIntFreq = getUseChargeIntervalFrequency(frequencyValues);
 
   // ComponentWillUnmount - reset selected to null
   useEffect(() => {
@@ -101,7 +103,7 @@ const RechargeOption = ({
 
     setSelected(frequencyValue);
 
-  const chargeIntervalFrequency = useChargeIntFreq ? chargeIntFreq : frequencyValue;
+    const chargeIntervalFrequency = useChargeIntFreq ? chargeIntFreq : frequencyValue;
 
     // Frequency value is the selected value from sheet
     const subscriptionInfo = {
@@ -143,7 +145,7 @@ const RechargeOption = ({
     }
 
     const valueLabel = frequencyValues.find(frequencyValue => frequencyValue === selected);
-    const label = singularizeOrderUnit(valueLabel, intervalUnit)
+    const label = singularizeOrderUnit(valueLabel, intervalUnit);
 
     return `${valueLabel} ${label}`;
   };
