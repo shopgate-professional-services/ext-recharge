@@ -4,4 +4,4 @@ export default (orderIntervalFrequencyOptions) => {
   }
 
   return true;
-}
+};
