@@ -1,8 +1,12 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react';
+import React, {
+  Fragment, useState, useEffect, useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
 import Transition from 'react-transition-group/Transition';
 import { i18n } from '@shopgate/engage/core';
 import { SheetDrawer, SheetList } from '@shopgate/engage/components';
+import getUseChargeIntervalFrequency from '../../helpers/getUseChargeIntervalFrequency';
+import singularizeOrderUnit from '../../helpers/singularizeOrderUnit';
 import SheetItem from './components/SheetItem';
 import {
   REQUIRED_SUBSCRIPTION_TEXT,
@@ -15,6 +19,7 @@ import styles from './style';
  * @returns {JSX}
  */
 const RechargeOption = ({
+  chargeIntFreq,
   cutoffDayOfMonth,
   cutoffDayOfWeek,
   discountAmount,
@@ -38,6 +43,15 @@ const RechargeOption = ({
   const [selected, setSelected] = useState(null);
   const [highlight, setHighlight] = useState(false);
   const isSubscriptionOptional = purchaseOption !== REQUIRED_SUBSCRIPTION_TEXT;
+
+  /**
+   * Recharge has a subscription type called `Pre-paid subscription only` that
+   * needs to use the charge_interval_frequency value since it is different then the
+   * order_interval_frequency_options values. The charge_interval_frequency for non Pre-paid
+   * subscription options will always be the same value as the first value of the array.
+   * Placed method here since frequencyValues is a required prop.
+   */
+  const useChargeIntFreq = getUseChargeIntervalFrequency(frequencyValues);
 
   // ComponentWillUnmount - reset selected to null
   useEffect(() => {
@@ -89,12 +103,14 @@ const RechargeOption = ({
 
     setSelected(frequencyValue);
 
+    const chargeIntervalFrequency = useChargeIntFreq ? chargeIntFreq : frequencyValue;
+
     // Frequency value is the selected value from sheet
     const subscriptionInfo = {
       frequencyValue,
       baseProductId,
       subscriptionInfo: {
-        chargeIntervalFrequency: frequencyValue,
+        chargeIntervalFrequency,
         cutoffDayOfMonth,
         cutoffDayOfWeek,
         discountType,
@@ -129,8 +145,9 @@ const RechargeOption = ({
     }
 
     const valueLabel = frequencyValues.find(frequencyValue => frequencyValue === selected);
+    const label = singularizeOrderUnit(valueLabel, intervalUnit);
 
-    return `${valueLabel} ${intervalUnit}`;
+    return `${valueLabel} ${label}`;
   };
 
   /**
@@ -196,6 +213,7 @@ const RechargeOption = ({
 
 RechargeOption.propTypes = {
   baseProductId: PropTypes.string.isRequired,
+  chargeIntFreq: PropTypes.number.isRequired,
   discountAmount: PropTypes.number.isRequired,
   discountType: PropTypes.string.isRequired,
   frequencyValues: PropTypes.arrayOf(PropTypes.string).isRequired,

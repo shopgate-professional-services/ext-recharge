@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import singularizeOrderUnit from '../../../../helpers/singularizeOrderUnit';
 import styles from './style';
 
 /**
@@ -42,9 +43,11 @@ const SheetItem = ({
     onClick: handleItemClick,
   });
 
+  const label = singularizeOrderUnit(item, intervalUnit);
+
   return (
-    <button {...buildProps()} aria-selected={selected} role="option">
-      {`${item} ${intervalUnit}`}
+    <button type="button" {...buildProps()} aria-selected={selected} role="option">
+      {`${item} ${label}`}
     </button>
   );
 };
