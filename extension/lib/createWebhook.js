@@ -8,10 +8,11 @@ module.exports = async (context) => {
   // check config to ensure all required data is available throw error if not
   checkForConfigError(context)
   const { meta: { appId } } = context
-  const existingWebhook = await context.storage.extension.map.getItem(RECHARGE_WEBHOOK_MAP, appId)
+  const shopNumber = getShopNumber(appId)
+  const existingWebhook = await context.storage.extension.map.getItem(RECHARGE_WEBHOOK_MAP, shopNumber)
 
   if (!existingWebhook) {
-    await createWebhook(appId, context)
+    await createWebhook(shopNumber, context)
 
     return
   }
@@ -20,7 +21,7 @@ module.exports = async (context) => {
     return
   }
 
-  const webhookGood = await webhookExists(existingWebhook, appId, context)
+  const webhookGood = await webhookExists(existingWebhook, shopNumber, context)
 
   // If webhook is still good update the stored timestamp
   if (webhookGood) {
@@ -34,30 +35,38 @@ module.exports = async (context) => {
   await createWebhook(appId, context)
 }
 
+/**
+ * Get shop number for appId
+ * @param {string} appId appId like shop_123456
+ * @return {string}
+ */
+const getShopNumber = (appId) => (
+  appId.split('_')[1]
+)
+
 const checkForConfigError = (context) => {
   const {
     webhookHandlerUrl,
-    webhookHandlerRef,
     webhookHandlerToken,
-    webhookHandlerSalt,
+    webhookHandlerSalt
   } = context.config
 
-  if (!(webhookHandlerUrl && webhookHandlerRef && webhookHandlerToken && webhookHandlerSalt)) {
+  if (!(webhookHandlerUrl && webhookHandlerToken && webhookHandlerSalt)) {
     throw new Error('Misconfiguration for Recharge Webhook creation')
   }
 }
 
 /**
  * Call Recharge api to create webhook, and store it in extension storage by app id
- * @param {string} appId App id like shop_31840
+ * @param {string} shopNumber Shop number
  * @param {Object} context Step context object
  * @return {Promise<void>}
  */
-const createWebhook = async (appId, context) => {
+const createWebhook = async (shopNumber, context) => {
   const api = new RechargeApi(context)
 
   const { webhook } = await api.createWebhook(
-    generateWebhookAddress(appId, context),
+    generateWebhookAddress(shopNumber, context),
     WEBHOOK_TOPIC
   ) || {}
 
@@ -66,36 +75,37 @@ const createWebhook = async (appId, context) => {
   }
 
   await context.storage.extension.map.setItem(
-    RECHARGE_WEBHOOK_MAP, appId, { ...webhook, timestamp: Date.now() }
+    RECHARGE_WEBHOOK_MAP, shopNumber, { ...webhook, timestamp: Date.now() }
   )
 }
 
 /**
  * Generate address webhook should call when triggered
- * @param {string} appId App id like shop_31840
+ * @param {string} shopNumber Shop number
  * @param {Object} context Step context object
  * @return {string}
  */
-const generateWebhookAddress = (appId, context) => {
+const generateWebhookAddress = (shopNumber, context) => {
   const {
     webhookHandlerUrl,
-    webhookHandlerRef,
     webhookHandlerToken,
-    webhookHandlerSalt,
-    webhookNodeEnv = 'production'
+    webhookHandlerSalt
   } = context.config
-  const variables = [
-    { key: 'shop_number', value: appId },
-    { key: 'auth_hash', value: generateAuthenticationHash(appId, webhookHandlerSalt) },
-    { key: 'node_env', value: webhookNodeEnv }
-  ].map(({ key, value }) => (`&variables[${key}]=${value}`))
+  const query = [
+    { key: 'apiKey', value: webhookHandlerToken },
+    { key: 'shop_number', value: shopNumber },
+    { key: 'auth_hash', value: generateAuthenticationHash(shopNumber, webhookHandlerSalt) }
+  ].reduce((accum, { key, value }, index) => {
+    const demarcation = index > 0 ? '&' : '?'
+    return `${accum}${demarcation}${key}=${encodeURIComponent(value)}`
+  }, '')
 
-  return `${webhookHandlerUrl}?ref=${webhookHandlerRef}&token=${webhookHandlerToken}${variables}`
+  return `${webhookHandlerUrl}${query}`
 }
 
 /**
  * Generate a authentication hash with salt
- * @param {string} shopNumber Shop number like shop_31840
+ * @param {string} shopNumber Shop number
  * @param {string} salt
  * @return {string}
  */
@@ -120,14 +130,14 @@ const shouldCheckWebook = (storedWebhook) => {
 /**
  * Call Recharge api to ensure webhook is still exists and has the same topic and the correct address
  * @param {Object} existingWebhook Webhook as stored in Extension store
- * @param {string} appId App id like shop_31840
+ * @param {string} shopNumber Shop number
  * @param context
  * @return {Promise<boolean>}
  */
-const webhookExists = async (existingWebhook, appId, context) => {
+const webhookExists = async (existingWebhook, shopNumber, context) => {
   const { id, topic: existingTopic } = existingWebhook
   // get webhook address according to current configuration
-  const webhookAddress = generateWebhookAddress(appId, context)
+  const webhookAddress = generateWebhookAddress(shopNumber, context)
   const api = new RechargeApi(context)
   try {
     const { webhook } = await api.getWebhookById(id)
