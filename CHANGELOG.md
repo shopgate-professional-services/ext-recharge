@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Creation of recharge charge/paid webhook to track recurring payments
 
+## [1.2.4] - 2020-03-03
+### Changed
+- Logic for charge interval frequency for pre-paid subscription items and added a singularize heler.
+
+
 ## [1.2.3] - 2020-02-21
 ### Changed
 - Message passed in update cart product when editing subscription rather than throwing an error
@@ -46,6 +51,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Initial release of Recharge Integration
 
 [Unreleased]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.3...HEAD
+[1.2.4]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.0...v1.2.1
