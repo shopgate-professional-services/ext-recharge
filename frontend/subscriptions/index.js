@@ -7,10 +7,10 @@ import {
   productsAdded$,
   productsUpdated$,
 } from '@shopgate/engage/cart';
-import { PipelineRequest, logger, appDidStart$ } from '@shopgate/engage/core';
+import { PipelineRequest, logger } from '@shopgate/engage/core';
 import { navigate$ } from '@shopgate/pwa-common/streams/router';
 import getCart from '@shopgate/pwa-tracking/selectors/cart';
-import { checkoutSucceeded$ } from '@shopgate/pwa-common-commerce/checkout';
+import { checkoutSucceeded$ } from '@shopgate/engage/checkout';
 import { track } from '@shopgate/pwa-tracking/helpers';
 import { userDataReceived$, userDidLogout$ } from '@shopgate/engage/user';
 import { receiveFavorites$ } from '@shopgate/engage/favorites';
@@ -74,8 +74,9 @@ export default (subscribe) => {
 
   let cartNeedsSync = false;
 
-  subscribe(checkoutSucceeded$, () => {
+  subscribe(checkoutSucceeded$, ({ dispatch }) => {
     cartNeedsSync = true;
+    dispatch(createWebhook());
   });
 
   subscribe(cartReceived$, ({ action, dispatch }) => {
@@ -110,10 +111,5 @@ export default (subscribe) => {
 
   subscribe(productsUpdated$, ({ dispatch }) => {
     dispatch(setBlockRechargeCart(false));
-  });
-
-  // Create webhook (if does not already exist) for tracking recurring payments
-  subscribe(appDidStart$, ({ dispatch }) => {
-    dispatch(createWebhook());
   });
 };
