@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- improved error logging for request to Recharge api
+### Fixed
+- cart checkout button portal now aware of recharge cart token fetching
+- user checkout params not being sent to recharge checkout endpoints with line items
 
 ## [1.2.4] - 2020-03-03
 ### Changed
