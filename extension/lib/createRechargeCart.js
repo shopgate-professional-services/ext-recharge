@@ -6,16 +6,22 @@ module.exports = async (context, { cart, customer }) => {
     return { rechargeCart: null }
   }
 
-  const checkoutParams = {
-    lineItems: createLineItems(cart.items),
-    ...refineCustomerData(customer)
+  try {
+    const checkoutParams = {
+      line_items: createLineItems(cart.items),
+      ...refineCustomerData(customer)
+    }
+
+    const api = new RechargeApi(context)
+    const response = await api.createOrderToken(checkoutParams)
+    const { checkout } = response || {}
+
+    return { rechargeCart: checkout }
+  } catch (error) {
+    context.log.error(error, 'Error creating recharge cart')
+    throw new Error('There was a problem processing the subscription products. Please try again later')
   }
 
-  const api = new RechargeApi(context)
-  const response = await api.createOrderToken(checkoutParams)
-  const { checkout } = response || {}
-
-  return { rechargeCart: checkout }
 }
 
 const createLineItems = (items) => {
