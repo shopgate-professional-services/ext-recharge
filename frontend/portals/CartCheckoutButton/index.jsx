@@ -6,12 +6,12 @@ import RechargeCheckoutButton from '../../components/RechargeCheckoutButton';
 /**
  * @returns {JSX}
  */
-const CartCheckoutButton = ({ cartToken, disabled, children, isTokenFetching }) => {
-  if (!cartToken && !isTokenFetching) {
+const CartCheckoutButton = ({ cartToken, disabled, children, isTokenFetching, isError }) => {
+  if (!cartToken && !isTokenFetching && !isError) {
     return children;
   }
 
-  return (<RechargeCheckoutButton cartToken={cartToken} disabled={disabled} />);
+  return (<RechargeCheckoutButton cartToken={cartToken} disabled={disabled || isError} />);
 };
 
 CartCheckoutButton.propTypes = {
