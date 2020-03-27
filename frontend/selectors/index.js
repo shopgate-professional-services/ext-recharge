@@ -199,13 +199,13 @@ export const getCartItemLineInfo = createSelector(
   }
 );
 
-const isTokenFetching = createSelector(
+export const isTokenFetching = createSelector(
   getRechargeCartState,
   cartState => cartState.isFetching
 );
 
 /**
- * Determine if carte is busty
+ * Determine if cart is busty
  * @returns {bool}
  */
 export const getIsCartBusy = createSelector(

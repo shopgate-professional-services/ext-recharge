@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getRechargeCartToken, getIsCartBusy } from '../../selectors';
+import { getRechargeCartToken, getIsCartBusy, isTokenFetching } from '../../selectors';
 
 /**
  * @param {Object} state state
@@ -8,6 +8,7 @@ import { getRechargeCartToken, getIsCartBusy } from '../../selectors';
 const mapStateToProps = state => ({
   cartToken: getRechargeCartToken(state),
   disabled: getIsCartBusy(state),
+  isTokenFetching: isTokenFetching(state),
 });
 
 export default connect(mapStateToProps);
