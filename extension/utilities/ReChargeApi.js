@@ -34,6 +34,28 @@ class ReChargeApi {
   }
 
   /**
+   * Prevent authentication tokens from being logged
+   * @param params
+   * @return {object}
+   */
+  obfuscateSensitiveParamData (params) {
+    if (!(params &&
+      typeof params === 'object' &&
+      params.headers &&
+      typeof params.headers === 'object')) {
+
+      return params
+    }
+
+    return {
+      ...params,
+      headers: {
+        ['X-Recharge-Access-Token']: 'XXXXXXXXXXXXXXXX'
+      }
+    }
+  }
+
+  /**
    * Evaluate response code for error
    * @param {number} code Response code
    * @return {boolean}
@@ -80,8 +102,8 @@ class ReChargeApi {
         if (err) {
           this.logger.error({
             body,
-            qs,
-            httpCode: res.statusCode
+            httpCode: res.statusCode,
+            requestParams: params ? JSON.stringify(this.obfuscateSensitiveParamData(params)) : 'no request params'
           }, 'ReCharge request error')
           return reject(err)
         }
@@ -91,7 +113,8 @@ class ReChargeApi {
         if (this.isErroredCode(res.statusCode)) {
           this.logger.error({
             body,
-            httpCode: res.statusCode
+            httpCode: res.statusCode,
+            requestParams: params ? JSON.stringify(this.obfuscateSensitiveParamData(params)) : 'no request params'
           }, 'ReCharge request error')
           return reject(new Error(`Received error code from the API: ${res.statusCode}`))
         }
@@ -117,13 +140,12 @@ class ReChargeApi {
   }
 
   async createOrderToken (checkoutParams) {
-    const { lineItems } = checkoutParams
     return this.call({
       path: 'checkouts',
       method: 'POST',
       body: {
         'checkout': {
-          'line_items': lineItems
+          ...checkoutParams || {}
         }
       }
     })

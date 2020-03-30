@@ -8,9 +8,12 @@ import { RECHARGE_CHECKOUT_PATH, APPENDED_SHOPIFY_DOMAIN_INFO } from '../../cons
  * @returns {JSX}
  */
 const RechargeCheckoutButton = ({ cartToken, disabled }) => (
-  <Link href={`${RECHARGE_CHECKOUT_PATH}${cartToken}?${APPENDED_SHOPIFY_DOMAIN_INFO}`} isActive={!disabled}>
+  <Link
+    href={`${RECHARGE_CHECKOUT_PATH}${cartToken}?${APPENDED_SHOPIFY_DOMAIN_INFO}`}
+    disabled={disabled || !cartToken}
+  >
     <RippleButton
-      isActive={!disabled}
+      disabled={disabled || !cartToken}
       type="regular"
       className={!disabled ? styles.button : styles.disabledButton}
     >
@@ -20,8 +23,12 @@ const RechargeCheckoutButton = ({ cartToken, disabled }) => (
 );
 
 RechargeCheckoutButton.propTypes = {
-  cartToken: PropTypes.string.isRequired,
   disabled: PropTypes.bool.isRequired,
+  cartToken: PropTypes.string,
+};
+
+RechargeCheckoutButton.defaultProps = {
+  cartToken: null,
 };
 
 export default RechargeCheckoutButton;

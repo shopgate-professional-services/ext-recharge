@@ -24,7 +24,7 @@ function getCacheEntry (cacheKey, context) {
       }, 'recharge redis cache get took too long.')
 
       resolve(null)
-    }, 100)
+    }, 500)
 
     redisClient.get(cacheKey)
       .then((result) => {
