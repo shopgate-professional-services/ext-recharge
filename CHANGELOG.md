@@ -54,7 +54,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Initial release of Recharge Integration
 
-[Unreleased]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.3...HEAD
+[Unreleased]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.5...HEAD
+[1.2.5]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.4...v1.2.5
 [1.2.4]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.1...v1.2.2
