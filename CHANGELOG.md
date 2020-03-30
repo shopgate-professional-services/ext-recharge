@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.2.5] - 2020-03-30
 ### Added
 - improved error logging for request to Recharge api
 ### Fixed
@@ -14,7 +16,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [1.2.4] - 2020-03-03
 ### Changed
 - Logic for charge interval frequency for pre-paid subscription items and added a singularize heler.
-
 
 ## [1.2.3] - 2020-02-21
 ### Changed
