@@ -93,8 +93,6 @@ export const fetchRechargeCart = () => (dispatch, getState) => {
     .catch((err) => {
       logger.error(err);
       dispatch(errorRechargeCart());
-      // TODO: show modal and redirect user to homepage
-
       LoadingProvider.unsetLoading(CART_PATH);
     });
 };
