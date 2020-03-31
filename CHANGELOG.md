@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-## [1.3.0] - 2020-04-01
+## [1.3.0] - 2020-03-31
 ### Added
 - support for more than one Recharge api token to spread api calls over all defined api tokens to increase the number of allowed calls per minute.
 
@@ -58,7 +58,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Initial release of Recharge Integration
 
-[Unreleased]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.5...HEAD
+[Unreleased]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.5...v1.3.0
 [1.2.5]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.4...v1.2.5
 [1.2.4]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.2...v1.2.3
