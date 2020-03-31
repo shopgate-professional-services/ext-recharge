@@ -26,6 +26,13 @@ apiTokens
 }
 ```
 
+apiToken DEPRECATED
+```json
+{
+  "apiToken": "123456abcdef"
+}
+```
+
 cacheTimeCustomer
 ```json
 {
