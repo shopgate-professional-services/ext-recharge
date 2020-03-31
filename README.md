@@ -12,17 +12,17 @@ This extension integrates a Shopgate app with the [Recharge](https://apps.shopif
 - copy the code from customer_portal.html into Customize styles > Storefront header HTML/CSS/JS
 
 ## Configuration
-It is necessary to configure the Recarge api base URL and configure your shop's recharge app token
+It is necessary to configure the Recarge api base URL and configure your shop's recharge api token or tokens. Defining more than one api token increases the number calls per minute allowed to the Recharge api.
 You can also configure the recharge details button text, recharge details button icon src, recharge details pop up title, recharge details pop up text, recharge details pop up learn more link text, recharge details pop up learn more link href, recharge details pop up footer image, and recharge currency.
 ```json
 {
   "baseUrl": "https://api.rechargeapps.com"
 }
 ```
-apiToken
+apiTokens
 ```json
 {
-  "apiToken": "123456abcdef"
+  "apiTokens": ["123456abcdef"]
 }
 ```
 

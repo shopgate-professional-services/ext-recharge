@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.3.0] - 2020-04-01
+### Added
+- support for more than one Recharge api token to spread api calls over all defined api tokens to increase the number of allowed calls per minute.
+
 ## [1.2.5] - 2020-03-30
 ### Added
 - improved error logging for request to Recharge api

@@ -8,6 +8,7 @@ class ReChargeApi {
     this.request = context.tracedRequest('ShopgateProjectReChargeAPI')
     this.logger = context.log
     this.token = context.config.apiToken
+    this.tokens = context.config.apiTokens
     this.storage = context.storage
   }
 
@@ -47,10 +48,12 @@ class ReChargeApi {
       return params
     }
 
+    const paramToken = params.headers['X-Recharge-Access-Token']
+
     return {
       ...params,
       headers: {
-        ['X-Recharge-Access-Token']: 'XXXXXXXXXXXXXXXX'
+        ['X-Recharge-Access-Token']: paramToken ? `...${paramToken.substr(paramToken.length - 5)}` : 'no token'
       }
     }
   }
@@ -73,6 +76,22 @@ class ReChargeApi {
   }
 
   /**
+   * Get token by randomly selecting one token from all defined
+   * @return {string}
+   */
+  getToken () {
+    // backward compatibility to version that supported only one token
+    if (!(Array.isArray(this.tokens) && this.tokens.length > 0)) {
+
+      return this.token
+    }
+
+    const randomIndex = Math.floor(Math.random() * this.tokens.length)
+
+    return this.tokens[randomIndex]
+  }
+
+  /**
    * Make API call
    * @param {string} path Path to api enpoint
    * @param {string} method Request method
@@ -88,15 +107,18 @@ class ReChargeApi {
         json: true,
         timeout: 5000,
         headers: {
-          'X-Recharge-Access-Token': this.token
+          'X-Recharge-Access-Token': this.getToken()
         }
       }
+
       if (body) {
         params.body = body
       }
+
       if (qs) {
         params.qs = qs
       }
+
       this.logger.debug(this.sanitizeForLogging(params), 'Calling RechargeAPI')
       this.request(params, (err, res = {}, body) => {
         if (err) {
