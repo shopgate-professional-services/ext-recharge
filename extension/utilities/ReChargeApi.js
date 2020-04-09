@@ -8,6 +8,7 @@ class ReChargeApi {
     this.request = context.tracedRequest('ShopgateProjectReChargeAPI')
     this.logger = context.log
     this.token = context.config.apiToken
+    this.tokens = context.config.apiTokens
     this.storage = context.storage
   }
 
@@ -34,6 +35,30 @@ class ReChargeApi {
   }
 
   /**
+   * Prevent authentication tokens from being logged
+   * @param params
+   * @return {object}
+   */
+  obfuscateSensitiveParamData (params) {
+    if (!(params &&
+      typeof params === 'object' &&
+      params.headers &&
+      typeof params.headers === 'object')) {
+
+      return params
+    }
+
+    const paramToken = params.headers['X-Recharge-Access-Token']
+
+    return {
+      ...params,
+      headers: {
+        ['X-Recharge-Access-Token']: paramToken ? `...${paramToken.substr(paramToken.length - 5)}` : 'no token'
+      }
+    }
+  }
+
+  /**
    * Evaluate response code for error
    * @param {number} code Response code
    * @return {boolean}
@@ -48,6 +73,22 @@ class ReChargeApi {
     }
 
     return false
+  }
+
+  /**
+   * Get token by randomly selecting one token from all defined
+   * @return {string}
+   */
+  getToken () {
+    // backward compatibility to version that supported only one token
+    if (!(Array.isArray(this.tokens) && this.tokens.length > 0)) {
+
+      return this.token
+    }
+
+    const randomIndex = Math.floor(Math.random() * this.tokens.length)
+
+    return this.tokens[randomIndex]
   }
 
   /**
@@ -66,22 +107,25 @@ class ReChargeApi {
         json: true,
         timeout: 5000,
         headers: {
-          'X-Recharge-Access-Token': this.token
+          'X-Recharge-Access-Token': this.getToken()
         }
       }
+
       if (body) {
         params.body = body
       }
+
       if (qs) {
         params.qs = qs
       }
+
       this.logger.debug(this.sanitizeForLogging(params), 'Calling RechargeAPI')
       this.request(params, (err, res = {}, body) => {
         if (err) {
           this.logger.error({
             body,
-            qs,
-            httpCode: res.statusCode
+            httpCode: res.statusCode,
+            requestParams: params ? JSON.stringify(this.obfuscateSensitiveParamData(params)) : 'no request params'
           }, 'ReCharge request error')
           return reject(err)
         }
@@ -91,7 +135,8 @@ class ReChargeApi {
         if (this.isErroredCode(res.statusCode)) {
           this.logger.error({
             body,
-            httpCode: res.statusCode
+            httpCode: res.statusCode,
+            requestParams: params ? JSON.stringify(this.obfuscateSensitiveParamData(params)) : 'no request params'
           }, 'ReCharge request error')
           return reject(new Error(`Received error code from the API: ${res.statusCode}`))
         }
@@ -117,13 +162,12 @@ class ReChargeApi {
   }
 
   async createOrderToken (checkoutParams) {
-    const { lineItems } = checkoutParams
     return this.call({
       path: 'checkouts',
       method: 'POST',
       body: {
         'checkout': {
-          'line_items': lineItems
+          ...checkoutParams || {}
         }
       }
     })

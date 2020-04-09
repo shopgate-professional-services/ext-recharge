@@ -8,10 +8,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Creation of recharge charge/paid webhook to track recurring payments
 
+## [1.3.0] - 2020-03-31
+### Added
+- support for more than one Recharge api token to spread api calls over all defined api tokens to increase the number of allowed calls per minute.
+
+## [1.2.5] - 2020-03-30
+### Added
+- improved error logging for request to Recharge api
+### Fixed
+- cart checkout button portal now aware of recharge cart token fetching
+- user checkout params not being sent to recharge checkout endpoints with line items
+
 ## [1.2.4] - 2020-03-03
 ### Changed
 - Logic for charge interval frequency for pre-paid subscription items and added a singularize heler.
-
 
 ## [1.2.3] - 2020-02-21
 ### Changed
@@ -50,7 +60,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Initial release of Recharge Integration
 
-[Unreleased]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.3...HEAD
+[Unreleased]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.5...v1.3.0
+[1.2.5]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.4...v1.2.5
 [1.2.4]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/shopgate-professional-services/ext-recharge/compare/v1.2.1...v1.2.2

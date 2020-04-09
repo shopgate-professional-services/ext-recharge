@@ -16,6 +16,7 @@ const rechargeCartReducer = (
     rechargeCart: null,
     isFetching: false,
     isBlocked: false,
+    isError: null,
   },
   action
 ) => {
@@ -31,12 +32,14 @@ const rechargeCartReducer = (
         ...action.rechargeCart,
         isFetching: false,
         isBlocked: false,
+        isError: false,
       };
     case ERROR_RECHARGE_CART:
       return {
         ...state,
         isFetching: false,
         isBlocked: false,
+        isError: true,
       };
     case SET_BLOCK_RECHARGE_CART:
       return {

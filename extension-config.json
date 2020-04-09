@@ -106,14 +106,23 @@
     }
   ],
   "configuration": {
+    "apiTokens": {
+      "type": "admin",
+      "destination": "backend",
+      "default": [],
+      "params": {
+        "label": "ReCharge API token",
+        "type": "json",
+        "required": true
+      }
+    },
     "apiToken": {
       "type": "admin",
       "destination": "backend",
       "default": "",
       "params": {
-        "label": "ReCharge API token",
-        "type": "text",
-        "required": true
+        "label": "DEPRECATED ReCharge API token",
+        "type": "text"
       }
     },
     "baseUrl": {
