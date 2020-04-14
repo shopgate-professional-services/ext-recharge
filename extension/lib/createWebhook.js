@@ -12,9 +12,7 @@ module.exports = async (context) => {
   const existingWebhook = await context.storage.extension.map.getItem(RECHARGE_WEBHOOK_MAP, shopNumber)
 
   if (!existingWebhook) {
-    await createWebhook(shopNumber, context)
-
-    return
+    return createWebhook(shopNumber, context)
   }
 
   if (!shouldCheckWebook(existingWebhook)) {
@@ -25,14 +23,12 @@ module.exports = async (context) => {
 
   // If webhook is still good update the stored timestamp
   if (webhookGood) {
-    await context.storage.extension.map.setItem(
+    return context.storage.extension.map.setItem(
       RECHARGE_WEBHOOK_MAP, appId, { ...existingWebhook, timestamp: Date.now() }
     )
-
-    return
   }
 
-  await createWebhook(shopNumber, context)
+  return createWebhook(shopNumber, context)
 }
 
 /**
