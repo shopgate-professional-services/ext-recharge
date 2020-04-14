@@ -1,8 +1,7 @@
 const crypto = require('crypto')
 const RechargeApi = require('../utilities/ReChargeApi')
 const { RECHARGE_WEBHOOK_MAP } = require('../constants')
-// const TTL = 24 * 60 * 60 * 1000 // 24 hours // ToDo
-const TTL = 60 * 1000 // 1 Minute for debugging
+const TTL = 24 * 60 * 60 * 1000 // 24 hours
 const WEBHOOK_TOPIC = 'charge/paid'
 
 module.exports = async (context) => {
