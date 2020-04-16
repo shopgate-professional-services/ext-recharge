@@ -28,7 +28,7 @@ apiTokens
 webhookApiToken 
 ```json
 {
-  "webhookApiToken": ["123456abcdef"]
+  "webhookApiToken": "123456abcdef"
 }
 ```
 Use one of the apiTokens above, but don't change, to prevent duplicate webhooks. 
