@@ -1,0 +1,18 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate-project.recharge.checkCreateWebhook.v1",
+    "public": true,
+    "input": [],
+    "output": [],
+    "steps": [
+      {
+        "id": "@shopgate-project/recharge",
+        "path": "@shopgate-project/recharge/lib/createWebhook.js",
+        "type": "extension",
+        "input": [],
+        "output": []
+      }
+    ]
+  }
+}

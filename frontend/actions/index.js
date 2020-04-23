@@ -14,6 +14,7 @@ import {
   GET_CART,
   GET_CUSTOMER_HASH,
   SET_BLOCK_RECHARGE_CART,
+  CREATE_WEBHOOK,
 } from '../constants';
 import {
   requestRechargeSubscriptionProducts,
@@ -25,6 +26,9 @@ import {
   requestRechargeCustomerHash,
   receiveRechargeCustomerHash,
   errorRechargeCustomerHash,
+  requestCreateWebhook,
+  successCreateWebhook,
+  errorCreateWebhook,
 } from '../action-creators';
 
 /**
@@ -162,4 +166,22 @@ export const setBlockRechargeCart = flag => (dispatch) => {
     type: SET_BLOCK_RECHARGE_CART,
     flag,
   });
+};
+
+/**
+ * Create webhook if one does not already exist
+ * @return {Function}
+ */
+export const createWebhook = () => (dispatch) => {
+  dispatch(requestCreateWebhook());
+  new PipelineRequest(CREATE_WEBHOOK)
+    .setHandleErrors(ERROR_HANDLE_SUPPRESS)
+    .dispatch()
+    .then(() => {
+      dispatch(successCreateWebhook());
+    })
+    .catch((err) => {
+      logger.error(err);
+      dispatch(errorCreateWebhook());
+    });
 };

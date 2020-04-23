@@ -25,6 +25,13 @@ apiTokens
   "apiTokens": ["123456abcdef"]
 }
 ```
+webhookApiToken 
+```json
+{
+  "webhookApiToken": "123456abcdef"
+}
+```
+Use one of the apiTokens above, but don't change, to prevent duplicate webhooks. 
 
 apiToken DEPRECATED
 ```json
@@ -66,7 +73,10 @@ In guru you must add the redis secret token to the config `Shopgate Connect Exte
 ```json
 {
   "@shopgate-project/recharge": {
-    "redisSecret": ""
+    "redisSecret": "",
+    "webhookHandlerUrl": "",
+    "webhookHandlerToken": "",
+    "webhookHandlerSalt": ""
   }
 }
 ```

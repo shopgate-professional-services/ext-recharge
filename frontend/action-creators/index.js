@@ -11,6 +11,9 @@ import {
   REMOVE_RECHARGE_CUSTOMER_HASH,
   UPDATE_RECHARGE_INFO,
   UPDATE_SHOPIFY_VARIANT_ID,
+  REQUEST_CREATE_WEBHOOK,
+  SUCCESS_CREATE_WEBHOOK,
+  ERROR_CREATE_WEBHOOK,
 } from '../constants';
 
 /**
@@ -127,4 +130,28 @@ export const errorRechargeCustomerHash = () => ({
  */
 export const removeRechargeCustomerHash = () => ({
   type: REMOVE_RECHARGE_CUSTOMER_HASH,
+});
+
+/**
+ * Request create webhook
+ * @return {Object}
+ */
+export const requestCreateWebhook = () => ({
+  type: REQUEST_CREATE_WEBHOOK,
+});
+
+/**
+ * Success create webhook
+ * @return {Object}
+ */
+export const successCreateWebhook = () => ({
+  type: SUCCESS_CREATE_WEBHOOK,
+});
+
+/**
+ * Error create webhook
+ * @return {Object}
+ */
+export const errorCreateWebhook = () => ({
+  type: ERROR_CREATE_WEBHOOK,
 });

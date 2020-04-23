@@ -1,5 +1,5 @@
 {
-  "version": "1.3.0",
+  "version": "1.4.0",
   "id": "@shopgate-project/recharge",
   "components": [
     {
@@ -237,6 +237,49 @@
       "params": {
         "label": "Value (ms) for caching recharche subscription products in backend.",
         "type": "number"
+      }
+    },
+    "webhookHandlerUrl": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project/recharge.webhookHandlerUrl"
+      }
+    },
+    "webhookHandlerToken": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project/recharge.webhookHandlerToken"
+      }
+    },
+    "webhookHandlerSalt": {
+      "type": "bigApi",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "method": "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/sgc_extension_settings?parsed=true",
+        "key": "value.@shopgate-project/recharge.webhookHandlerSalt"
+      }
+    },
+    "webhookApiToken": {
+      "type": "admin",
+      "destination": "backend",
+      "default": "",
+      "params": {
+        "label": "ReCharge API token. Use any but don't change to prevent duplicate Webhook creations.",
+        "type": "text",
+        "required": true
       }
     }
   },

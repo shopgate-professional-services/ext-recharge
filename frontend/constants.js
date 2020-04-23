@@ -24,6 +24,10 @@ export const UPDATE_SHOPIFY_VARIANT_ID = 'UPDATE_SHOPIFY_VARIANT_ID';
 
 export const SET_BLOCK_RECHARGE_CART = 'SET_BLOCK_RECHARGE_CART';
 
+export const REQUEST_CREATE_WEBHOOK = 'REQUEST_CREATE_WEBHOOK';
+export const SUCCESS_CREATE_WEBHOOK = 'SUCCESS_CREATE_WEBHOOK';
+export const ERROR_CREATE_WEBHOOK = 'ERROR_CREATE_WEBHOOK';
+
 // Redux namespace
 const EXTENSION_NAME = '@shopgate-project/recharge';
 export const REDUX_NAMESPACE_RECHARGE_SUBSCRIPTION_ITEMS = `${EXTENSION_NAME}/rechargeSubscriptionItems`;
@@ -39,6 +43,7 @@ export const NO_SUBSCRIPTION_FREQUENCY_VALUE = 'No Subscription';
 export const GET_SUBSCRIPTION_PRODUCTS = 'shopgate-project.recharge.getSubscriptionProducts';
 export const GET_CART = 'shopgate-project.recharge.getCart';
 export const GET_CUSTOMER_HASH = 'shopgate-project.recharge.getCustomerHash';
+export const CREATE_WEBHOOK = 'shopgate-project.recharge.checkCreateWebhook';
 
 export const RECHARGE_CHECKOUT_PATH = 'https://checkout.rechargeapps.com/r/checkout/';
 
