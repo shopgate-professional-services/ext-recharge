@@ -10,22 +10,25 @@ This extension integrates a Shopgate app with the [Recharge](https://apps.shopif
 - Copy the code from thank_you.html and add it to "Additional & scripts and trackers"
 - navigate to admin/apps/shopify-recurring-payments/settings/customer portal
 - copy the code from customer_portal.html into Customize styles > Storefront header HTML/CSS/JS
+- Navigate to a customer account in Shopify store front and click *manage subscriptions* and check if URL partial deviates from default configuration below
 
 ## Configuration
 It is necessary to configure the Recarge api base URL and configure your shop's recharge api token or tokens. Defining more than one api token increases the number of calls per minute allowed to the Recharge api.
 You can also configure the recharge details button text, recharge details button icon src, recharge details pop up title, recharge details pop up text, recharge details pop up learn more link text, recharge details pop up learn more link href, recharge details pop up footer image, and recharge currency.
+
+**baseUrl**
 ```json
 {
   "baseUrl": "https://api.rechargeapps.com"
 }
 ```
-apiTokens
+**apiTokens**
 ```json
 {
   "apiTokens": ["123456abcdef"]
 }
 ```
-webhookApiToken 
+**webhookApiToken**
 ```json
 {
   "webhookApiToken": "123456abcdef"
@@ -33,22 +36,23 @@ webhookApiToken
 ```
 Use one of the apiTokens above, but don't change, to prevent duplicate webhooks. 
 
-apiToken DEPRECATED
+**shopifySubscriptionPath**
 ```json
 {
-  "apiToken": "123456abcdef"
+  "shopifySubscriptionPath": "tools/recurring/customers"
 }
 ```
+Please check **Setup** section to verify URL path.
 
-cacheTimeCustomer
+**cacheTimeCustomer**
 ```json
 {
   "cacheTimeCustomer": 1800000
 }
  ```
-Cache time (ms) for ReCharge customer data. Default  30m
+Cache time (ms) for ReCharge customer data. Default is 30m.
 
-Recharge details configurations.
+**Recharge details configurations**
 ```json
  {
    "rechargeDetailsButtonText": "Subscription details",
@@ -61,7 +65,7 @@ Recharge details configurations.
 }
 ```
 
- rechargeSubscriptionTTLBackend
+**rechargeSubscriptionTTLBackend**
 ```json
 {
   "rechargeSubscriptionTTLBackend": 1200000

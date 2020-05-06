@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.5.0-rc.1",
   "id": "@shopgate-project/recharge",
   "components": [
     {
@@ -116,21 +116,22 @@
         "required": true
       }
     },
-    "apiToken": {
-      "type": "admin",
-      "destination": "backend",
-      "default": "",
-      "params": {
-        "label": "DEPRECATED ReCharge API token",
-        "type": "text"
-      }
-    },
     "baseUrl": {
       "type": "admin",
       "destination": "backend",
       "default": "https://api.rechargeapps.com",
       "params": {
         "label": "ReCharge API base URL",
+        "type": "text",
+        "required": true
+      }
+    },
+    "shopifySubscriptionPath": {
+      "type": "admin",
+      "destination": "frontend",
+      "default": "tools/recurring/customers",
+      "params": {
+        "label": "Shopify URL partial for Recharge subscription path",
         "type": "text",
         "required": true
       }

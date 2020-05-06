@@ -7,7 +7,6 @@ class ReChargeApi {
     this.baseUrl = context.config.baseUrl
     this.request = context.tracedRequest('ShopgateProjectReChargeAPI')
     this.logger = context.log
-    this.token = context.config.apiToken
     this.tokens = context.config.apiTokens
     this.webhookToken = context.config.webhookApiToken
     this.storage = context.storage
@@ -83,10 +82,6 @@ class ReChargeApi {
   getToken (webhookCall) {
     if (webhookCall && this.webhookToken) {
       return this.webhookToken
-    }
-    // backward compatibility to version that supported only one token
-    if (!(Array.isArray(this.tokens) && this.tokens.length > 0)) {
-      return this.token
     }
 
     const randomIndex = Math.floor(Math.random() * this.tokens.length)
