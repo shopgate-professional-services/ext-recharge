@@ -19,7 +19,7 @@ const RechargePortalLink = ({ customerHash, Item, openPortal }) => {
     <Item
       label="recharge.customer_portal.manage_subscriptions"
       icon={InfoIcon}
-      onClick={() => { console.warn('component', customerHash); openPortal(customerHash); }}
+      onClick={openPortal(customerHash)}
     >
       <I18n.Text string="recharge.customer_portal.manage_subscriptions" />
     </Item>
