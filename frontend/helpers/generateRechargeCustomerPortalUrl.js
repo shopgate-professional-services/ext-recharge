@@ -7,6 +7,7 @@ const { shopifyAlias, shopifySubscriptionPath } = getConfig();
  * @param {string} customerHash Customer hash
  * @return {string}
  */
-export default customerHash => (
-  `https://${shopifyAlias}.myshopify.com/${shopifySubscriptionPath}/${customerHash}/subscriptions`
-);
+export default (customerHash) => {
+  console.warn('getUrl', customerHash);
+  return `https://${shopifyAlias}.myshopify.com/${shopifySubscriptionPath}/${customerHash}/subscriptions`;
+};

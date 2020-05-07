@@ -13,11 +13,10 @@ const mapStateToProps = state => ({
 
 /**
  * @param {Function} dispatch dispatch
- * @param {Object} props  props
  * @returns {Object}
  */
-const mapDispatchToProps = (dispatch, props) => ({
-  openPortal: () => dispatch(historyPush({ pathname: getUrl(props.customerHash) })),
+const mapDispatchToProps = dispatch => ({
+  openPortal: customerHash => dispatch(historyPush({ pathname: getUrl(customerHash) })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);
