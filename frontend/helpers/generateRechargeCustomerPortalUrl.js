@@ -1,6 +1,6 @@
 import getConfig from './getConfig';
 
-const { shopifyAlias } = getConfig();
+const { shopifyAlias, shopifySubscriptionPath } = getConfig();
 
 /**
  * Create url to recharge customer portal
@@ -8,5 +8,5 @@ const { shopifyAlias } = getConfig();
  * @return {string}
  */
 export default customerHash => (
-  `https://${shopifyAlias}.myshopify.com/tools/recurring/customers/${customerHash}/subscriptions`
+  `https://${shopifyAlias}.myshopify.com/${shopifySubscriptionPath}/${customerHash}/subscriptions`
 );
