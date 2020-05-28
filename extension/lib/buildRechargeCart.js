@@ -28,13 +28,6 @@ module.exports = async function buildRechargeCart (context, input) {
   cartItemsProducts.forEach((cartItem) => {
     const { quantity, product } = cartItem
 
-    const { price: { unit } } = product
-    if (!unit) {
-      // Exclude free items to not send to recharge
-      context.log.info(`Product ${product.id} is excluded due to zero price`)
-      return
-    }
-
     const { recharge: rechargeInfo } = product.additionalInfo
       .find(({ recharge }) => !!recharge) || {}
 
@@ -66,7 +59,7 @@ module.exports = async function buildRechargeCart (context, input) {
       }
 
       // when there is subscriptionInfo the shopifyVariantId and quantity is stored only within it
-      mappedSubscription.shopifyVariantId = subscriptionInfo.shopifyVariantId
+      mappedSubscription.shopifyVariantId = subscriptionInfo.shopifyVariantId || shopifyVariantId
       mappedSubscription.quantity = subscriptionInfo.quantity
       mappedSubscription.subscriptionInfo = subscriptionInfo
       const discountPercentage = subscriptionInfo.discountAmount || 0
