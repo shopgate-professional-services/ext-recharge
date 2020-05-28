@@ -1,4 +1,4 @@
-import { appDidStart$, mutableActions } from '@shopgate/engage/core';
+import { appDidStart$, mutableActions, next } from '@shopgate/engage/core';
 import { addProductsToCart, getAddToCartOptions } from '@shopgate/engage/cart';
 import { getBaseProductId } from '@shopgate/engage/product';
 import { getSelectedSubscriptionsInfo, getVariantId } from '../selectors';
@@ -8,8 +8,11 @@ import { getSelectedSubscriptionsInfo, getVariantId } from '../selectors';
  */
 export default (subscribe) => {
   subscribe(appDidStart$, async ({ getState }) => {
+    // 6.11.0 vs 6.12.0
+    const nextThunk = next || mutableActions.next;
+
     addProductsToCart.useBefore(addProductsData => (
-      mutableActions.next(addProductsData.map((data) => {
+      nextThunk(addProductsData.map((data) => {
         if (data.metadata && data.metadata.shopifyVariantId) {
           // Already processed by addProductToCart
           return data;
