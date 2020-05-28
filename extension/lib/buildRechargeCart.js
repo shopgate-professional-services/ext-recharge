@@ -59,7 +59,7 @@ module.exports = async function buildRechargeCart (context, input) {
       }
 
       // when there is subscriptionInfo the shopifyVariantId and quantity is stored only within it
-      mappedSubscription.shopifyVariantId = subscriptionInfo.shopifyVariantId || shopifyVariantId
+      mappedSubscription.shopifyVariantId = subscriptionInfo.shopifyVariantId
       mappedSubscription.quantity = subscriptionInfo.quantity
       mappedSubscription.subscriptionInfo = subscriptionInfo
       const discountPercentage = subscriptionInfo.discountAmount || 0

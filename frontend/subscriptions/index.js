@@ -23,8 +23,11 @@ import {
 } from '../actions';
 import { removeRechargeCustomerHash } from '../action-creators';
 import { RECHARGE_CHECKOUT_PATH } from '../constants';
+import cartSubscriptions from './cart';
 
 export default (subscribe) => {
+  cartSubscriptions(subscribe);
+
   subscribe(receivedVisibleProduct$, ({ action, dispatch, getState }) => {
     const state = getState();
     const { productData } = action;
