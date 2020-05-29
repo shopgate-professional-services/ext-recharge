@@ -3,10 +3,10 @@ module.exports = async function buildRechargeCart (context, input) {
     return { cart: null }
   }
 
-  const cartItems = input.cartItems.filter(({ type }) => type === 'product')
+  const cartItemsProducts = input.cartItems.filter(({ type }) => type === 'product')
 
   // Check if we need to generate a recharge cart
-  const isRecharge = cartItems.some(
+  const isRecharge = cartItemsProducts.some(
     ({ product }) =>
       product.additionalInfo.some(
         (val) => {
@@ -25,9 +25,9 @@ module.exports = async function buildRechargeCart (context, input) {
   const discounts = input.totals.filter(({ type }) => type === 'discount')
   const items = []
 
-  cartItems.forEach((cartItem) => {
-    const quantity = cartItem.quantity
-    const product = cartItem.product
+  cartItemsProducts.forEach((cartItem) => {
+    const { quantity, product } = cartItem
+
     const { recharge: rechargeInfo } = product.additionalInfo
       .find(({ recharge }) => !!recharge) || {}
 
