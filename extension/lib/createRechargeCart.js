@@ -6,10 +6,34 @@ module.exports = async (context, { cart, customer }) => {
     return { rechargeCart: null }
   }
 
+  const { app: { os: { platform = 'connect' } = {} } = {} } = await context.device.getInfo()
+
   try {
     const checkoutParams = {
       line_items: createLineItems(cart.items),
-      ...refineCustomerData(customer)
+      ...refineCustomerData(customer),
+      /**
+       * @link https://support.rechargepayments.com/hc/en-us/articles/360041127093-Using-cart-attributes-and-UTM-parameters-in-URLs
+       */
+      analytics_data: {
+        utm_params: [
+          {
+            utm_data_source: 'shopgate_connect',
+            utm_source: 'shopgate',
+            utm_medium: platform,
+            utm_timestamp: (new Date()).toISOString().substring(0, 10)
+          }
+        ]
+      },
+      // Shopify order / Notes
+      note: `Shopgate Connect ${platform}`,
+      // Shopify order / Additional details
+      note_attributes: [
+        {
+          name: 'Shopgate connect', // read only
+          value: platform // can be changed
+        }
+      ]
     }
 
     const api = new RechargeApi(context)
@@ -21,7 +45,6 @@ module.exports = async (context, { cart, customer }) => {
     context.log.error(error, 'Error creating recharge cart')
     throw new Error('There was a problem processing the subscription products. Please try again later')
   }
-
 }
 
 const createLineItems = (items) => {
@@ -30,6 +53,7 @@ const createLineItems = (items) => {
     Weeks: 'week',
     Months: 'month'
   }
+  const orderIntervalTranslationVals = Object.values(orderIntervalTranslation)
 
   return items.map((item) => {
     const { subscriptionInfo, shopifyVariantId } = item || {}
@@ -42,6 +66,11 @@ const createLineItems = (items) => {
       })
     }
 
+    let oderIntervalUnit = orderIntervalTranslation[subscriptionInfo.intervalUnit]
+    if (!oderIntervalUnit && orderIntervalTranslationVals.includes(subscriptionInfo.intervalUnit)) {
+      oderIntervalUnit = subscriptionInfo.intervalUnit
+    }
+
     const rechargeItem = {
       charge_interval_frequency: subscriptionInfo.chargeIntervalFrequency,
       cutoff_day_month: subscriptionInfo.cutoffDayOfMonth,
@@ -50,7 +79,7 @@ const createLineItems = (items) => {
       order_day_of_month: subscriptionInfo.orderDayOfMonth === 0 ? null : subscriptionInfo.orderDayOfMonth,
       order_day_of_week: subscriptionInfo.orderDayOfWeek,
       order_interval_frequency: subscriptionInfo.orderIntervalFrequency,
-      order_interval_unit: orderIntervalTranslation[subscriptionInfo.intervalUnit] || null,
+      order_interval_unit: oderIntervalUnit || null,
       price: item.unit_price,
       quantity: item.quantity,
       variant_id: subscriptionInfo.shopifyVariantId
