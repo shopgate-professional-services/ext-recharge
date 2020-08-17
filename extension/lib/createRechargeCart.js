@@ -48,12 +48,16 @@ module.exports = async (context, { cart, customer }) => {
 }
 
 const createLineItems = (items) => {
-  const orderIntervalTranslation = {
-    Days: 'day',
-    Weeks: 'week',
-    Months: 'month'
+  const translateOrderInterval = interval => {
+    return {
+      day: 'day',
+      days: 'day',
+      weeks: 'week',
+      week: 'week',
+      months: 'month',
+      month: 'month'
+    }[interval.toLowerCase()] || null
   }
-  const orderIntervalTranslationVals = Object.values(orderIntervalTranslation)
 
   return items.map((item) => {
     const { subscriptionInfo, shopifyVariantId } = item || {}
@@ -66,11 +70,6 @@ const createLineItems = (items) => {
       })
     }
 
-    let oderIntervalUnit = orderIntervalTranslation[subscriptionInfo.intervalUnit]
-    if (!oderIntervalUnit && orderIntervalTranslationVals.includes(subscriptionInfo.intervalUnit)) {
-      oderIntervalUnit = subscriptionInfo.intervalUnit
-    }
-
     const rechargeItem = {
       charge_interval_frequency: subscriptionInfo.chargeIntervalFrequency,
       cutoff_day_month: subscriptionInfo.cutoffDayOfMonth,
@@ -79,7 +78,7 @@ const createLineItems = (items) => {
       order_day_of_month: subscriptionInfo.orderDayOfMonth === 0 ? null : subscriptionInfo.orderDayOfMonth,
       order_day_of_week: subscriptionInfo.orderDayOfWeek,
       order_interval_frequency: subscriptionInfo.orderIntervalFrequency,
-      order_interval_unit: oderIntervalUnit || null,
+      order_interval_unit: translateOrderInterval(subscriptionInfo.intervalUnit),
       price: item.unit_price,
       quantity: item.quantity,
       variant_id: subscriptionInfo.shopifyVariantId
