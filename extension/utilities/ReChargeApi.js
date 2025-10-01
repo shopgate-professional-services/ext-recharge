@@ -105,7 +105,8 @@ class ReChargeApi {
         json: true,
         timeout: 5000,
         headers: {
-          'X-Recharge-Access-Token': this.getToken(path.includes('webhooks'))
+          'X-Recharge-Access-Token': this.getToken(path.includes('webhooks')),
+          'X-Recharge-Version': '2021-11'
         }
       }
 
@@ -149,12 +150,12 @@ class ReChargeApi {
    * @param {Object[]} productIds
    * @return {Promise<any>}
    */
-  async getProducts (productIds = []) {
+  async getPlans (productIds = []) {
     return this.call({
-      path: 'products',
+      path: 'plans',
       method: 'GET',
       qs: {
-        shopify_product_ids: productIds.join(',')
+        external_product_ids: productIds.join(',')
       }
     })
   }

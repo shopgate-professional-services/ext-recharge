@@ -47,7 +47,7 @@ module.exports = async (context, input) => {
   const { productIds = [] } = input || {}
 
   if (!productIds.length) {
-    return { products: [] }
+    return { plans: [] }
   }
 
   const { redisClientSecret } = context.config || {}
@@ -86,19 +86,19 @@ module.exports = async (context, input) => {
   // If we got all product subscriptions from cache then return
   if (!productIdsToFetch.length) {
     return {
-      products: cachedOutput
+      plans: cachedOutput
     }
   }
 
   // Fetch products from API
   const api = new ReChargeApi(context)
-  const { products = [] } = await api.getProducts(productIdsToFetch)
+  const { plans = [] } = await api.getPlans(productIdsToFetch)
 
   // TTL in seconds
   const TTL = context.config.rechargeSubscriptionTTLBackend / 1000
 
   // If no subscription info then save empty object for id
-  if (!products.length) {
+  if (!plans.length) {
     productIdsToFetch.forEach(async (id) => {
       const cacheKey = buildCacheKey(id)
       try {
@@ -114,11 +114,11 @@ module.exports = async (context, input) => {
   }
 
   // put response and missing product from response into cache
-  products.forEach(async (product) => {
-    const { product_id: id } = product || {}
+  plans.forEach(async plan => {
+    const { external_product_id: { ecommerce: id } } = plan || {}
     const cacheKey = buildCacheKey(id)
     try {
-      await redisClient.set(cacheKey, JSON.stringify(product), TTL)
+      await redisClient.set(cacheKey, JSON.stringify(plan), TTL)
     } catch (e) {
       context.log.error({
         redisError: e,
@@ -127,5 +127,5 @@ module.exports = async (context, input) => {
     }
   })
 
-  return { products }
+  return { plans }
 }

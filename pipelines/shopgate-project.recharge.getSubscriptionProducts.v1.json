@@ -11,7 +11,7 @@
     ],
     "output": [
       {
-        "key": "products",
+        "key": "plans",
         "id": "1100"
       }
     ],
@@ -28,7 +28,7 @@
         ],
         "output": [
           {
-            "key": "products",
+            "key": "plans",
             "id": "1100"
           }
         ]
