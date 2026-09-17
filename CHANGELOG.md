@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.5.4] - 2026-09-17
+### Removed
+- pwa peerDependencies version check
+
 ## [1.5.0] - 2020-05-06
 ### Added
 - Configuration for Shopify "Manage Subscription" URL partial
